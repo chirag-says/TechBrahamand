@@ -41,7 +41,8 @@ coverage/
 !.env.example
 
 # Local server uploads
-Server/uploads/
+server/uploads/
+uploads/
 
 # Editor directories and files
 .vscode/

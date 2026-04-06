@@ -1,12 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Sparkles,
-  Binary,
-  Orbit,
-  ArrowUpRight,
-  Shield,
-} from "lucide-react";
+import { ArrowUpRight, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,17 +29,17 @@ export default function Products() {
       color: "text-amber-600",
       bg: "bg-amber-50",
       border: "border-amber-100",
-      icon: <Sparkles size={20} />,
-      label: "Creation Stage",
-      desc: "Build complete AI-powered digital infrastructure from zero. Designed for scalability, performance, and intelligent automation.",
+      btnBg: "bg-amber-600 hover:bg-amber-700 shadow-amber-600/20",
+      image: "/brahma.png",
+      desc: "We build complete digital products from scratch — websites, web apps, SaaS platforms, e-commerce stores, and full branding packages tailored to your vision.",
       features: [
-        "Business process design",
-        "AI-driven architecture",
-        "Automation foundation",
-        "Infinite scalability",
+        "Custom website & web app development",
+        "SaaS product engineering",
+        "UI/UX design & branding",
+        "E-commerce solutions",
       ],
-      ideal: "Startups & traditional businesses going digital",
-      cta: "Build Platform",
+      ideal: "Startups, new businesses, and entrepreneurs going digital",
+      cta: "Build With Us",
     },
     {
       title: "Tech Vishnu",
@@ -52,17 +47,17 @@ export default function Products() {
       color: "text-cyan-700",
       bg: "bg-cyan-50",
       border: "border-cyan-100",
-      icon: <Binary size={20} />,
-      label: "Enhancement Stage",
-      desc: "Enhance existing software systems with AI automation, improving efficiency without disrupting operations.",
+      btnBg: "bg-cyan-600 hover:bg-cyan-700 shadow-cyan-600/20",
+      image: "/vishnu.png",
+      desc: "We keep your digital presence alive and thriving. From routine maintenance to emergency fixes, we ensure your platform runs at peak performance 24/7.",
       features: [
-        "System intelligence upgrade",
-        "Workflow automation",
-        "AI reporting",
-        "Performance optimization",
+        "Bug fixes & security patches",
+        "Hosting & server management",
+        "SEO optimization & content updates",
+        "Performance monitoring",
       ],
-      ideal: "Growing businesses with existing software",
-      cta: "Enhance Systems",
+      ideal: "Businesses with existing websites or apps needing ongoing care",
+      cta: "Get Maintenance",
     },
     {
       title: "Tech Mahesh",
@@ -70,17 +65,17 @@ export default function Products() {
       color: "text-purple-700",
       bg: "bg-purple-50",
       border: "border-purple-100",
-      icon: <Orbit size={20} />,
-      label: "Transformation Stage",
-      desc: "Safely rebuild legacy systems into modern AI-powered platforms with zero downtime.",
+      btnBg: "bg-purple-600 hover:bg-purple-700 shadow-purple-600/20",
+      image: "/mahesh.png",
+      desc: "We analyze your competitors and arm you with strategic intelligence. Through deep audits and market insights, we give you the edge to dominate your space.",
       features: [
-        "Legacy modernization",
-        "Parallel architecture",
-        "Safe migration",
-        "Future-proof infrastructure",
+        "SEO audits & competitive analysis",
+        "UI/UX teardowns & recommendations",
+        "Market positioning reports",
+        "Ad strategy & growth planning",
       ],
-      ideal: "Enterprises with legacy infrastructure",
-      cta: "Transform Infrastructure",
+      ideal: "Businesses wanting to outperform their competition",
+      cta: "Get Your Edge",
     },
   ];
 
@@ -121,7 +116,7 @@ export default function Products() {
             font-semibold tracking-[0.18em]
             text-slate-600 uppercase
           ">
-            AI Product Suite
+            Our Services
           </span>
         </div>
 
@@ -132,14 +127,14 @@ export default function Products() {
           text-[clamp(1.5rem,6vw,4.5rem)]
         ">
 
-          Intelligence Built for Every{" "}
+          Three Pillars.{" "}
 
           <span className="
             bg-gradient-to-r
             from-slate-900 via-slate-600 to-slate-400
             bg-clip-text text-transparent
           ">
-            Stage of Evolution
+            One Mission.
           </span>
 
         </h1>
@@ -152,8 +147,8 @@ export default function Products() {
           leading-relaxed
           max-w-2xl mx-auto
         ">
-          Deploy specialized AI agents engineered to create, enhance,
-          and transform your business infrastructure.
+          Whether you're starting from zero, need ongoing support, or want
+          to crush your competition — we've got the right solution for you.
         </p>
 
 
@@ -167,7 +162,7 @@ export default function Products() {
             tracking-[0.2em]
             text-slate-400 font-semibold uppercase
           ">
-            Enterprise-Grade Intelligence
+            Create · Preserve · Transform
           </div>
 
           <div className="h-px w-8 sm:w-12 bg-gradient-to-l from-transparent to-slate-300" />
@@ -207,15 +202,15 @@ export default function Products() {
             `}
           >
 
-            {/* icon */}
+            {/* image */}
             <div className={`
-              w-12 h-12 sm:w-14 sm:h-14
-              rounded-lg sm:rounded-xl
-              flex items-center justify-center
+              w-16 h-16 sm:w-20 sm:h-20
+              rounded-xl sm:rounded-2xl
+              overflow-hidden shadow-md
               mb-4 sm:mb-6
-              ${item.bg} ${item.color}
+              border-2 ${item.border}
             `}>
-              {item.icon}
+              <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
             </div>
 
 
@@ -271,23 +266,25 @@ export default function Products() {
 
 
             {/* ideal */}
-            <div className="
-              bg-slate-50 border border-slate-200
+            <div className={`
+              border
               p-3 sm:p-4
               rounded-lg sm:rounded-xl
               mb-4 sm:mb-6
-            ">
+              ${item.bg} ${item.border}
+            `}>
 
-              <div className="
+              <div className={`
                 text-[10px] sm:text-xs
-                uppercase text-slate-400 mb-1
-              ">
+                uppercase mb-1 font-semibold
+                ${item.color}
+              `}>
                 Ideal For
               </div>
 
               <div className="
                 text-xs sm:text-sm
-                text-slate-600
+                text-slate-700
               ">
                 {item.ideal}
               </div>
@@ -296,23 +293,25 @@ export default function Products() {
 
 
             {/* CTA */}
-            <button className="
-              mt-auto
-              bg-slate-900 text-white
-              py-2.5 sm:py-3
-              text-sm sm:text-base
-              rounded-lg sm:rounded-xl
-              font-semibold
-              hover:bg-slate-700
-              transition
-              flex items-center justify-center gap-2
-            ">
+            <Link to="/contact">
+              <button className={`
+                mt-auto w-full
+                text-white
+                py-2.5 sm:py-3
+                text-sm sm:text-base
+                rounded-lg sm:rounded-xl
+                font-semibold shadow-lg
+                transition-all duration-300
+                flex items-center justify-center gap-2
+                ${item.btnBg}
+              `}>
 
-              {item.cta}
+                {item.cta}
 
-              <ArrowUpRight size={16} />
+                <ArrowUpRight size={16} />
 
-            </button>
+              </button>
+            </Link>
 
           </motion.div>
 
@@ -328,7 +327,7 @@ export default function Products() {
         uppercase tracking-widest
         text-slate-400 font-semibold
       ">
-        Enterprise-grade • Secure • Zero downtime deployment
+        AMC Plans Available · One-time & Ongoing · Flexible Pricing
       </div>
 
     </div>

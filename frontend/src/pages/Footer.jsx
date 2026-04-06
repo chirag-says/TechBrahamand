@@ -1,12 +1,20 @@
 import React from "react";
-import { ArrowUpRight, Github, Linkedin, Twitter } from "lucide-react";
+import { ArrowUpRight, Linkedin, Twitter } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
 
   const links = {
-    Platform: ["Overview", "Architecture", "Security", "AI Models"],
-    Company: ["About", "Careers", "Press", "Contact"],
-    Resources: ["Documentation", "Guides", "API Reference", "Support"],
+    Services: [
+      { name: "Website Development", path: "/products" },
+      { name: "Maintenance & AMC", path: "/products" },
+      { name: "Competitor Analysis", path: "/products" },
+    ],
+    Company: [
+      { name: "About Us", path: "/about" },
+      { name: "Our Services", path: "/services" },
+      { name: "Contact", path: "/contact" },
+    ],
   };
 
   return (
@@ -34,7 +42,7 @@ export default function Footer() {
           {/* BRAND */}
           <div className="
             md:col-span-2
-            lg:col-span-4
+            lg:col-span-5
             text-center md:text-left
           ">
 
@@ -54,8 +62,8 @@ export default function Footer() {
               max-w-sm
               mx-auto md:mx-0
             ">
-              AI infrastructure platform for building, modernizing,
-              and transforming business systems.
+              Your complete digital partner — we build, maintain,
+              and strategize to help your business thrive online.
             </p>
 
 
@@ -65,7 +73,7 @@ export default function Footer() {
               gap-3 sm:gap-4
             ">
 
-              {[Twitter, Linkedin, Github].map((Icon, i) => (
+              {[Twitter, Linkedin].map((Icon, i) => (
 
                 <button
                   key={i}
@@ -96,8 +104,8 @@ export default function Footer() {
           {/* LINKS */}
           <div className="
             md:col-span-2
-            lg:col-span-8
-            grid grid-cols-2 sm:grid-cols-3
+            lg:col-span-7
+            grid grid-cols-2
             gap-8 sm:gap-10 lg:gap-12
             text-center sm:text-left
           ">
@@ -119,10 +127,10 @@ export default function Footer() {
 
                   {items.map(item => (
 
-                    <li key={item}>
+                    <li key={item.name}>
 
-                      <a
-                        href="#"
+                      <Link
+                        to={item.path}
                         className="
                           group flex items-center
                           justify-center sm:justify-start
@@ -134,14 +142,14 @@ export default function Footer() {
                         "
                       >
 
-                        {item}
+                        {item.name}
 
                         <ArrowUpRight
                           size={14}
                           className="opacity-0 group-hover:opacity-100 transition"
                         />
 
-                      </a>
+                      </Link>
 
                     </li>
 
@@ -188,17 +196,9 @@ export default function Footer() {
             text-gray-500
           ">
 
-            <a href="#" className="hover:text-white transition">
-              Privacy
-            </a>
-
-            <a href="#" className="hover:text-white transition">
-              Terms
-            </a>
-
-            <a href="#" className="hover:text-white transition">
-              Security
-            </a>
+            <span className="text-gray-600">
+              India 🇮🇳
+            </span>
 
           </div>
 

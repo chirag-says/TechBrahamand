@@ -1,548 +1,339 @@
-import React from "react";
+import React, { useRef, useEffect, Suspense } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronRight, Star, ArrowRight, Zap, CheckCircle2, Globe } from "lucide-react";
-import img from '../../public/vect.png'
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-// Assuming background is handled via CSS or a local path
-// import background from "../../public/roshni.jpg"; 
+import Lenis from "lenis";
+import img from "../../public/ai-hero-nobg.png";
 
-const Home = () => {
-  const stats = [
-    { value: "1.4M+", label: "Calls Handled", icon: <Zap size={16} /> },
-    { value: "1.2M+", label: "Minutes Saved", icon: <CheckCircle2 size={16} /> },
-    { value: "23K+", label: "Appointments", icon: <Star size={16} /> },
-    { value: "37K+", label: "Global Reach", icon: <Globe size={16} /> },
-  ];
+const HomeScene = React.lazy(() => import("../components/HomeScene"));
 
-  const agents = [
-    {
-      name: "Tech Brahma",
-      phase: "Phase 01: Create",
-      icon: "ॐ",
-      desc: "For visionaries starting from zero. We architect AI-native platforms from the first line of code, ensuring your foundation is built for the next decade of scale.",
-      gradient: "from-amber-500/10 to-transparent"
-    },
-    {
-      name: "Tech Vishnu",
-      phase: "Phase 02: Re-Engineer",
-      icon: "सं",
-      desc: "For established systems that feel the friction of legacy code. We inject intelligence into your current workflows, modernizing without a single minute of downtime.",
-      gradient: "from-blue-500/10 to-transparent"
-    },
-    {
-      name: "Tech Mahesh",
-      phase: "Phase 03: Transform",
-      icon: "वि",
-      desc: "For enterprise systems at the breaking point. A controlled demolition of technical debt, replaced by a streamlined, autonomous AI infrastructure.",
-      gradient: "from-purple-500/10 to-transparent"
+/* ============================
+   SMOOTH SCROLL
+   ============================ */
+function useSmoothScroll() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     }
-  ];
+    requestAnimationFrame(raf);
+    return () => lenis.destroy();
+  }, []);
+}
+
+
+/* ============================
+   TRINITY SECTION
+   ============================ */
+function TrinitySection({ phase, title, name, image, description, features, accentColor, glowColor, reverse = false }) {
+  const c = {
+    amber: { text: "text-amber-400", border: "border-amber-500/30", dot: "bg-amber-400" },
+    cyan: { text: "text-cyan-400", border: "border-cyan-500/30", dot: "bg-cyan-400" },
+    purple: { text: "text-purple-400", border: "border-purple-500/30", dot: "bg-purple-400" },
+  }[accentColor];
 
   return (
-    <div className="bg-[#fafafa] text-slate-900 font-sans selection:bg-black selection:text-white">
+    <section className="min-h-screen flex items-center py-24 sm:py-32 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-6xl mx-auto w-full">
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center`}>
 
-      {/* --- HERO SECTION --- */}
-      <section className="relative px-4 sm:px-0 flex items-center pt-20 sm:pt-32 pb-6 overflow-hidden">
+          {/* TEXT */}
+          <motion.div
+            className={reverse ? "lg:order-2" : ""}
+            initial={{ opacity: 0, x: reverse ? 40 : -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7 }}
+          >
+            <p className={`text-xs sm:text-sm uppercase tracking-[0.35em] font-bold mb-3 ${c.text}`}>
+              Phase {phase}
+            </p>
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-2 leading-none">
+              {title}
+            </h2>
+            <h3 className="text-lg sm:text-xl font-semibold text-white/30 mb-6 sm:mb-8">
+              {name}
+            </h3>
+            <p className="text-sm sm:text-base lg:text-lg text-white/45 leading-relaxed mb-8 sm:mb-10 max-w-lg">
+              {description}
+            </p>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              {features.map((feat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.4 }}
+                  className={`flex items-center gap-2 sm:gap-3 bg-white/[0.04] border ${c.border} px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl`}
+                >
+                  <div className={`w-1 sm:w-1.5 h-4 sm:h-5 rounded-full ${c.dot}`} />
+                  <span className="text-[11px] sm:text-sm text-white/60">{feat}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
-    {/* Gradient */}
-          {/* Grid Background */}
-        <div
-          className="absolute inset-0 z-0 opacity-[0.03]"
+          {/* IMAGE */}
+          <motion.div
+            className={`flex justify-center ${reverse ? "lg:order-1" : ""}`}
+            initial={{ opacity: 0, scale: 0.85 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+          >
+            <div className="relative">
+              <div className="absolute -inset-8 sm:-inset-12 rounded-full blur-3xl opacity-25" style={{ background: glowColor }} />
+              <div className={`w-44 h-44 sm:w-56 sm:h-56 lg:w-72 lg:h-72 rounded-2xl sm:rounded-3xl overflow-hidden border ${c.border} shadow-2xl relative z-10`}>
+                <img src={image} alt={name} className="w-full h-full object-cover" />
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ============================
+   HOME
+   ============================ */
+const Home = () => {
+  useSmoothScroll();
+
+  const scrollRef = useRef(0);
+  const immersiveRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: immersiveRef,
+    offset: ["start start", "end end"],
+  });
+
+  useEffect(() => {
+    return scrollYProgress.on("change", (v) => { scrollRef.current = v; });
+  }, [scrollYProgress]);
+
+  // Overlay color shifts for the 3D sections
+  const sectionGradient = useTransform(
+    scrollYProgress,
+    [0, 0.05, 0.25, 0.5, 0.75, 0.95, 1],
+    [
+      "rgba(0,0,0,0)",
+      "rgba(40,20,0,0.65)",     // amber tint
+      "rgba(0,25,35,0.65)",     // cyan tint
+      "rgba(25,10,40,0.65)",    // purple tint
+      "rgba(0,0,0,0.7)",
+      "rgba(250,250,250,0.95)",
+      "rgba(250,250,250,1)",
+    ]
+  );
+
+  return (
+    <div className="font-sans selection:bg-black selection:text-white">
+
+      {/* ========================================
+          HERO — Classic light section
+          ======================================== */}
+      <section className="relative bg-[#fafafa] px-4 sm:px-0 flex items-center pt-20 sm:pt-32 pb-10 sm:pb-16 overflow-hidden">
+
+        {/* Grid texture */}
+        <div className="absolute inset-0 z-0 opacity-[0.03]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
 
-        {/* Gradient glow background */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] !bg-red-500 h-[500px]  blur-[140px] rounded-full -z-10" />
-        {/* Layout */}
-        <div className="grid grid-cols-12 mx-auto sm:py-10 py-4 mb-3 gap-x-4 sm:gap-x-2 items-center">
+        <div className="grid grid-cols-12 max-w-7xl mx-auto w-full sm:py-10 py-4 gap-x-4 sm:gap-x-2 items-center relative z-10">
 
-          {/* LEFT CONTENT */}
-          <div className="
-    col-span-7
-    sm:col-span-7
-    md:col-span-7
-    lg:col-span-7
-  ">
-
+          {/* LEFT TEXT */}
+          <div className="col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="max-w-xl sm:max-w-2xl"
             >
-
-              {/* Heading */}
-              <h1 className="
-        font-bold tracking-tight leading-[1.05]
-        text-[clamp(1.4rem,6vw,5.5rem)]
-        text-slate-900
-        mb-4 sm:mb-6
-      ">
-                Evolve your <br />
-
-                <span className="
-          bg-gradient-to-r
-          from-slate-900
-          via-slate-600
-          to-slate-400
-          bg-clip-text
-          text-transparent
-        ">
-                  Infrastructure
+              <h1 className="font-bold tracking-tight leading-[1.05] text-[clamp(1.4rem,6vw,5.5rem)] text-slate-900 mb-4 sm:mb-6">
+                We Build, <br />
+                <span className="bg-gradient-to-r from-slate-900 via-slate-600 to-slate-400 bg-clip-text text-transparent">
+                  Maintain &
                 </span>
-
                 <br />
-
-                <span className="
-          bg-gradient-to-r
-          from-slate-900
-          via-slate-600
-          to-slate-400
-          bg-clip-text
-          text-transparent
-        ">
-                  with AI
+                <span className="bg-gradient-to-r from-slate-900 via-slate-600 to-slate-400 bg-clip-text text-transparent">
+                  Dominate.
                 </span>
-
               </h1>
 
-              {/* Description */}
-              <p className="
-        text-[8px]
-        sm:text-base
-        lg:text-lg
-        text-slate-500
-        leading-relaxed
-        mb-5 sm:mb-8
-        max-w-md
-      ">
-                Tech Brahmand architects intelligent infrastructure that bridges legacy
-                systems with autonomous AI — enabling enterprises to scale, modernize,
-                and evolve without disruption.
+              <p className="text-[8px] sm:text-base lg:text-lg text-slate-500 leading-relaxed mb-5 sm:mb-8 max-w-md">
+                TechBrahmand is a full-service digital agency. We create stunning websites,
+                maintain your digital presence, and help you outperform your competition.
               </p>
 
-              {/* Buttons */}
               <div className="flex gap-2 sm:gap-4">
-
                 <Link to="/contact">
-                  <button className="
-            group
-            bg-black text-white
-            px-2 sm:px-6
-            py-1 sm:py-3
-            rounded-full
-            text-[10px] sm:text-sm
-            font-semibold
-            flex items-center gap-2
-          ">
-                    Get Started
-                    <ArrowRight size={16} />
+                  <button className="group bg-black text-white px-2 sm:px-6 py-1 sm:py-3 rounded-full text-[10px] sm:text-sm font-semibold flex items-center gap-2 hover:scale-105 transition">
+                    Get Started <ArrowRight size={16} />
                   </button>
                 </Link>
-
-                <Link to="/contact">
-                  <button className="
-            px-2 sm:px-6
-            py-1 sm:py-3
-            rounded-full
-           text-[10px] sm:text-sm
-            font-semibold
-            border border-slate-300
-          ">
-                    Case Studies
+                <Link to="/products">
+                  <button className="px-2 sm:px-6 py-1 sm:py-3 rounded-full text-[10px] sm:text-sm font-semibold border border-slate-300 hover:bg-slate-900 hover:text-white transition">
+                    Our Services
                   </button>
                 </Link>
-
               </div>
-
             </motion.div>
-
           </div>
-
 
           {/* RIGHT IMAGE */}
           <motion.div
-            className="
-      col-span-5
-      sm:col-span-5
-      md:col-span-5
-      lg:col-span-5
-      relative flex justify-center !mb-12
-    "
+            className="col-span-5 relative flex justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-
             <div className="relative w-full max-w-[160px] sm:max-w-xs lg:max-w-lg">
-
-              {/* Image */}
-              <img
-                src={img}
-                alt="AI"
-                className="w-full h-auto object-contain"
-              />
-
-              {/* Glass Card */}
-              <div className="
-        absolute
-        bottom-[-50px]
-        left-0
-        right-0
-        mx-auto
-        w-[90%]
-        bg-white/80
-        backdrop-blur-xl
-        border border-white/60
-        p-2 sm:p-6
-        rounded-xl sm:rounded-2xl
-        shadow-lg
-      ">
-
-                <div className="flex items-center gap-2 justify-between mb-2">
-
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map(i => (
-                      <div
-                        key={i}
-                        className="w-4 h-4 sm:w-8 sm:h-8 rounded-full border border-gray-300 bg-slate-200"
-                      />
-                    ))}
-                  </div>
-
-                  <span className="text-[8px] sm:text-xs font-semibold">
-                    325k+
-                  </span>
-
-                </div>
-
-                <div className="h-[3px]  bg-slate-200 rounded">
-                  <div className="h-full w-[85%] bg-gray-800" />
-                </div>
-
-                <p className="text-[7px] sm:text-xs font-bold mt-1 sm:mt-2">
-                  Efficiency: 85%
-                </p>
-
-              </div>
-
+              <img src={img} alt="TechBrahmand AI" className="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover object-top drop-shadow-2xl" />
             </div>
-
           </motion.div>
+        </div>
+      </section>
 
+
+      {/* ========================================
+          IMMERSIVE 3D SCROLL SECTION
+          ======================================== */}
+      <div ref={immersiveRef} className="relative bg-[#0a0a0a]">
+
+        {/* 3D Canvas — stuck as background */}
+        <div className="sticky top-0 left-0 w-full h-screen" style={{ zIndex: 1 }}>
+          <Suspense fallback={<div className="w-full h-full bg-[#0a0a0a]" />}>
+            <HomeScene scrollRef={scrollRef} />
+          </Suspense>
+          {/* Color overlay */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{ backgroundColor: sectionGradient }}
+          />
         </div>
 
-      </section>
-      {/* --- STATS SECTION --- */}
-      <section className="relative py-8 sm:py-20 lg:py-18 bg-gradient-to-b from-white to-slate-50">
+        {/* Content scrolling OVER the canvas */}
+        <div className="relative" style={{ zIndex: 2, marginTop: "-100vh" }}>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* ---- NARRATIVE BRIDGE ---- */}
+          <section className="min-h-[80vh] flex items-center justify-center px-4">
+            <div className="text-center max-w-3xl mx-auto">
+              <motion.p
+                className="text-base sm:text-xl lg:text-3xl text-white/25 font-light mb-4"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2 }}
+              >
+                In a world of templates & shortcuts,
+              </motion.p>
+              <motion.p
+                className="text-xl sm:text-3xl lg:text-5xl text-white font-bold leading-tight"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              >
+                we chose to build{" "}
+                <span className="bg-gradient-to-r from-amber-400 to-amber-300 bg-clip-text text-transparent">
+                  with purpose.
+                </span>
+              </motion.p>
+            </div>
+          </section>
 
-          {/* HEADER */}
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 lg:mb-16">
+          {/* ---- BRAHMA ---- */}
+          <TrinitySection
+            phase="01" title="We Create." name="Tech Brahma" image="/brahma.png"
+            description="Your idea deserves to exist. We take it from concept to a full digital product — websites, web apps, SaaS platforms, and complete branding."
+            features={["Custom Websites & Apps", "SaaS Engineering", "Branding & UI/UX", "E-Commerce"]}
+            accentColor="amber" glowColor="rgba(245,158,11,0.2)"
+          />
 
-            <h2 className="
-        font-bold tracking-tight leading-tight
-        text-[clamp(1.3rem,3vw,3rem)]
-      ">
-              Platform Scale <br />
+          {/* ---- VISHNU ---- */}
+          <TrinitySection
+            phase="02" title="We Protect." name="Tech Vishnu" image="/vishnu.png"
+            description="Your creation deserves to thrive. We handle maintenance, security, hosting, SEO, and performance — so you never lose sleep over your platform."
+            features={["Bug Fixes & Security", "Hosting Management", "SEO & Content", "Performance 24/7"]}
+            accentColor="cyan" glowColor="rgba(6,182,212,0.2)" reverse
+          />
 
-              <span className="
-          italic font-serif text-slate-400
-          underline decoration-slate-200 underline-offset-4 sm:underline-offset-8
-        ">
-                Powering businesses at scale
-              </span>
+          {/* ---- MAHESH ---- */}
+          <TrinitySection
+            phase="03" title="We Conquer." name="Tech Mahesh" image="/mahesh.png"
+            description="Your rivals don't stand a chance. We dissect their strategy and arm you with intelligence to dominate — SEO audits, market reports, and ad strategy."
+            features={["SEO Audits", "UI/UX Teardowns", "Market Strategy", "Ad Campaigns"]}
+            accentColor="purple" glowColor="rgba(168,85,247,0.2)"
+          />
 
-            </h2>
-
-            <p className="
-        mt-4 sm:mt-6
-        text-[11px] sm:text-base lg:text-lg
-        text-slate-600 leading-relaxed
-        px-2 sm:px-0
-      ">
-              Trusted automation infrastructure handling millions of interactions
-              across calls, messaging, and intelligent workflows globally.
-            </p>
-
-          </div>
-
-
-          {/* STATS GRID */}
-          <div className="
-      grid grid-cols-2
-      sm:grid-cols-2
-      md:grid-cols-3
-      lg:grid-cols-4
-      gap-3 sm:gap-5 lg:gap-6
-    ">
-
-            {stats.map((stat, i) => (
+          {/* ---- CTA ---- */}
+          <section className="min-h-screen flex items-center justify-center px-4 bg-[#fafafa] relative z-10">
+            <div className="text-center max-w-3xl mx-auto">
 
               <motion.div
-                key={i}
-                whileHover={{ y: -6, scale: 1.02 }}
-                transition={{ duration: 0.25 }}
-                className="
-            group
-            p-2 sm:p-6 lg:p-8
-            rounded-xl sm:rounded-2xl
-            bg-white border border-slate-200
-            shadow-sm hover:shadow-xl
-            hover:border-blue-200
-            transition-all duration-300
-            flex flex-col items-center text-center
-          "
+                className="flex items-center justify-center gap-2 mb-8"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
               >
-
-                {/* ICON */}
-                <div className="
-            mb-3 sm:mb-4 lg:mb-5
-            p-2 sm:p-3
-            rounded-lg sm:rounded-xl
-            bg-gradient-to-br from-slate-50 to-slate-100
-            text-slate-500
-            group-hover:text-blue-600
-            group-hover:scale-110
-            transition
-          ">
-                  {stat.icon}
-                </div>
-
-                {/* VALUE */}
-                <div className="
-            font-bold text-slate-900 tracking-tight mb-1 sm:mb-2
-            text-[12px] sm:text-3xl lg:text-4xl
-          ">
-                  {stat.value}
-                </div>
-
-                {/* LABEL */}
-                <div className="
-            text-[8px] sm:text-xs
-            uppercase tracking-widest
-            font-semibold text-slate-500
-          ">
-                  {stat.label}
-                </div>
-
+                <div className="w-3 h-3 rounded-full bg-amber-500 shadow-lg shadow-amber-500/50" />
+                <div className="w-6 h-[2px] bg-slate-300" />
+                <div className="w-3 h-3 rounded-full bg-cyan-500 shadow-lg shadow-cyan-500/50" />
+                <div className="w-6 h-[2px] bg-slate-300" />
+                <div className="w-3 h-3 rounded-full bg-purple-500 shadow-lg shadow-purple-500/50" />
               </motion.div>
 
-            ))}
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* --- AGENTS / FRAMEWORK SECTION --- */}
-      <section className="
-  py-16 sm:py-24 lg:py-32
-  bg-slate-900 text-white
-  rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[3rem]
-  mx-3 sm:mx-4 lg:mx-6
-  overflow-hidden relative
-">
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-          {/* HEADER */}
-          <div className="mb-10 sm:mb-16 lg:mb-20 text-center md:text-left">
-
-            <h2 className="
-        font-bold tracking-tight leading-tight mb-4 sm:mb-6
-        text-[clamp(2rem,5vw,4.5rem)]
-      ">
-              The Trinity of <br className="hidden sm:block" />
-              Evolution
-            </h2>
-
-            <p className="
-        text-slate-400
-        text-sm sm:text-base lg:text-lg
-        max-w-md mx-auto md:mx-0
-      ">
-              Our systematic approach to replacing friction with intelligence.
-            </p>
-
-          </div>
-
-          {/* GRID */}
-          <div className="
-      grid
-      grid-cols-1
-      sm:grid-cols-2
-      lg:grid-cols-3
-      gap-4 sm:gap-6 lg:gap-8
-    ">
-
-            {agents.map((agent, i) => (
-
-              <motion.div
-                key={i}
+              <motion.h2
+                className="text-3xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 leading-tight"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className={`
-            group relative
-            p-5 sm:p-7 lg:p-10
-            rounded-xl sm:rounded-2xl lg:rounded-[2rem]
-            border border-white/10
-            bg-gradient-to-br ${agent.gradient}
-            hover:border-white/30
-            transition-all duration-300
-          `}
               >
+                Three forces.<br />
+                <span className="text-slate-400 italic font-serif">One mission.</span>
+              </motion.h2>
 
-                {/* ICON */}
-                <div className="
-            text-2xl sm:text-3xl lg:text-4xl
-            mb-4 sm:mb-6 lg:mb-8
-            w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16
-            flex items-center justify-center
-            bg-white/5
-            rounded-lg sm:rounded-xl lg:rounded-2xl
-            group-hover:scale-110
-            transition-transform duration-500
-          ">
-                  {agent.icon}
-                </div>
+              <motion.p
+                className="text-sm sm:text-base lg:text-lg text-slate-500 max-w-xl mx-auto mb-10 leading-relaxed"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+              >
+                Whether you're starting from zero or dominating a market —
+                we're one conversation away.
+              </motion.p>
 
-                {/* PHASE */}
-                <div className="
-            text-[10px] sm:text-xs
-            font-bold tracking-widest uppercase
-            text-slate-500 mb-2
-          ">
-                  {agent.phase}
-                </div>
-
-                {/* TITLE */}
-                <h3 className="
-            text-3xl sm:text-3xl lg:text-3xl xl:text-3xl
-            font-bold mb-3 sm:mb-4
-          ">
-                  {agent.name}
-                </h3>
-
-                {/* DESCRIPTION */}
-                <p className="
-            text-slate-400
-            text-sm sm:text-base
-            leading-relaxed
-            mb-4 sm:mb-6 lg:mb-8
-          ">
-                  {agent.desc}
-                </p>
-
-                {/* HOVER LINE */}
-                <div className="
-            h-[2px]
-            w-0 group-hover:w-full
-            bg-white
-            transition-all duration-500
-          "/>
-
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+              >
+                <Link to="/contact">
+                  <button className="px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base bg-black text-white rounded-full font-bold shadow-xl shadow-black/20 hover:scale-[1.05] active:scale-[0.98] transition-all duration-300 group">
+                    Let's Talk
+                    <ArrowRight size={18} className="inline ml-2 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </Link>
               </motion.div>
 
-            ))}
-
-          </div>
-
-        </div>
-
-        {/* BACKGROUND GLOW */}
-        <div className="
-    absolute top-0 right-0
-    w-full sm:w-2/3 lg:w-1/2
-    h-full
-    bg-gradient-to-l from-blue-500/10 to-transparent
-    pointer-events-none
-  "/>
-
-      </section>
-
-      {/* --- REFINED ABOUT SECTION --- */}
-      <section className="
-  py-12 sm:py-24 lg:py-20
-  px-4 sm:px-6 lg:px-8
-">
-
-        <div className="max-w-4xl mx-auto text-center">
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6 sm:space-y-8"
-          >
-
-            {/* HEADING */}
-            <h2 className="
-        font-bold tracking-tight leading-tight
-        text-[clamp(1.3rem,5vw,3rem)]
-      ">
-              Designed for the next <br className="hidden sm:block" />
-
-              <span className="
-          italic font-serif text-slate-400
-          underline decoration-slate-200
-          underline-offset-4 sm:underline-offset-8
-          block sm:inline
-        ">
-                generation of industry.
-              </span>
-
-            </h2>
-
-            {/* DESCRIPTION */}
-            <p className="
-        text-slate-600 leading-relaxed
-        text-sm sm:text-base lg:text-lg
-        max-w-2xl mx-auto
-      ">
-              We don't just implement AI. We weave intelligence into your business logic.
-              From building new platforms to modernizing legacy systems, Tech Brahmand
-              becomes the architect of your digital future.
-            </p>
-
-            {/* BUTTON */}
-            <div className="pt-4 sm:pt-6 lg:pt-10">
-
-              <Link to="/contact">
-
-                <button className="
-            px-6 sm:px-8 lg:px-10
-            py-3 sm:py-4
-            text-sm sm:text-base
-            bg-black text-white
-            rounded-full font-semibold
-            shadow-lg hover:shadow-xl
-            hover:scale-[1.02]
-            active:scale-[0.98]
-            transition-all duration-300
-          ">
-
-                  Partner With Us
-
-                </button>
-
-              </Link>
-
             </div>
-
-          </motion.div>
+          </section>
 
         </div>
-
-      </section>
-
+      </div>
 
     </div>
   );
