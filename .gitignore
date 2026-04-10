@@ -79,3 +79,7 @@ coverage/
 *.bak
 *.swp
 *~
+
+# Media Files
+*.mp4
+frontend/public/video-frames/
