@@ -7,18 +7,16 @@ import Products from "./pages/Products";
 import Services from "./pages/Services";
 import Contactus from "./pages/Contactus";
 import About from "./pages/About";
+import Chatbot from "./pages/Chatbot";
 
-// Scroll to top on route change
-function ScrollToTop() {
+function AppLayout() {
   const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
-  return null;
-}
+  const isChatbot = pathname === '/chatbot';
 
-export default function App() {
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+
   return (
-    <Router>
-      <ScrollToTop />
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -26,8 +24,17 @@ export default function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contactus />} />
         <Route path="/about" element={<About />} />
+        <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
-      <Footer />
+      {!isChatbot && <Footer />}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <AppLayout />
     </Router>
   );
 }
