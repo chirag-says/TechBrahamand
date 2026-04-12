@@ -61,7 +61,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="bg-white text-slate-900 min-h-screen overflow-hidden relative">
+    <div className="bg-white text-slate-900 h-full relative overflow-y-auto">
 
       {/* Background Glow */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
@@ -69,7 +69,7 @@ export default function Contact() {
         <div className="absolute bottom-[-20%] right-[-20%] w-[300px] sm:w-[500px] lg:w-[800px] h-[300px] sm:h-[500px] lg:h-[800px] bg-slate-200/40 blur-[120px] sm:blur-[160px] rounded-full" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-22 sm:pt-28 lg:pt-32 pb-16 sm:pb-24 lg:pb-28">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-22 sm:pt-28 lg:pt-32 pb-32 sm:pb-40 lg:pb-40">
 
         {/* ================= HEADER ================= */}
 

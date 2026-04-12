@@ -1,153 +1,125 @@
-import React, { useRef, useEffect, Suspense } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Link } from "react-router-dom";
-import Lenis from "lenis";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const ScrollVideoCanvas = React.lazy(() => import("../components/ScrollVideoCanvas"));
-
-/* ============================
-   SMOOTH SCROLL
-   ============================ */
-function useSmoothScroll() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
-  }, []);
-}
-
-/* ============================
-   HOME
-   ============================ */
 const Home = () => {
-  useSmoothScroll();
+  const [hoveredDeity, setHoveredDeity] = useState(null);
 
-  const immersiveRef = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: immersiveRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Hero fades out early
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 0.06], [0, -60]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.06], [1, 0.95]);
-
-  // Trinity labels fade in after the video finishes and STAY forever (no fade out)
-  const trinityOpacity = useTransform(scrollYProgress, [0.30, 0.40], [0, 1]);
-  const trinityY = useTransform(scrollYProgress, [0.30, 0.40], [40, 0]);
+  const deities = [
+    { id: 'brahma', name: 'Tech Brahma', role: 'Autonomous AI Architecture', align: 'items-start text-left', posParams: 'pl-6 md:pl-16' },
+    { id: 'vishnu', name: 'Tech Vishnu', role: 'Neural Security & Cloud Scalability', align: 'items-center text-center', posParams: '' },
+    { id: 'mahesh', name: 'Tech Mahesh', role: 'Disruptive Machine Evolution', align: 'items-end text-right', posParams: 'pr-6 md:pr-16' },
+  ];
 
   return (
-    <div className="font-sans bg-black text-white selection:bg-white selection:text-black">
-      <motion.div ref={immersiveRef} className="relative w-full bg-black">
+    <div className="relative w-full h-full min-h-[100dvh] bg-black overflow-hidden selection:bg-amber-500 selection:text-black">
+      
+      {/* Base Background Image */}
+      <img 
+        src="/download (3).png" 
+        alt="Techbrahmand Universe" 
+        className="absolute inset-0 w-full h-full object-cover object-top z-0" 
+      />
+
+      {/* Dynamic Cinematic Spotlight Overlay (Syncs perfectly across all screen sizes) */}
+      <div 
+        className={`absolute inset-0 pointer-events-none transition-all duration-700 z-10
+          ${hoveredDeity ? 'opacity-100 backdrop-blur-[2px]' : 'opacity-0'}
+        `}
+        style={{
+          background: hoveredDeity === 'brahma' 
+            ? 'radial-gradient(circle at 20% 40%, transparent 10%, rgba(0,0,0,0.85) 50%)'
+            : hoveredDeity === 'vishnu'
+            ? 'radial-gradient(circle at 50% 45%, transparent 15%, rgba(0,0,0,0.85) 60%)'
+            : hoveredDeity === 'mahesh'
+            ? 'radial-gradient(circle at 80% 40%, transparent 10%, rgba(0,0,0,0.85) 50%)'
+            : 'rgba(0,0,0,0)'
+        }}
+      />
+
+      {/* Cinematic Vignette / Bottom Gradient for Text Readability */}
+      <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none z-10" />
+
+      {/* =======================
+          INTERACTIVE HOVER ZONES
+          ======================= */}
+      <div className="absolute inset-0 w-full h-full flex z-20">
+        {deities.map((deity) => (
+          <div 
+            key={deity.id}
+            onMouseEnter={() => setHoveredDeity(deity.id)}
+            onMouseLeave={() => setHoveredDeity(null)}
+            className="group relative flex-1 h-full cursor-pointer"
+          >
+            {/* Hover zones don't need independent dimming overlays anymore, handled globally above */}
+            {/* Hover Text Overlays */}
+            <AnimatePresence>
+              {hoveredDeity === deity.id && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className={`absolute inset-x-0 top-[25%] md:top-[35%] flex flex-col pointer-events-none ${deity.align} ${deity.posParams}`}
+                >
+                  <h3 className="
+                    font-heading text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight
+                    drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]
+                  ">
+                    {deity.name}
+                  </h3>
+                  <p className="
+                    mt-2 md:mt-4 text-[10px] md:text-sm lg:text-base 
+                    text-amber-400 font-bold tracking-widest md:tracking-[0.3em] uppercase
+                    drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]
+                    max-w-xs md:max-w-md
+                  ">
+                    {deity.role}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+
+      {/* Centered Main Title (Pointer events ignored so it doesn't block deity hovers) */}
+      <div className="absolute inset-0 w-full h-full flex flex-col justify-end items-center pb-24 md:pb-36 px-4 z-30 pointer-events-none">
         
-        {/* Background Canvas — fixed behind everything */}
-        <div className="sticky top-0 left-0 w-full h-[100dvh]" style={{ zIndex: 1 }}>
-           <Suspense fallback={<div className="w-full h-full bg-black flex items-center justify-center text-white text-lg tracking-widest uppercase">Loading...</div>}>
-              <ScrollVideoCanvas progress={scrollYProgress} />
-           </Suspense>
-           {/* Corner button badges to cover watermarks */}
-           <Link to="/contact" className="absolute bottom-0 left-0 bg-black px-10 py-5 rounded-tr-2xl z-10 transition-all duration-300 cursor-pointer group">
-             <span className="text-xs font-semibold tracking-[0.25em] uppercase text-white/60 group-hover:text-white transition-colors duration-300">Contact Us</span>
-           </Link>
-           <Link to="/chatbot" className="absolute bottom-0 right-0 bg-black px-10 py-5 rounded-tl-2xl z-10 transition-all duration-300 cursor-pointer group">
-             <span className="text-xs font-semibold tracking-[0.25em] uppercase text-white/60 group-hover:text-white transition-colors duration-300">Idea to Reality</span>
-           </Link>
-        </div>
-
-        {/* Content Scrolling Overlay */}
-        <div className="relative pointer-events-none" style={{ zIndex: 2, marginTop: "-100vh" }}>
+        <div className="text-center">
           
-          {/* ══════════════════════════════════
-              HERO — First screen
-              ══════════════════════════════════ */}
-          <div className="h-[100vh] w-full flex flex-col items-center justify-center px-6 relative">
-            {/* Top gradient so navbar text is readable against bright galaxy */}
-            <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-black/70 to-transparent pointer-events-none" />
-            
-            <motion.div style={{ opacity: heroOpacity, y: heroY, scale: heroScale }} className="text-center z-10">
-               <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-white mb-4 leading-none tracking-tight"
-                   style={{ textShadow: "0 4px 30px rgba(0,0,0,0.8), 0 0 80px rgba(0,0,0,0.5)" }}>
-                 Techbrahmand
-               </h1>
-               <p className="text-lg md:text-2xl text-white/70 font-light tracking-[0.3em] uppercase"
-                  style={{ textShadow: "0 2px 20px rgba(0,0,0,0.9)" }}>
-                 Where digital universes are born
-               </p>
-            </motion.div>
-            
-            {/* Scroll Indicator */}
-            <motion.div style={{ opacity: heroOpacity }} className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-              <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">Scroll</span>
-              <div className="w-px h-12 bg-white/20 relative overflow-hidden">
-                 <motion.div 
-                   animate={{ y: [-48, 48] }} 
-                   transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                   className="w-full h-6 bg-white/80" 
-                 />
-              </div>
-            </motion.div>
-          </div>
-
-          {/* ══════════════════════════════════
-              TRINITY LABELS — Bottom of viewport, stay visible permanently
-              ══════════════════════════════════ */}
-          <div className="h-[200vh] w-full relative">
-            <div className="sticky top-0 h-[100vh] w-full flex items-end justify-center pb-24 md:pb-28">
-              <motion.div 
-                style={{ opacity: trinityOpacity, y: trinityY }}
-                className="w-full max-w-6xl mx-auto px-6 grid grid-cols-3 gap-4 md:gap-12 pointer-events-auto"
-              >
-                {/* Brahma — Create */}
-                <div className="text-center">
-                  <p className="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-amber-400/80 mb-2"
-                     style={{ textShadow: "0 0 10px rgba(245,158,11,0.4)" }}>
-                    Brahma
-                  </p>
-                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-none"
-                      style={{ textShadow: "0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.6)" }}>
-                    Create
-                  </h2>
-                </div>
-
-                {/* Vishnu — Protect */}
-                <div className="text-center">
-                  <p className="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-amber-400/80 mb-2"
-                     style={{ textShadow: "0 0 10px rgba(245,158,11,0.4)" }}>
-                    Vishnu
-                  </p>
-                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-none"
-                      style={{ textShadow: "0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.6)" }}>
-                    Protect
-                  </h2>
-                </div>
-
-                {/* Shiva — Destroy */}
-                <div className="text-center">
-                  <p className="text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-amber-400/80 mb-2"
-                     style={{ textShadow: "0 0 10px rgba(245,158,11,0.4)" }}>
-                    Mahesh
-                  </p>
-                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-none"
-                      style={{ textShadow: "0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.6)" }}>
-                    Destroy
-                  </h2>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-
+          {/* Main Title with Cinematic Un-blur Entrance */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 60, filter: 'blur(20px)', scale: 1.05 }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="
+              font-heading text-[clamp(3.5rem,8vw,11rem)]
+              font-extrabold mb-2 md:mb-4 leading-none tracking-tight
+              bg-gradient-to-b from-[#FFFBEB] via-[#FDE68A] to-[#D97706]
+              bg-clip-text text-transparent
+              drop-shadow-[0_10px_40px_rgba(0,0,0,0.9)]
+            "
+          >
+            Techbrahmand
+          </motion.h1>
+           
+          {/* AI Subtitle with Staggered Fade Up */}
+          <motion.p 
+            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
+            className="
+              text-[10px] sm:text-xs md:text-sm lg:text-lg 
+              text-amber-100/90 font-semibold tracking-widest md:tracking-[0.3em] uppercase
+              drop-shadow-[0_4px_15px_rgba(0,0,0,1)]
+            "
+          >
+            Architecting the next dimension of autonomous AI ecosystems
+          </motion.p>
+          
         </div>
-      </motion.div>
+
+      </div>
     </div>
   );
 };

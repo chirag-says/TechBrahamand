@@ -161,10 +161,10 @@ KEY RULES:
   const hasConversation = messages.length > 1;
 
   return (
-    <div className="w-full h-screen pt-[72px] flex overflow-hidden bg-white">
+    <div className="w-full h-full flex overflow-hidden bg-white">
       
       {/* ===== LEFT SIDEBAR ===== */}
-      <aside className="hidden md:flex w-[240px] flex-shrink-0 flex-col bg-gray-50 border-r border-gray-200 p-4 gap-2">
+      <aside className="hidden md:flex w-[240px] flex-shrink-0 flex-col bg-gray-50 border-r border-gray-200 p-4 pt-10 pb-4 gap-2">
         
         {/* New Project Button */}
         <button onClick={() => {
@@ -213,7 +213,7 @@ KEY RULES:
       </aside>
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden pt-[72px]">
         
         {/* Header */}
         <div className="flex-shrink-0 text-center py-5 px-4">

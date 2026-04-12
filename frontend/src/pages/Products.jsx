@@ -82,8 +82,8 @@ export default function Products() {
   return (
   <div className="
     pt-28 sm:pt-24 lg:pt-32
-    pb-16 sm:pb-20 lg:pb-24
-    bg-white min-h-screen relative overflow-hidden
+    pb-32 sm:pb-32 lg:pb-40
+    bg-white h-full relative overflow-y-auto
   ">
 
     {/* background */}

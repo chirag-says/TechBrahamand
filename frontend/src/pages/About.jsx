@@ -44,7 +44,7 @@ const trinityData = [
 
 export default function About() {
   return (
-    <div className="bg-[#FAFAFA] text-slate-900 min-h-screen overflow-hidden">
+    <div className="bg-[#FAFAFA] text-slate-900 h-full overflow-y-auto">
 
       {/* Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
@@ -52,7 +52,7 @@ export default function About() {
         <div className="absolute bottom-[-20%] left-[-20%] w-[300px] sm:w-[500px] lg:w-[600px] h-[300px] sm:h-[500px] lg:h-[600px] bg-purple-50/50 blur-[120px] rounded-full" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-22 sm:pt-28 lg:pt-32 pb-16 sm:pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-22 sm:pt-28 lg:pt-32 pb-32 sm:pb-40">
 
         {/* ================= HERO ================= */}
         <motion.header
