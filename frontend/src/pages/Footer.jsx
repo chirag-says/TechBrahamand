@@ -28,7 +28,7 @@ export default function Footer() {
       <div className="
         max-w-7xl mx-auto
         px-4 sm:px-6 lg:px-8
-        py-12 sm:py-16 lg:py-24
+        py-8
       ">
 
         <div className="
@@ -185,6 +185,7 @@ export default function Footer() {
           <div className="
             text-xs sm:text-sm
             text-gray-500
+            md:pl-[380px] lg:pl-[420px]
           ">
             © {new Date().getFullYear()} TechBrahmand. All rights reserved.
           </div>

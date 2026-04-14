@@ -261,7 +261,14 @@ function AppLayout() {
   const { pathname } = useLocation();
   const isChatbot = pathname === '/chatbot';
 
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => { 
+    const viewport = document.querySelector('.bezel-viewport');
+    if (viewport) {
+      viewport.scrollTo(0, 0);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
 
   return (
     <>
