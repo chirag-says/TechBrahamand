@@ -11,13 +11,13 @@ import { useDrag } from "@use-gesture/react";
 function CentralCore({ scrollYProgress }) {
   const meshRef = useRef();
   const matRef = useRef();
-  
+
   useFrame(() => {
     if (!meshRef.current || !matRef.current || !scrollYProgress) return;
-    
+
     // Get the current scroll progress directly
     const progress = scrollYProgress.get() || 0;
-    
+
     // Scale mapping [0, 0.25, 0.5, 0.75, 1] -> [0, 1.2, 1, 0.8, 1.5]
     let scale = 0;
     if (progress <= 0.25) scale = THREE.MathUtils.lerp(0.01, 1.2, progress / 0.25);
@@ -35,12 +35,12 @@ function CentralCore({ scrollYProgress }) {
     const colPhase1 = new THREE.Color("#f59e0b");
     const colPhase2 = new THREE.Color("#06b6d4");
     const colPhase3 = new THREE.Color("#a855f7");
-    
+
     const col = new THREE.Color();
     if (progress <= 0.5) {
-       col.lerpColors(colPhase1, colPhase2, progress / 0.5);
+      col.lerpColors(colPhase1, colPhase2, progress / 0.5);
     } else {
-       col.lerpColors(colPhase2, colPhase3, (progress - 0.5) / 0.5);
+      col.lerpColors(colPhase2, colPhase3, (progress - 0.5) / 0.5);
     }
     matRef.current.color.copy(col);
   });
@@ -59,17 +59,17 @@ function OrbitingNode({ scrollYProgress, targetProgress, index, type }) {
 
   useFrame((state) => {
     if (!groupRef.current || !meshRef.current || !scrollYProgress) return;
-    
+
     let progress = scrollYProgress.get() || 0;
-    
+
     // Mapping X: [targetProgress - 0.25, targetProgress, targetProgress + 0.25] -> [...]
     let p = (progress - (targetProgress - 0.25)) / 0.5; // normalized 0 to 1 inside the window
     p = Math.max(0, Math.min(1, p)); // clamp
-    
+
     const startX = index % 2 === 0 ? -10 : 10;
     const midX = index % 2 === 0 ? -2 : 2;
     const endX = index % 2 === 0 ? -15 : 15;
-    
+
     let currentX = 0;
     if (p <= 0.5) currentX = THREE.MathUtils.lerp(startX, midX, p * 2);
     else currentX = THREE.MathUtils.lerp(midX, endX, (p - 0.5) * 2);
@@ -77,7 +77,7 @@ function OrbitingNode({ scrollYProgress, targetProgress, index, type }) {
     const startZ = index > 1 ? -10 : 10;
     const midZ = index > 1 ? -1 : 1;
     const endZ = index > 1 ? -15 : 15;
-    
+
     let currentZ = 0;
     if (p <= 0.5) currentZ = THREE.MathUtils.lerp(startZ, midZ, p * 2);
     else currentZ = THREE.MathUtils.lerp(midZ, endZ, (p - 0.5) * 2);
@@ -93,7 +93,7 @@ function OrbitingNode({ scrollYProgress, targetProgress, index, type }) {
   });
 
   const getGeometry = () => {
-    switch(type) {
+    switch (type) {
       case "box": return <boxGeometry args={[0.8, 0.8, 0.8]} />;
       case "torus": return <torusGeometry args={[0.5, 0.2, 16, 32]} />;
       case "octahedron": return <octahedronGeometry args={[0.6]} />;
@@ -125,7 +125,7 @@ function DraggableShape({ initialPosition, color, type }) {
   const bind = useDrag(({ offset: [ox, oy] }) => set({ x: ox / 50 + initialPosition[0], y: -oy / 50 + initialPosition[1] }));
 
   const getGeometry = () => {
-    switch(type) {
+    switch (type) {
       case "torusKnot": return <torusKnotGeometry args={[0.4, 0.1, 100, 16]} />;
       case "cylinder": return <cylinderGeometry args={[0.3, 0.3, 1, 32]} />;
       default: return <dodecahedronGeometry args={[0.5]} />;
@@ -133,7 +133,7 @@ function DraggableShape({ initialPosition, color, type }) {
   };
 
   const meshRef = useRef();
-  
+
   useFrame(() => {
     if (meshRef.current) {
       meshRef.current.position.set(x, y, initialPosition[2]);
@@ -144,7 +144,7 @@ function DraggableShape({ initialPosition, color, type }) {
   });
 
   return (
-    <mesh 
+    <mesh
       ref={meshRef}
       {...bind()}
       onClick={() => setActive(!active)}
@@ -167,7 +167,7 @@ export default function HomeScene({ progress }) {
   return (
     <Canvas shadows gl={{ antialias: true, alpha: true }} style={{ pointerEvents: 'auto' }}>
       <OrthographicCamera makeDefault position={[5, 5, 5]} zoom={80} />
-      
+
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 20, 5]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
       <spotLight position={[-10, 10, -10]} intensity={1} color="#f59e0b" />
@@ -185,7 +185,7 @@ export default function HomeScene({ progress }) {
       >
         <group position={[0, -1, 0]}>
           <CentralCore scrollYProgress={progress} />
-          
+
           {/* Phase 1 Nodes (Create) */}
           <OrbitingNode scrollYProgress={progress} targetProgress={0.25} index={0} type="box" />
           <OrbitingNode scrollYProgress={progress} targetProgress={0.25} index={1} type="torus" />
@@ -197,7 +197,7 @@ export default function HomeScene({ progress }) {
           {/* Phase 3 Nodes (Conquer) */}
           <OrbitingNode scrollYProgress={progress} targetProgress={0.75} index={4} type="box" />
           <OrbitingNode scrollYProgress={progress} targetProgress={0.75} index={5} type="torus" />
-          
+
           <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
         </group>
       </PresentationControls>

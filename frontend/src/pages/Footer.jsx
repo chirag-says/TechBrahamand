@@ -6,9 +6,9 @@ export default function Footer() {
 
   const links = {
     Services: [
-      { name: "Website Development", path: "/products" },
-      { name: "Maintenance & AMC", path: "/products" },
-      { name: "Competitor Analysis", path: "/products" },
+      { name: "Software as a Service (SaaS)", path: "/services" },
+      { name: "Platform as a Service (PaaS)", path: "/services" },
+      { name: "Infrastructure as a Service (IaaS)", path: "/services" },
     ],
     Company: [
       { name: "About Us", path: "/about" },
@@ -62,8 +62,7 @@ export default function Footer() {
               max-w-sm
               mx-auto md:mx-0
             ">
-              Your complete digital partner — we build, maintain,
-              and strategize to help your business thrive online.
+              An AI-first engineering house bridging operations with execution, enabling enterprises to scale and evolve.
             </p>
 
 

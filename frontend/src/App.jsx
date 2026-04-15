@@ -8,6 +8,8 @@ import Services from "./pages/Services";
 import Contactus from "./pages/Contactus";
 import About from "./pages/About";
 import Chatbot from "./pages/Chatbot";
+import { AnimatePresence } from "framer-motion";
+import IntroLoader from "./components/IntroLoader";
 import "./App.css";
 
 /* ════════════════════════════════════════
@@ -295,8 +297,18 @@ function AppLayout() {
 }
 
 export default function App() {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <Router>
+      {/* Full-screen cinematic intro — plays once on load */}
+      <AnimatePresence>
+        {showIntro && (
+          <IntroLoader onComplete={() => setShowIntro(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Main site — always mounted, just hidden behind the intro */}
       <AppLayout />
     </Router>
   );

@@ -8,9 +8,30 @@ const Home = () => {
   const [hoveredDeity, setHoveredDeity] = useState(null);
 
   const deities = [
-    { id: 'brahma', name: 'Tech Brahma', role: 'Autonomous AI Architecture', align: 'items-start text-left', posParams: 'pl-6 md:pl-16' },
-    { id: 'vishnu', name: 'Tech Vishnu', role: 'Neural Security & Cloud Scalability', align: 'items-center text-center', posParams: '' },
-    { id: 'mahesh', name: 'Tech Mahesh', role: 'Disruptive Machine Evolution', align: 'items-end text-right', posParams: 'pr-6 md:pr-16' },
+    { 
+      id: 'brahma', 
+      name: 'TechCreator', 
+      role: 'AI Architecture', 
+      align: 'items-start text-left', 
+      posParams: 'left-3 md:left-6 lg:left-8 top-[55%] md:top-[58%]',
+      subtitleWidth: 'max-w-[120px] md:max-w-[160px]'
+    },
+    { 
+      id: 'vishnu', 
+      name: 'TechPreserver', 
+      role: 'System Intelligence', 
+      align: 'items-center text-center', 
+      posParams: 'left-1/2 -translate-x-1/2 top-[18%] md:top-[16%] lg:top-[14%]',
+      subtitleWidth: 'max-w-[130px] md:max-w-[170px]'
+    },
+    { 
+      id: 'mahesh', 
+      name: 'TechTransformer', 
+      role: 'Legacy Migration', 
+      align: 'items-end text-right', 
+      posParams: 'right-3 md:right-6 lg:right-8 top-[55%] md:top-[58%]',
+      subtitleWidth: 'max-w-[120px] md:max-w-[160px]'
+    },
   ];
 
   return (
@@ -32,7 +53,7 @@ const Home = () => {
         />
       </div>
 
-      <div className="relative w-full h-full min-h-[100dvh] bg-black overflow-hidden selection:bg-amber-500 selection:text-black">
+      <div className="relative w-full h-[65vh] md:h-[70vh] bg-black overflow-hidden selection:bg-amber-500 selection:text-black">
 
         {/* Base Background Image */}
         <img
@@ -44,15 +65,15 @@ const Home = () => {
         {/* Dynamic Cinematic Spotlight Overlay (Syncs perfectly across all screen sizes) */}
         <div
           className={`absolute inset-0 pointer-events-none transition-all duration-700 z-10
-          ${hoveredDeity ? 'opacity-100 backdrop-blur-[2px]' : 'opacity-0'}
+          ${hoveredDeity ? 'opacity-100 backdrop-blur-[1px]' : 'opacity-0'}
         `}
           style={{
             background: hoveredDeity === 'brahma'
-              ? 'radial-gradient(circle at 20% 40%, transparent 10%, rgba(0,0,0,0.85) 50%)'
+              ? 'radial-gradient(circle at 15% 50%, transparent 8%, rgba(0,0,0,0.8) 40%)'
               : hoveredDeity === 'vishnu'
-                ? 'radial-gradient(circle at 50% 45%, transparent 15%, rgba(0,0,0,0.85) 60%)'
+                ? 'radial-gradient(circle at 50% 35%, transparent 12%, rgba(0,0,0,0.8) 50%)'
                 : hoveredDeity === 'mahesh'
-                  ? 'radial-gradient(circle at 80% 40%, transparent 10%, rgba(0,0,0,0.85) 50%)'
+                  ? 'radial-gradient(circle at 85% 50%, transparent 8%, rgba(0,0,0,0.8) 40%)'
                   : 'rgba(0,0,0,0)'
           }}
         />
@@ -71,29 +92,28 @@ const Home = () => {
               onMouseLeave={() => setHoveredDeity(null)}
               className="group relative flex-1 h-full cursor-pointer"
             >
-              {/* Hover zones don't need independent dimming overlays anymore, handled globally above */}
-              {/* Hover Text Overlays */}
+              {/* Hover Text Overlays — small secondary labels */}
               <AnimatePresence>
                 {hoveredDeity === deity.id && (
                   <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className={`absolute inset-x-0 top-[25%] md:top-[35%] flex flex-col pointer-events-none ${deity.align} ${deity.posParams}`}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className={`absolute flex flex-col pointer-events-none w-[140px] md:w-[170px] lg:w-[200px] z-30 ${deity.align} ${deity.posParams}`}
                   >
                     <h3 className="
-                    font-heading text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight
-                    drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)]
+                    font-heading text-lg md:text-xl lg:text-2xl font-extrabold text-white leading-tight
+                    drop-shadow-[0_6px_12px_rgba(0,0,0,0.9)]
                   ">
                       {deity.name}
                     </h3>
-                    <p className="
-                    mt-2 md:mt-4 text-[10px] md:text-sm lg:text-base 
-                    text-amber-400 font-bold tracking-widest md:tracking-[0.3em] uppercase
-                    drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]
-                    max-w-xs md:max-w-md
-                  ">
+                    <p className={`
+                    mt-0.5 md:mt-1 text-[7px] md:text-[9px] lg:text-[10px] 
+                    text-amber-400/90 font-bold tracking-[0.15em] md:tracking-[0.18em] uppercase
+                    drop-shadow-[0_3px_8px_rgba(0,0,0,0.8)]
+                    ${deity.subtitleWidth}
+                  `}>
                       {deity.role}
                     </p>
                   </motion.div>
@@ -104,7 +124,7 @@ const Home = () => {
         </div>
 
         {/* Centered Main Title (Pointer events ignored so it doesn't block deity hovers) */}
-        <div className="absolute inset-0 w-full h-full flex flex-col justify-end items-center pb-24 md:pb-36 px-4 z-30 pointer-events-none">
+        <div className="absolute inset-0 w-full h-full flex flex-col justify-end items-center pb-6 md:pb-10 px-4 z-30 pointer-events-none">
 
           <div className="text-center">
 
@@ -114,8 +134,8 @@ const Home = () => {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
               transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               className="
-              font-heading text-[clamp(3.5rem,8vw,11rem)]
-              font-extrabold mb-2 md:mb-4 leading-none tracking-tight
+              font-heading text-[clamp(2.8rem,6vw,7rem)]
+              font-extrabold mb-1 md:mb-3 leading-none tracking-tighter
               bg-gradient-to-b from-[#FFFBEB] via-[#FDE68A] to-[#D97706]
               bg-clip-text text-transparent
               drop-shadow-[0_10px_40px_rgba(0,0,0,0.9)]
@@ -130,12 +150,12 @@ const Home = () => {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
               className="
-              text-[10px] sm:text-xs md:text-sm lg:text-lg 
-              text-amber-100/90 font-semibold tracking-widest md:tracking-[0.3em] uppercase
-              drop-shadow-[0_4px_15px_rgba(0,0,0,1)]
+              text-[9px] sm:text-[10px] md:text-xs lg:text-sm 
+              text-amber-100/90 font-semibold tracking-widest md:tracking-[0.25em] uppercase
+              drop-shadow-[0_4px_15px_rgba(0,0,0,1)] whitespace-nowrap
             "
             >
-              Architecting the next dimension of autonomous AI ecosystems
+              Architecting intelligent infrastructure that bridges legacy systems with autonomous AI
             </motion.p>
 
           </div>

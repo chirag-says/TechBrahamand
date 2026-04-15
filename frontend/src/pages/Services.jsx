@@ -20,69 +20,43 @@ const fadeInUp = {
 export default function Services() {
   const serviceCategories = [
     {
-      category: "AI Solutions",
-      description: "Integrating advanced AI capabilities to optimize workflows, automate tasks, and build truly intelligent digital experiences for your brand.",
+      category: "Software as a Service (SaaS)",
+      description: "We design and deliver custom software applications that run securely on the cloud and evolve continuously with your business.",
       videoUrl: "/431d8fdae126384f744056a7e616896f_720w.mp4",
-      linkText: "EXPLORE AI SERVICES",
+      linkText: "EXPLORE SAAS PLATFORMS",
       services: [
-        "GENERATIVE AI & LLMs",
-        "INTELLIGENT CHATBOTS",
-        "AI CAPABILITY INTEGRATION",
-        "AI STRATEGY CONSULTING",
+        "CUSTOM AI ARCHITECTURE",
+        "CLOUD-NATIVE DEPLOYMENT",
+        "EVOLUTIONARY UPGRADES",
+        "24/7 SYSTEM INTEGRITY",
       ],
       themeColor: "from-amber-200 to-amber-100",
     },
     {
-      category: "Machine Learning Solutions",
-      description: "Leverage data-driven forecasting, computer vision, and deep analytics to anticipate trends and dominate your market.",
+      category: "Platform as a Service (PaaS)",
+      description: "We build scalable platforms that allow teams, applications, and data to work together with autonomous intelligence.",
       videoUrl: "/c780455026110284ea07a4e793fff651.mp4",
-      linkText: "EXPLORE ML SERVICES",
+      linkText: "EXPLORE PAAS ECOSYSTEMS",
       services: [
-        "PREDICTIVE ANALYTICS",
-        "COMPUTER VISION",
-        "NATURAL LANGUAGE PROCESSING",
-        "RECOMMENDATION ENGINES",
+        "MODULAR LOGIC LAYERS",
+        "AI DATA ORCHESTRATION",
+        "UNIFIED API INTEGRATION",
+        "RAPID SCALE PROTOCOLS",
       ],
       themeColor: "from-cyan-200 to-cyan-100",
     },
     {
-      category: "App Development",
-      description: "Custom app development with strategic insights to generate greater brand engagement, higher conversions & measurable results.",
+      category: "Infrastructure as a Service (IaaS)",
+      description: "We design and manage intelligent infrastructure that supports performance, security, and extreme scalability.",
       videoUrl: "/2478bf3628d5f9ae72c8e0a3cbbb549c.mp4",
-      linkText: "EXPLORE APP SERVICES",
+      linkText: "EXPLORE IAAS CAPABILITIES",
       services: [
-        "IOS NATIVE DEVELOPMENT",
-        "ANDROID NATIVE DEVELOPMENT",
-        "CROSS-PLATFORM (REACT NATIVE)",
-        "APP UI/UX DESIGN",
+        "HYBRID-MESH DESIGN",
+        "AI RESOURCE ALLOCATION",
+        "COST-EFFICIENCY ENGINE",
+        "DISASTER RECOVERY ALPHA",
       ],
       themeColor: "from-purple-200 to-purple-100",
-    },
-    {
-      category: "Custom Software (ERP)",
-      description: "Bespoke Enterprise Resource Planning solutions to unify your business operations, supply chains, and customer relationship workflows.",
-      videoUrl: "/c24dcfc9f7c5d0463893f71a972aab76.mp4",
-      linkText: "EXPLORE ERP SERVICES",
-      services: [
-        "ENTERPRISE ERP DEVELOPMENT",
-        "SUPPLY CHAIN MANAGEMENT",
-        "CRM SYSTEMS INTEGRATION",
-        "CORE WORKFLOW AUTOMATION",
-      ],
-      themeColor: "from-emerald-200 to-emerald-100",
-    },
-    {
-      category: "Cloud Computing",
-      description: "Secure, highly available cloud infrastructures designed on AWS, Azure, and GCP for limitless scalability.",
-      videoUrl: "/b9121259b70d9b0185da316e475b1f5e.mp4",
-      linkText: "EXPLORE CLOUD SERVICES",
-      services: [
-        "SEAMLESS CLOUD MIGRATION",
-        "DEVOPS & CI/CD PIPELINES",
-        "SCALABLE ARCHITECTURE",
-        "ADVANCED CLOUD SECURITY",
-      ],
-      themeColor: "from-blue-200 to-blue-100",
     },
   ];
 
@@ -126,7 +100,7 @@ export default function Services() {
           </h1>
 
           <p className="text-slate-500 text-base sm:text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
-             From building your digital foundation to automating success with Artificial Intelligence. Here's everything we offer to give you the competitive edge.
+             From intelligent SaaS applications to highly scalable infrastructure. Here's how we architecture the core ecosystems that power modern enterprises.
           </p>
         </motion.div>
 
@@ -207,9 +181,9 @@ export default function Services() {
         >
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 text-center">
             {[
-              { label: "One-Time Projects", icon: <Code2 size={24} />, desc: "Fixed cost for complete deliverables" },
-              { label: "AMC Plans", icon: <ShieldCheck size={24} />, desc: "Annual maintenance contracts for ongoing care" },
-              { label: "Flexible Retainers", icon: <TrendingUp size={24} />, desc: "Ongoing support tailored to your needs" },
+              { label: "Predictable Scaling", icon: <Code2 size={24} />, desc: "Growth engines built on autonomous AI" },
+              { label: "Zero Disruption", icon: <ShieldCheck size={24} />, desc: "Parallel architecture for legacy modernization" },
+              { label: "Global Performance", icon: <TrendingUp size={24} />, desc: "Millions of interactions managed securely" },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center">
                 <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white border border-slate-200 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-4 text-slate-700 shadow-sm">

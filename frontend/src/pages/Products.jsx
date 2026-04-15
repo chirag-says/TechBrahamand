@@ -33,10 +33,10 @@ const staggerContainer = {
 
 const products = [
   {
-    title: "Tech Brahma",
-    subtitle: "The Creator",
+    title: "TechCreator",
+    subtitle: "The Architect",
     image: "/brahma.png",
-    desc: "We build complete digital products from scratch — websites, web apps, SaaS platforms, e-commerce stores, and full branding packages tailored to your vision.",
+    desc: "Build complete AI-powered digital infrastructure from zero. Designed for scalability, performance, and intelligent automation.",
     icon: Code2,
     accent: "from-amber-500 to-orange-600",
     accentText: "text-amber-600",
@@ -44,19 +44,19 @@ const products = [
     accentGlow: "bg-amber-400/10",
     accentDot: "bg-amber-500",
     features: [
-      "Custom website & web app development",
-      "SaaS product engineering",
-      "UI/UX design & branding",
-      "E-commerce solutions",
+      "Business process design",
+      "AI-driven architecture",
+      "Automation foundation",
+      "Infinite scalability",
     ],
-    ideal: "Startups, new businesses, and entrepreneurs going digital",
+    ideal: "Startups & traditional businesses going digital",
     cta: "Build With Us",
   },
   {
-    title: "Tech Vishnu",
-    subtitle: "The Preserver",
+    title: "TechPreserver",
+    subtitle: "The Enhancer",
     image: "/vishnu.png",
-    desc: "We keep your digital presence alive and thriving. From routine maintenance to emergency fixes, we ensure your platform runs at peak performance 24/7.",
+    desc: "Enhance existing software systems with AI automation, improving efficiency without disrupting operations.",
     icon: Shield,
     accent: "from-cyan-500 to-blue-600",
     accentText: "text-cyan-600",
@@ -64,19 +64,19 @@ const products = [
     accentGlow: "bg-cyan-400/10",
     accentDot: "bg-cyan-500",
     features: [
-      "Bug fixes & security patches",
-      "Hosting & server management",
-      "SEO optimization & content updates",
-      "Performance monitoring",
+      "System intelligence upgrade",
+      "Workflow automation",
+      "AI reporting",
+      "Performance optimization",
     ],
-    ideal: "Businesses with existing websites or apps needing ongoing care",
-    cta: "Get Maintenance",
+    ideal: "Growing businesses with existing software",
+    cta: "Enhance Systems",
   },
   {
-    title: "Tech Mahesh",
-    subtitle: "The Transformer",
+    title: "TechTransformer",
+    subtitle: "The Modernizer",
     image: "/mahesh.png",
-    desc: "We analyze your competitors and arm you with strategic intelligence. Through deep audits and market insights, we give you the edge to dominate your space.",
+    desc: "Safely rebuild legacy systems into modern AI-powered platforms with zero downtime and parallel architectures.",
     icon: BarChart3,
     accent: "from-purple-500 to-indigo-600",
     accentText: "text-purple-600",
@@ -84,21 +84,21 @@ const products = [
     accentGlow: "bg-purple-400/10",
     accentDot: "bg-purple-500",
     features: [
-      "SEO audits & competitive analysis",
-      "UI/UX teardowns & recommendations",
-      "Market positioning reports",
-      "Ad strategy & growth planning",
+      "Legacy modernization",
+      "Parallel architecture",
+      "Safe migration",
+      "Future-proof infrastructure",
     ],
-    ideal: "Businesses wanting to outperform their competition",
-    cta: "Get Your Edge",
+    ideal: "Enterprises with legacy infrastructure",
+    cta: "Modernize Now",
   },
 ];
 
 const pricingHighlights = [
-  { icon: Zap, label: "Flexible Plans", desc: "One-time or ongoing — your call" },
-  { icon: Shield, label: "AMC Available", desc: "Annual maintenance contracts" },
-  { icon: Globe, label: "Pan-India", desc: "Currently serving clients across India" },
-  { icon: Sparkles, label: "Custom Pricing", desc: "Tailored quotes for every project" },
+  { icon: Zap, label: "Platform Scale", desc: "Built to handle millions of interactions" },
+  { icon: Shield, label: "Zero Disruption", desc: "Safe migration & parallel architectures" },
+  { icon: Globe, label: "Global Reach", desc: "Powering autonomous ecosystems worldwide" },
+  { icon: Sparkles, label: "Custom Infrastructure", desc: "Specialized AI agents for your workflows" },
 ];
 
 export default function Products() {
@@ -140,14 +140,14 @@ export default function Products() {
             </div>
 
             <h1 className="text-[clamp(2rem,5.5vw,4rem)] font-bold leading-[1.05] tracking-[-0.03em] mb-6">
-              Three Pillars.{" "}
+              Intelligence Built For{" "}
               <span className="bg-gradient-to-r from-amber-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
-                One Mission.
+                Every Stage
               </span>
             </h1>
 
             <p className="text-[15px] sm:text-[17px] text-[#555] font-medium leading-relaxed max-w-[520px] mx-auto mb-6">
-              Whether you're starting from zero, need ongoing support, or want to crush your competition — we've got the right solution for you.
+              Deploy specialized AI agents engineered to create, enhance, and transform your business infrastructure.
             </p>
 
             <div className="flex items-center justify-center gap-3">

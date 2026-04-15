@@ -11,10 +11,10 @@ const MarqueeBanner = ({
 }) => {
   const items = [
     { text: "AUTONOMOUS AI", icon: Brain },
-    { text: "NEURAL NETWORKS", icon: Cpu },
-    { text: "QUANTUM COMPUTING", icon: Zap },
-    { text: "MACHINE LEARNING", icon: Activity },
-    { text: "CYBER SECURITY", icon: Shield },
+    { text: "INTELLIGENT INFRASTRUCTURE", icon: Cpu },
+    { text: "LEGACY MODERNIZATION", icon: Zap },
+    { text: "AI AGENTS", icon: Activity },
+    { text: "ENTERPRISE SCALE", icon: Shield },
     { text: "TECHBRAHMAND", icon: Aperture },
   ];
 

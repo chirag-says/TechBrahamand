@@ -27,7 +27,7 @@ export default function Contact() {
     name: "",
     phone: "",
     contactEmail: "",
-    target: "Tech Brahma",
+    target: "TechCreator",
     budget: "",
     timeline: "",
     description: "",
@@ -51,7 +51,7 @@ export default function Contact() {
         name: "",
         phone: "",
         contactEmail: "",
-        target: "Tech Brahma",
+        target: "TechCreator",
         budget: "",
         timeline: "",
         description: "",
@@ -255,9 +255,9 @@ export default function Contact() {
                     backgroundRepeat: 'no-repeat',
                   }}
                 >
-                  <option value="Tech Brahma">Tech Brahma — Build something new</option>
-                  <option value="Tech Vishnu">Tech Vishnu — Maintain my platform</option>
-                  <option value="Tech Mahesh">Tech Mahesh — Competitor analysis</option>
+                  <option value="TechCreator">TechCreator — Build infrastructure</option>
+                  <option value="TechPreserver">TechPreserver — Enhance systems</option>
+                  <option value="TechTransformer">TechTransformer — Legacy modernization</option>
                   <option value="Multiple Services">Multiple Services</option>
                 </select>
 

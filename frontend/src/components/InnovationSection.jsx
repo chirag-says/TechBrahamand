@@ -23,10 +23,10 @@ const InnovationSection = () => {
           {/* Left Column — Text + Cards */}
           <div className="flex-1 max-w-[560px]">
             <h2 className="text-[38px] lg:text-[46px] font-bold text-[#111] leading-[1.08] tracking-[-0.02em]">
-              Unlock the Power of Innovation
+              Intelligence Built for Every Stage
             </h2>
             <p className="mt-4 text-[15px] text-[#555] font-medium leading-relaxed max-w-[440px]">
-              Delivering transformative tech solutions that redefine the future of industries
+              Deploy specialized AI agents engineered to create, enhance, and transform your enterprise infrastructure
             </p>
 
             {/* Feature Cards Row */}
@@ -48,9 +48,9 @@ const InnovationSection = () => {
                 <div className="w-[44px] h-[44px] rounded-xl bg-[#F0F2F6] flex items-center justify-center mb-4 group-hover:bg-[#111] transition-colors duration-400">
                   <Cpu size={22} className="text-[#333] group-hover:text-white transition-colors duration-400" strokeWidth={1.5} />
                 </div>
-                <h4 className="text-[16px] font-bold text-[#111] tracking-tight">Technology Enablement</h4>
+                <h4 className="text-[16px] font-bold text-[#111] tracking-tight">Legacy Modernization</h4>
                 <p className="mt-2 text-[12px] text-[#666] leading-relaxed font-medium">
-                  Leverage advanced tools to transform your business
+                  Safely migrate to modern AI-powered platforms
                 </p>
               </div>
             </div>
@@ -111,8 +111,8 @@ const InnovationSection = () => {
 
             {/* Big Quote */}
             <h2 className="text-[34px] lg:text-[44px] font-bold text-[#1A1030] leading-[1.1] tracking-[-0.02em]">
-              "Dare to build what <br/>
-              <span className="bg-gradient-to-r from-purple-600 to-violet-500 bg-clip-text text-transparent">no one else</span> can imagine."
+              "Autonomous AI architecture for <br/>
+              <span className="bg-gradient-to-r from-purple-600 to-violet-500 bg-clip-text text-transparent">infinite</span> scale."
             </h2>
             
             <p className="mt-6 text-[14px] text-[#555] font-medium leading-relaxed max-w-[420px]">
