@@ -30,7 +30,7 @@ const InnovationSection = () => {
             </p>
 
             {/* Feature Cards Row */}
-            <div className="mt-10 flex gap-5">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-5">
               
               {/* Card 1: AI Strategies */}
               <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[24px] p-6 border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-400 group cursor-pointer">
@@ -56,7 +56,7 @@ const InnovationSection = () => {
             </div>
 
             {/* CTA Buttons Row */}
-            <div className="mt-8 flex gap-4">
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
               <Link to="/services" className="flex items-center justify-between bg-[#111] rounded-full pl-6 pr-[4px] py-[4px] hover:scale-105 transition-transform group/btn shadow-md">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-white mr-3">
                   See All Services
@@ -146,7 +146,7 @@ const InnovationSection = () => {
             </div>
 
             {/* CTA */}
-            <Link to="/chatbot" className="mt-8 flex items-center justify-between bg-[#1A1030] rounded-full pl-6 pr-[4px] py-[4px] hover:scale-105 transition-transform group/btn shadow-lg max-w-[max-content]">
+            <Link to="/chatbot" className="mt-8 flex items-center justify-between bg-[#1A1030] rounded-full pl-6 pr-[4px] py-[4px] hover:scale-105 transition-transform group/btn shadow-lg w-[200px] sm:max-w-[max-content]">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-white mr-3">
                 Start Your Journey
               </span>

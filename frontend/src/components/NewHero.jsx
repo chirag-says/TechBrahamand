@@ -1,24 +1,140 @@
-import React from 'react';
-import { Sparkles, Zap, Globe, ShieldCheck, ArrowRight, Menu, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, Zap, Globe, ShieldCheck, ArrowRight, Menu, User, LogIn } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ProfileRail from './ProfileRail';
 
 const NewHero = () => {
+  const [user, setUser] = useState(null);
+
   return (
     <div className="relative w-full min-h-[100dvh] bg-[#F3F5F9] overflow-hidden font-sans tracking-tight">
 
-      {/* 1. Cyborg Image (Background for the right side) */}
-      <div className="absolute top-13 right-0 w-[55%] h-full flex items-center justify-end">
+      {/* ═══════════════════════════════════════════ */}
+      {/* MOBILE ONLY ELEMENTS                        */}
+      {/* ═══════════════════════════════════════════ */}
+
+      {/* Mobile: Top Right Floating Login / Greeting */}
+      <div className="absolute top-4 right-4 md:hidden z-40">
+        {user ? (
+          <div className="text-sm font-semibold text-[#1A1E23] flex items-center gap-2 bg-white/60 backdrop-blur-md px-4 py-2 rounded-full shadow-sm animate-fade-in">
+            Hi, {user.name.split(' ')[0]}
+          </div>
+        ) : (
+          <button
+            onClick={() => setUser({
+              name: "Abhitha",
+              email: "abhitha@techbrahmand.com",
+              image: "",
+              joinedDate: "April 2026",
+              savedItems: 12
+            })}
+            className="flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#8A2BE2] text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors shadow-lg"
+          >
+            <LogIn size={14} />
+            Log In
+          </button>
+        )}
+      </div>
+
+      {/* Mobile: ProfileRail */}
+      <div className="md:hidden">
+        <ProfileRail user={user} setUser={setUser} />
+      </div>
+
+      {/* Mobile Content Wrapper */}
+      <div className="md:hidden relative z-30 flex flex-col min-h-[100dvh] pt-[120px] pb-[8px] px-6 pointer-events-none">
+        {/* Mobile: TECH BRAHMAND title */}
+        <div className="pointer-events-auto flex flex-col items-center w-full">
+          <h1 className="font-heading font-extrabold text-[22px] sm:text-[28px] tracking-[0.05em] text-[#1A1E23] absolute top-[52px] w-full text-center px-[84px] left-0 mt-2">
+            TECH BRAHMAND
+          </h1>
+        </div>
+
+        {/* Mobile: Main Heading */}
+        <div className="flex flex-col justify-center pointer-events-auto max-w-[600px] mt-2 mb-2 shrink-0 pl-[60px] sm:pl-[70px] z-20">
+          <h2 className="text-[40px] sm:text-[52px] font-medium leading-[1] text-[#111] tracking-[-0.04em] drop-shadow-sm">
+            Turning Ideas Into Intelligent Experiences
+          </h2>
+          <p className="mt-4 text-[14px] text-[#444] font-medium max-w-[460px] leading-[1.5]">
+            Future-ready technology crafted to solve real challenges and create lasting impact
+          </p>
+        </div>
+
+        {/* Mobile: Inline robot image */}
+        <div className="flex w-full justify-center pointer-events-none mt-6 mb-2 z-10 relative">
+          <img
+            src="/ChatGPT-upscaled.png"
+            alt="Cyborg character"
+            className="w-[110%] max-w-[400px] h-auto object-contain scale-[1.05] drop-shadow-xl"
+          />
+        </div>
+
+        {/* Mobile: Stats Icons Row */}
+        <div className="flex flex-row items-start justify-center w-full gap-4 mt-2 mb-2 pointer-events-auto z-30 px-4">
+
+          {/* Stat 1 — Projects */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative w-[64px] h-[64px] rounded-2xl bg-white/80 border border-black/[0.06] shadow-[0_4px_14px_rgba(0,0,0,0.06)] flex items-center justify-center">
+              <div className="absolute inset-[5px] rounded-full border-[1.5px] border-dashed border-black/10 animate-[spin_14s_linear_infinite]" />
+              <span className="text-[20px] font-black text-[#111] tracking-tight relative z-10">50<span className="text-[14px] text-[#888]">+</span></span>
+            </div>
+            <span className="text-[8px] font-bold text-[#444] text-center uppercase tracking-[0.08em] leading-tight">Projects<br />Delivered</span>
+          </div>
+
+          {/* Stat 2 — Retention */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative w-[64px] h-[64px] rounded-2xl bg-white/80 border border-black/[0.06] shadow-[0_4px_14px_rgba(0,0,0,0.06)] flex items-center justify-center">
+              <span className="text-[20px] font-black text-[#111] tracking-tight relative z-10">99<span className="text-[12px] font-bold text-[#888]">%</span></span>
+              <div className="absolute top-[6px] right-[6px] w-[6px] h-[6px] rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)] animate-pulse" />
+            </div>
+            <span className="text-[8px] font-bold text-[#444] text-center uppercase tracking-[0.08em] leading-tight">Client<br />Retention</span>
+          </div>
+
+          {/* Stat 3 — Support */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative w-[64px] h-[64px] rounded-2xl bg-white/80 border border-black/[0.06] shadow-[0_4px_14px_rgba(0,0,0,0.06)] flex items-center justify-center overflow-hidden">
+              <div className="absolute bottom-0 left-0 right-0 flex gap-[2px] items-end justify-center px-2 pb-1 opacity-[0.12]">
+                <div className="w-[3px] rounded-t-full bg-[#111] h-[8px]" />
+                <div className="w-[3px] rounded-t-full bg-[#111] h-[14px]" />
+                <div className="w-[3px] rounded-t-full bg-[#111] h-[20px]" />
+                <div className="w-[3px] rounded-t-full bg-[#111] h-[12px]" />
+                <div className="w-[3px] rounded-t-full bg-[#111] h-[16px]" />
+              </div>
+              <span className="text-[20px] font-black text-[#111] tracking-tight relative z-10">24<span className="text-[14px] text-[#888]">/7</span></span>
+            </div>
+            <span className="text-[8px] font-bold text-[#444] text-center uppercase tracking-[0.08em] leading-tight">Active<br />Support</span>
+          </div>
+
+          {/* Stat 4 — Trust */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="relative w-[64px] h-[64px] rounded-2xl bg-white/80 border border-black/[0.06] shadow-[0_4px_14px_rgba(0,0,0,0.06)] flex items-center justify-center">
+              <svg className="absolute w-[36px] h-[36px] opacity-[0.06]" viewBox="0 0 36 36" fill="#111">
+                <path d="M18 2L32 9V18C32 26 26 32 18 34C10 32 4 26 4 18V9L18 2Z" />
+              </svg>
+              <span className="text-[20px] font-black text-[#111] tracking-tight relative z-10">5<span className="text-[14px] text-amber-500">★</span></span>
+            </div>
+            <span className="text-[8px] font-bold text-[#444] text-center uppercase tracking-[0.08em] leading-tight">Trusted<br />Partner</span>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════ */}
+      {/* DESKTOP ONLY ELEMENTS                       */}
+      {/* ═══════════════════════════════════════════ */}
+
+      {/* Desktop: Cyborg Image (Background right side) */}
+      <div className="hidden md:flex absolute top-13 right-0 w-[55%] h-full items-center justify-end">
         <img
           src="/ChatGPT-upscaled.png"
           alt="Cyborg background"
           className="w-[90%] h-[90%] object-contain object-center scale-[0.9]"
         />
-        {/* subtle fade into white on the left edge if needed, or keeping it sharp */}
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#F3F5F9] to-transparent" />
       </div>
 
-      {/* 3. Left Black Vertical Bar */}
-      <div className="absolute top-[40px] bottom-[100px] left-6 w-[70px] bg-[#0F1115] rounded-[40px] z-30 flex flex-col items-center py-6 justify-between shadow-xl">
+      {/* Desktop: Left Black Vertical Bar */}
+      <div className="hidden md:flex absolute top-[40px] bottom-[100px] left-6 w-[70px] bg-[#0F1115] rounded-[40px] z-30 flex-col items-center py-6 justify-between shadow-xl">
         <button className="w-[46px] h-[46px] rounded-full flex items-center justify-center hover:scale-105 transition-transform overflow-hidden shadow-[0_4px_10px_rgba(0,0,0,0.5)] bg-transparent">
           <img
             src="/techbrahmand-badge.png"
@@ -39,8 +155,8 @@ const NewHero = () => {
         </button>
       </div>
 
-      {/* 5. Center Top Logo (Geometric A) */}
-      <div className="absolute top-[50px] left-1/2 -translate-x-1/2 z-20 drop-shadow-lg opacity-95 pointer-events-none">
+      {/* Desktop: Center Top Logo (Geometric A) */}
+      <div className="hidden md:block absolute top-[50px] left-1/2 -translate-x-1/2 z-20 drop-shadow-lg opacity-95 pointer-events-none">
         <div className="flex flex-col gap-[3px] items-center">
           <svg width="68" height="42" viewBox="0 0 100 60" fill="white" xmlns="http://www.w3.org/2000/svg">
             <polygon points="30,10 70,10 85,30 15,30" />
@@ -49,16 +165,16 @@ const NewHero = () => {
         </div>
       </div>
 
-      {/* Dynamic Responsive Content Wrapper */}
-      <div className="relative z-30 flex flex-col min-h-[100dvh] pt-[28px] pb-[100px] pl-[130px] pr-[40px] pointer-events-none">
+      {/* Desktop: Content Wrapper */}
+      <div className="hidden md:flex relative z-30 flex-col min-h-[100dvh] pt-[28px] pb-[100px] pl-[130px] pr-[40px] pointer-events-none">
 
-        {/* 4. Top Header & Left Content Group */}
+        {/* Desktop: Top Header & Autonomous Evolution Card */}
         <div className="pointer-events-auto">
           <h1 className="font-heading font-extrabold text-[22px] tracking-wide text-[#1A1E23] uppercase">
             TECH BRAHMAND
           </h1>
 
-          {/* Premium Frosted Floating Card Redesign (Light Theme - Reduced Size) */}
+          {/* Premium Frosted Floating Card */}
           <Link to="/products" className="mt-2 relative z-20 w-[380px] rounded-[28px] p-[8px] pr-6 flex items-center gap-5 group overflow-hidden cursor-pointer isolate border border-white/60 bg-white/50 backdrop-blur-2xl shadow-[0_15px_40px_-10px_rgba(0,0,0,0.05)] hover:bg-white/70 hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.1)] transition-all duration-500 transform hover:-translate-y-1 block">
             <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 pointer-events-none" />
             <div className="relative w-[90px] h-[90px] rounded-[20px] overflow-hidden shrink-0 shadow-[0_6px_16px_rgba(0,0,0,0.08)] bg-white border border-white/80">
@@ -81,7 +197,7 @@ const NewHero = () => {
           </Link>
         </div>
 
-        {/* 6. Main Massive H1 Text (Middle Left) */}
+        {/* Desktop: Main Massive H1 Text */}
         <div className="flex-1 flex flex-col justify-center pointer-events-auto max-w-[600px] my-10 shrink-0">
           <h2 className="text-[52px] lg:text-[62px] font-medium leading-[1.05] text-[#111] tracking-[-0.03em]">
             Turning Ideas Into Intelligent Experiences
@@ -91,7 +207,7 @@ const NewHero = () => {
           </p>
         </div>
 
-        {/* 7. Bottom Long Glass Card — Redesigned */}
+        {/* Desktop: Bottom Long Glass Card with Stats */}
         <div className="flex pointer-events-auto shrink-0 z-30">
           <div className="w-full bg-white/70 backdrop-blur-[40px] rounded-[48px] py-7 pr-8 pl-10 border border-white flex items-center gap-8 shadow-[0_20px_50px_rgba(0,0,0,0.1),inset_0_0_20px_rgba(255,255,255,0.6)]">
 
@@ -174,16 +290,5 @@ const NewHero = () => {
     </div>
   );
 };
-
-// Hand-drawn looking spark icon from the image
-const StarSparkleIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111" strokeWidth="1.5">
-    <path d="M12 1L13.5 10.5L23 12L13.5 13.5L12 23L10.5 13.5L1 12L10.5 10.5L12 1Z" fill="white" />
-    <circle cx="18" cy="5" r="1.5" fill="#111" stroke="none" />
-    <circle cx="21" cy="8" r="0.8" fill="#111" stroke="none" />
-    <circle cx="5" cy="19" r="1" fill="#111" stroke="none" />
-    <circle cx="8" cy="18" r="0.8" fill="#111" stroke="none" />
-  </svg>
-);
 
 export default NewHero;

@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Chatbot from "./pages/Chatbot";
 import { AnimatePresence } from "framer-motion";
 import IntroLoader from "./components/IntroLoader";
+import HoloMenu from "./components/HoloMenu";
 import "./App.css";
 
 /* ════════════════════════════════════════
@@ -68,7 +69,7 @@ function CornerWidgets() {
     "Looking for cutting-edge security?",
     "Let's build your next digital universe."
   ];
-  
+
   const [textIndex, setTextIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -90,21 +91,21 @@ function CornerWidgets() {
       {/* Bottom-left widget: visible on all pages EXCEPT chatbot */}
       {!isChatbotPage && (
         <div className="corner-input">
-          <p 
-            className="corner-input-text" 
-          style={{ 
-            fontSize: '11px', 
-            paddingLeft: '8px',
-            transition: 'opacity 0.3s ease-in-out',
-            opacity: fade ? 1 : 0
-          }}
-        >
-          {widgetTexts[textIndex]}
-        </p>
-        <Link to="/chatbot" className="corner-input-btn" style={{ textDecoration: 'none' }}>
-          <ArrowUpRight size={16} strokeWidth={2.5} color="black" />
-        </Link>
-      </div>
+          <p
+            className="corner-input-text"
+            style={{
+              fontSize: '11px',
+              paddingLeft: '8px',
+              transition: 'opacity 0.3s ease-in-out',
+              opacity: fade ? 1 : 0
+            }}
+          >
+            {widgetTexts[textIndex]}
+          </p>
+          <Link to="/chatbot" className="corner-input-btn" style={{ textDecoration: 'none' }}>
+            <ArrowUpRight size={16} strokeWidth={2.5} color="black" />
+          </Link>
+        </div>
       )}
 
       {/* Top-right folder tab navbar */}
@@ -149,7 +150,7 @@ function BezelBorderOverlay() {
   const mobile = w <= 768;
   const p = mobile ? 8 : 16;
   const R = mobile ? 20 : 36;
-  
+
   // Cutouts applied globally on desktop
   const applyCuts = !mobile && w >= 900;
 
@@ -259,11 +260,11 @@ function BezelBorderOverlay() {
 /* ════════════════════════════════════════
    APP LAYOUT — wrapped in bezel frame
    ════════════════════════════════════════ */
-function AppLayout() {
+function AppLayout({ showIntro }) {
   const { pathname } = useLocation();
   const isChatbot = pathname === '/chatbot';
 
-  useEffect(() => { 
+  useEffect(() => {
     const viewport = document.querySelector('.bezel-viewport');
     if (viewport) {
       viewport.scrollTo(0, 0);
@@ -274,9 +275,10 @@ function AppLayout() {
 
   return (
     <>
+      <HoloMenu visible={!showIntro} />
       <div className="bezel-frame">
         <div className="bezel-viewport">
-          <PillNavbar />
+          {/* <PillNavbar /> replaced by HoloMenu */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
@@ -309,7 +311,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Main site — always mounted, just hidden behind the intro */}
-      <AppLayout />
+      <AppLayout showIntro={showIntro} />
     </Router>
   );
 }

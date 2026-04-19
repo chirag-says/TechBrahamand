@@ -180,11 +180,21 @@
 /* Mobile toggle */
 .nav-mobile-toggle {
   display: none;
-  background: none;
-  border: none;
+  background: rgba(10, 12, 20, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.nav-mobile-toggle:hover {
+  background: rgba(20, 25, 40, 0.95);
+  transform: scale(1.05);
 }
 
 /* Mobile menu */
@@ -582,7 +592,10 @@
   .corner-cut,
   .corner-input,
   .corner-bc,
-  .corner-br {
+  .corner-br,
+  .top-right-nav,
+  .nav-floating,
+  .nav-center-pill {
     display: none;
   }
 }

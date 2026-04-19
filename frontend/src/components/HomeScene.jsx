@@ -163,51 +163,102 @@ function DraggableShape({ initialPosition, color, type }) {
    SCENE ASSEMBLY
    ============================ */
 export default function HomeScene({ progress }) {
-  // Using an orthographic camera and presentation controls to create that sleek isometric feel
+  /*
+   * Pixel-precise screen bounds from the 1536×925 reference image:
+   *   Screen top-left  ≈ (261, 55)   → left 17%, top 5.9%
+   *   Screen top-right ≈ (1275, 55)  → right 17%
+   *   Screen bottom    ≈ y=600       → bottom 35.1%
+   * These percentages are relative to the full image dimensions.
+   */
   return (
-    <Canvas shadows gl={{ antialias: true, alpha: true }} style={{ pointerEvents: 'auto' }}>
-      <OrthographicCamera makeDefault position={[5, 5, 5]} zoom={80} />
+    <div className="relative w-full flex items-center justify-center overflow-hidden"
+      style={{
+        background: 'radial-gradient(ellipse at 50% 40%, #0d1a3a 0%, #070b1a 50%, #020408 100%)',
+        minHeight: '70vh',
+        padding: '40px 0',
+      }}
+    >
+      {/* Cosmic glow effects matching image copy 4 background */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse 80% 50% at 50% 55%, rgba(30,80,220,0.15) 0%, transparent 70%)',
+      }} />
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse 60% 30% at 50% 80%, rgba(20,100,255,0.12) 0%, transparent 60%)',
+      }} />
 
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 20, 5]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
-      <spotLight position={[-10, 10, -10]} intensity={1} color="#f59e0b" />
-
-      {/* Wrapping the main story items in presentation controls so the user can slightly twirl the scene like a toy */}
-      <PresentationControls
-        global={false}
-        cursor={true}
-        snap={true}
-        speed={1}
-        zoom={1}
-        rotation={[0, 0, 0]}
-        polar={[-Math.PI / 4, Math.PI / 4]}
-        azimuth={[-Math.PI / 4, Math.PI / 4]}
+      {/* Laptop + Screen container — maintains exact image aspect ratio */}
+      <div
+        className="relative w-full pointer-events-none"
+        style={{ maxWidth: '1000px', aspectRatio: '1536 / 925' }}
       >
-        <group position={[0, -1, 0]}>
-          <CentralCore scrollYProgress={progress} />
+        {/* The 3D Canvas sits BEHIND the laptop image, clipped to the screen area */}
+        <div
+          className="absolute overflow-hidden pointer-events-auto"
+          style={{
+            top: '5.9%',
+            bottom: '35.1%',
+            left: '17%',
+            right: '17%',
+            zIndex: 1,
+            borderRadius: '4px 4px 0 0',
+            background: '#000',
+          }}
+        >
+          <Canvas shadows gl={{ antialias: true, alpha: true }} style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}>
+            <OrthographicCamera makeDefault position={[5, 5, 5]} zoom={80} />
 
-          {/* Phase 1 Nodes (Create) */}
-          <OrbitingNode scrollYProgress={progress} targetProgress={0.25} index={0} type="box" />
-          <OrbitingNode scrollYProgress={progress} targetProgress={0.25} index={1} type="torus" />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 20, 5]} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
+            <spotLight position={[-10, 10, -10]} intensity={1} color="#f59e0b" />
 
-          {/* Phase 2 Nodes (Protect) */}
-          <OrbitingNode scrollYProgress={progress} targetProgress={0.5} index={2} type="octahedron" />
-          <OrbitingNode scrollYProgress={progress} targetProgress={0.5} index={3} type="sphere" />
+            <PresentationControls
+              global={false}
+              cursor={true}
+              snap={true}
+              speed={1}
+              zoom={1}
+              rotation={[0, 0, 0]}
+              polar={[-Math.PI / 4, Math.PI / 4]}
+              azimuth={[-Math.PI / 4, Math.PI / 4]}
+            >
+              <group position={[0, -1, 0]}>
+                <CentralCore scrollYProgress={progress} />
 
-          {/* Phase 3 Nodes (Conquer) */}
-          <OrbitingNode scrollYProgress={progress} targetProgress={0.75} index={4} type="box" />
-          <OrbitingNode scrollYProgress={progress} targetProgress={0.75} index={5} type="torus" />
+                {/* Phase 1 Nodes (Create) */}
+                <OrbitingNode scrollYProgress={progress} targetProgress={0.25} index={0} type="box" />
+                <OrbitingNode scrollYProgress={progress} targetProgress={0.25} index={1} type="torus" />
 
-          <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
-        </group>
-      </PresentationControls>
+                {/* Phase 2 Nodes (Protect) */}
+                <OrbitingNode scrollYProgress={progress} targetProgress={0.5} index={2} type="octahedron" />
+                <OrbitingNode scrollYProgress={progress} targetProgress={0.5} index={3} type="sphere" />
 
-      {/* Interactive loose items floating around just like Bezel's blobs */}
-      <DraggableShape initialPosition={[-4, 2, -2]} color="#10b981" type="dodecahedron" />
-      <DraggableShape initialPosition={[4, -3, 1]} color="#f43f5e" type="torusKnot" />
-      <DraggableShape initialPosition={[-3, -2, 3]} color="#3b82f6" type="cylinder" />
+                {/* Phase 3 Nodes (Conquer) */}
+                <OrbitingNode scrollYProgress={progress} targetProgress={0.75} index={4} type="box" />
+                <OrbitingNode scrollYProgress={progress} targetProgress={0.75} index={5} type="torus" />
 
-      <Environment preset="city" />
-    </Canvas>
+                <ContactShadows position={[0, -2, 0]} opacity={0.4} scale={10} blur={2} far={4} />
+              </group>
+            </PresentationControls>
+
+            {/* Interactive loose items */}
+            <DraggableShape initialPosition={[-4, 2, -2]} color="#10b981" type="dodecahedron" />
+            <DraggableShape initialPosition={[4, -3, 1]} color="#f43f5e" type="torusKnot" />
+            <DraggableShape initialPosition={[-3, -2, 3]} color="#3b82f6" type="cylinder" />
+
+            <Environment preset="city" />
+          </Canvas>
+        </div>
+
+        {/* Laptop frame image — sits ON TOP so it masks edges naturally */}
+        <img
+          src="/image copy 4.png"
+          alt="Laptop Display"
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+          style={{ zIndex: 2 }}
+        />
+      </div>
+    </div>
   );
 }
