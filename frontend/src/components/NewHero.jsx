@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, Zap, Globe, ShieldCheck, ArrowRight, Menu, User, LogIn } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProfileRail from './ProfileRail';
+import MarqueeBanner from './MarqueeBanner';
 
 const NewHero = () => {
   const [user, setUser] = useState(null);
@@ -13,28 +14,7 @@ const NewHero = () => {
       {/* MOBILE ONLY ELEMENTS                        */}
       {/* ═══════════════════════════════════════════ */}
 
-      {/* Mobile: Top Right Floating Login / Greeting */}
-      <div className="absolute top-4 right-4 md:hidden z-40">
-        {user ? (
-          <div className="text-sm font-semibold text-[#1A1E23] flex items-center gap-2 bg-white/60 backdrop-blur-md px-4 py-2 rounded-full shadow-sm animate-fade-in">
-            Hi, {user.name.split(' ')[0]}
-          </div>
-        ) : (
-          <button
-            onClick={() => setUser({
-              name: "Abhitha",
-              email: "abhitha@techbrahmand.com",
-              image: "",
-              joinedDate: "April 2026",
-              savedItems: 12
-            })}
-            className="flex items-center gap-2 bg-[#1a1a1a] hover:bg-[#8A2BE2] text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors shadow-lg"
-          >
-            <LogIn size={14} />
-            Log In
-          </button>
-        )}
-      </div>
+      {/* Mobile: Top Right Floating Login / Greeting Removed */}
 
       {/* Mobile: ProfileRail */}
       <div className="md:hidden">
@@ -42,10 +22,10 @@ const NewHero = () => {
       </div>
 
       {/* Mobile Content Wrapper */}
-      <div className="md:hidden relative z-30 flex flex-col min-h-[100dvh] pt-[120px] pb-[8px] px-6 pointer-events-none">
+      <div className="md:hidden relative z-30 flex flex-col min-h-[100dvh] pt-[100px] pb-[0px] px-6 pointer-events-none">
         {/* Mobile: TECH BRAHMAND title */}
         <div className="pointer-events-auto flex flex-col items-center w-full">
-          <h1 className="font-heading font-extrabold text-[22px] sm:text-[28px] tracking-[0.05em] text-[#1A1E23] absolute top-[52px] w-full text-center px-[84px] left-0 mt-2">
+          <h1 className="font-heading font-extrabold text-[22px] sm:text-[28px] tracking-[0.05em] text-[#1A1E23] absolute top-[14px] w-full text-center px-[84px] left-0 mt-2">
             TECH BRAHMAND
           </h1>
         </div>
@@ -117,6 +97,12 @@ const NewHero = () => {
           </div>
 
         </div>
+
+      </div>
+
+      {/* Mobile: Marquee Banner pinned to hero bottom */}
+      <div className="md:hidden absolute bottom-0 left-0 w-full z-40">
+        <MarqueeBanner containerBg="bg-[#F3F5F9]" marginTop="mt-0" marginBottom="mb-0" />
       </div>
 
       {/* ═══════════════════════════════════════════ */}

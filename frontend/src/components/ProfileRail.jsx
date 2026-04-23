@@ -85,7 +85,7 @@ export default function ProfileRail({ user, setUser }) {
 
         {/* Floating Account Menu (Popup) */}
         <AnimatePresence>
-          {showAccountMenu && (
+          {showAccountMenu && user && (
             <motion.div 
               className="pr-account-menu"
               initial={{ opacity: 0, scale: 0.9, x: -10 }}
@@ -93,25 +93,12 @@ export default function ProfileRail({ user, setUser }) {
               exit={{ opacity: 0, scale: 0.9, x: -10 }}
               transition={{ duration: 0.3, ease: smoothEase }}
             >
-              {!user ? (
-                <div className="pr-menu-list">
-                  <button className="pr-menu-item login-btn" onClick={handleLogin}>
-                    <LogIn size={16} />
-                    <span>Log In</span>
-                  </button>
-                  <button className="pr-menu-item" onClick={handleLogin}>
-                    <User size={16} />
-                    <span>Sign Up</span>
-                  </button>
-                </div>
-              ) : (
-                <div className="pr-menu-list">
-                  <button className="pr-menu-item logout-btn" onClick={handleLogout}>
-                    <LogOut size={16} />
-                    <span>Logout</span>
-                  </button>
-                </div>
-              )}
+              <div className="pr-menu-list">
+                <button className="pr-menu-item logout-btn" onClick={handleLogout}>
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

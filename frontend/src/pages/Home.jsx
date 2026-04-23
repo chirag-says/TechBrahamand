@@ -94,10 +94,12 @@ const Home = () => {
   return (
     <div className="w-full overflow-y-auto">
       <NewHero />
-      <MarqueeBanner containerBg="bg-[#F3F5F9]" />
+      <div className="hidden md:block">
+        <MarqueeBanner containerBg="bg-[#F3F5F9]" />
+      </div>
       <InnovationSection />
-      {/* Bottom Marquee Banner - Perfectly overlapping the transition */}
-      <div className="relative z-40 w-full overflow-visible">
+      {/* Bottom Marquee Banner - desktop only (mobile version is inside InnovationSection) */}
+      <div className="relative z-40 w-full overflow-visible hidden lg:block">
         {/* We use a white background patch that perfectly matches the skew to extend the Innovation section seamlessly */}
         <div className="absolute top-0 left-0 w-full h-[30px] bg-[#F3F5F9] origin-bottom-right skew-y-1 -translate-y-full pointer-events-none" />
         

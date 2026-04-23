@@ -64,7 +64,7 @@ export default function Services() {
   ];
 
   return (
-    <div className="pt-20 sm:pt-24 lg:pt-32 pb-32 sm:pb-40 bg-white h-full relative overflow-y-auto font-sans">
+    <div className="pt-20 sm:pt-24 lg:pt-32 pb-32 sm:pb-40 bg-white h-full relative overflow-x-hidden overflow-y-auto font-sans">
       
       {/* Original Light Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-slate-50 to-white -z-10" />
@@ -151,12 +151,12 @@ export default function Services() {
               </div>
 
               {/* Visual Side */}
-              <div className="flex-1 w-full relative group">
+              <div className="flex-1 w-full relative group overflow-hidden">
                 {/* A subtle colored glowing blur behind the card for light mode */}
-                <div className={`absolute -inset-4 bg-gradient-to-r ${cat.themeColor} rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition duration-700 -z-10`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-r ${cat.themeColor} rounded-3xl blur-2xl opacity-40 group-hover:opacity-60 transition duration-700 -z-10`}></div>
                 
                 {/* The offset corner styling */}
-                <div className={`absolute -bottom-4 -right-4 w-full h-full bg-gradient-to-br ${cat.themeColor} rounded-2xl transform translate-x-2 translate-y-2 opacity-50 -z-10`}></div>
+                <div className={`absolute bottom-0 right-0 w-[95%] h-[95%] bg-gradient-to-br ${cat.themeColor} rounded-2xl transform translate-x-2 translate-y-2 opacity-50 -z-10`}></div>
                 
                 <div className="relative rounded-2xl overflow-hidden aspect-[4/3] sm:aspect-[16/10] shadow-2xl shadow-slate-200/50 border border-slate-200/60 bg-white">
                   {catIdx === 0 ? (
