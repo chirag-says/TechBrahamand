@@ -212,6 +212,7 @@ const InnovationSection = () => {
         />
       </div>
 
+
     </div>
   );
 };

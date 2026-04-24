@@ -1,0 +1,762 @@
+/* ============================================= */
+/*  NewHero — Image Copy 5 Pixel-Perfect Design  */
+/* ============================================= */
+
+/* ---------- Root ---------- */
+.newhero-root {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+@media (max-width: 767px) {
+  .newhero-root {
+    background: #080c1a;
+  }
+}
+
+/* ---------- Mobile Container ---------- */
+.newhero-mobile {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+/* ===================== LEFT SIDEBAR ===================== */
+.newhero-left-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 32px;
+  background: #050810;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  border-right: 1px solid rgba(59, 130, 246, 0.05);
+}
+
+.newhero-sidebar-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.newhero-sidebar-dots {
+  position: absolute;
+  bottom: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.newhero-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+.newhero-dot--blue {
+  background: #3b82f6;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
+}
+
+.newhero-dot--dim {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.newhero-dot-line {
+  width: 1px;
+  height: 12px;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.3), transparent);
+}
+
+.newhero-dot-line--short {
+  height: 7px;
+}
+
+/* ===================== MAIN CONTENT ===================== */
+.newhero-content {
+  flex: 1;
+  margin-left: 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+}
+
+/* ===================== TOP NAV ===================== */
+.newhero-topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 10px;
+  position: relative;
+  z-index: 30;
+}
+
+.newhero-topnav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.newhero-logo-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.newhero-logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.newhero-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.newhero-brand-bold {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.1em;
+}
+
+.newhero-brand-blue {
+  font-size: 15px;
+  font-weight: 800;
+  color: #3366dd;
+  letter-spacing: 0.1em;
+}
+
+/* ===================== HERO BODY ===================== */
+/*
+  The hero body is a relative container.
+  The robot is positioned ABSOLUTE inside it, on the right side.
+  The text column sits on the left with higher z-index so it's always readable.
+*/
+.newhero-hero-body {
+  position: relative;
+  min-height: 480px;
+  overflow: visible;
+}
+
+/* Light gradient haze behind robot on the right side */
+.newhero-hero-body::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -40px;
+  width: 65%;
+  height: 130%;
+  background: radial-gradient(
+    ellipse at 75% 35%,
+    rgba(200, 218, 250, 0.15) 0%,
+    rgba(170, 195, 245, 0.08) 30%,
+    rgba(130, 165, 230, 0.04) 50%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.newhero-text-col {
+  position: relative;
+  z-index: 20;
+  padding: 16px 16px 0;
+  /* Text takes up the left portion, robot is behind on the right */
+  max-width: 65%;
+}
+
+.newhero-heading {
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.05;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 400px) and (max-width: 767px) {
+  .newhero-heading {
+    font-size: 46px;
+  }
+}
+
+.newhero-heading-highlight {
+  color: #3355dd;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.newhero-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.6;
+  max-width: 280px;
+  margin-bottom: 22px;
+  font-weight: 400;
+}
+
+/* ===================== CTA BUTTON ===================== */
+.newhero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #2952cc;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px 16px 13px 22px;
+  border-radius: 30px;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(41, 82, 204, 0.4);
+  margin-bottom: 24px;
+}
+
+.newhero-cta-btn:hover {
+  background: #2246b0;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(41, 82, 204, 0.5);
+}
+
+.newhero-cta-arrow {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.newhero-cta-btn:hover .newhero-cta-arrow {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===================== SOCIAL PROOF ===================== */
+.newhero-social-proof {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 20;
+}
+
+.newhero-avatars {
+  display: flex;
+  align-items: center;
+}
+
+.newhero-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #141c36;
+  object-fit: cover;
+  margin-right: -8px;
+}
+
+.newhero-avatar:last-child {
+  margin-right: 0;
+}
+
+.newhero-trust-text {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.3;
+  margin-left: 4px;
+}
+
+.newhero-trust-text strong {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ===================== ROBOT — absolute on the right ===================== */
+/*
+  In the reference image the robot:
+  - Head starts near the top of the hero (around nav level)
+  - Positioned on the RIGHT side, roughly right 45-50%
+  - Body extends all the way down past the social proof
+  - Does NOT cover the left-side text
+*/
+.newhero-robot-col {
+  position: absolute;
+  top: -30px;
+  right: -15%;
+  width: 75%;
+  bottom: -60px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+  overflow: visible;
+}
+
+/* Arc rings — light gray/white rings behind robot */
+.newhero-arc {
+  position: absolute;
+  border-radius: 50%;
+  border-style: solid;
+}
+
+.newhero-arc--outer {
+  width: 340px;
+  height: 340px;
+  border-width: 1px;
+  border-color: rgba(180, 200, 240, 0.1);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.newhero-arc--inner {
+  width: 250px;
+  height: 250px;
+  border-width: 1.5px;
+  border-color: rgba(180, 200, 240, 0.16);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(180, 210, 255, 0.03) 0%, transparent 70%);
+}
+
+.newhero-arc--glow {
+  width: 170px;
+  height: 170px;
+  border-width: 1px;
+  border-color: rgba(200, 220, 255, 0.12);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(180, 210, 255, 0.05) 0%, transparent 70%);
+  box-shadow: 0 0 60px rgba(140, 180, 255, 0.04);
+}
+
+.newhero-robot-img {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.4));
+  margin-top: 10px;
+}
+
+.newhero-robot-overlay-text {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.05;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.newhero-robot-overlay-text span {
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* ===================== STATS BAR ===================== */
+.newhero-stats-bar {
+  background: linear-gradient(135deg, #161e3a 0%, #131a30 50%, #0f152a 100%);
+  border: 1px solid rgba(100, 140, 220, 0.1);
+  border-radius: 22px;
+  padding: 24px 10px 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin: 16px 12px 16px;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  position: relative;
+  z-index: 25;
+}
+
+.newhero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.newhero-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.newhero-stat-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.newhero-stat-icon--blue {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1.5px solid rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
+}
+
+.newhero-stat-icon--green {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1.5px solid rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+
+.newhero-stat-icon--purple {
+  background: rgba(139, 92, 246, 0.12);
+  border: 1.5px solid rgba(139, 92, 246, 0.25);
+  color: #a78bfa;
+}
+
+.newhero-stat-icon--orange {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1.5px solid rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+}
+
+.newhero-stat-number {
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.newhero-stat-suffix {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.newhero-stat-suffix--star {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+.newhero-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+
+.newhero-stat-underline {
+  width: 24px;
+  height: 2.5px;
+  border-radius: 2px;
+  margin-top: 3px;
+}
+
+.newhero-stat-underline--blue {
+  background: #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+}
+
+.newhero-stat-underline--green {
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.newhero-stat-underline--purple {
+  background: #8b5cf6;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+}
+
+.newhero-stat-underline--orange {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+/* ===================== INFRA CARD ===================== */
+.newhero-infra-card {
+  background: linear-gradient(135deg, #131b35 0%, #0f1729 60%, #0c1322 100%);
+  border: 1px solid rgba(80, 120, 200, 0.1);
+  border-radius: 22px;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 12px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.newhero-infra-left {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.newhero-infra-chip-glow {
+  position: absolute;
+  inset: -12px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: infraGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes infraGlow {
+  0% { opacity: 0.5; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+.newhero-infra-chip {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: brightness(1.15) contrast(1.05);
+}
+
+.newhero-infra-right {
+  flex: 1;
+}
+
+.newhero-infra-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.newhero-infra-highlight {
+  color: #6d8fef;
+  font-style: italic;
+}
+
+.newhero-infra-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.5;
+}
+
+.newhero-infra-arrow {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #2952cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(41, 82, 204, 0.4);
+}
+
+.newhero-infra-arrow:hover {
+  background: #2246b0;
+  transform: scale(1.08);
+}
+
+/* ===================== FEATURES TRIO ===================== */
+.newhero-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 0 12px 24px;
+}
+
+.newhero-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0;
+}
+
+.newhero-feature-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.newhero-feature-icon--rocket {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.15));
+  color: #a78bfa;
+}
+
+.newhero-feature-icon--bot {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.15));
+  color: #34d399;
+}
+
+.newhero-feature-icon--chart {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.15));
+  color: #60a5fa;
+}
+
+.newhero-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.newhero-feature-text strong {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+}
+
+.newhero-feature-text p {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ===================== BOTTOM MARQUEE ===================== */
+.newhero-bottom-marquee {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 0 28px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.newhero-marquee-line {
+  width: 30px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.35), transparent);
+  border-radius: 2px;
+}
+
+.newhero-marquee-dot {
+  color: rgba(59, 130, 246, 0.4);
+  font-size: 14px;
+}
+
+/* ===================== DESKTOP OVERRIDE ===================== */
+@media (min-width: 768px) {
+  .newhero-root {
+    background: #F3F5F9;
+    min-height: 100dvh;
+  }
+}
+
+/* ===================== SMALL SCREEN ADJUSTMENTS ===================== */
+@media (max-width: 360px) {
+  .newhero-heading {
+    font-size: 34px;
+  }
+
+  .newhero-hero-body {
+    min-height: 400px;
+  }
+
+  .newhero-robot-col {
+    width: 70%;
+    right: -18%;
+  }
+
+  .newhero-stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .newhero-stat-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .newhero-stat-number {
+    font-size: 22px;
+  }
+
+  .newhero-stat-suffix {
+    font-size: 13px;
+  }
+
+  .newhero-stat-suffix--star {
+    font-size: 14px;
+  }
+
+  .newhero-features {
+    gap: 6px;
+  }
+
+  .newhero-feature-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 767px) {
+  .newhero-stat-number {
+    font-size: 30px;
+  }
+
+  .newhero-stat-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .newhero-stat-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .newhero-infra-title {
+    font-size: 18px;
+  }
+}
