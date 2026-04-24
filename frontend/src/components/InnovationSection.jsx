@@ -9,10 +9,10 @@ const InnovationSection = () => {
     <div className="w-full bg-[#F3F5F9] font-sans tracking-tight">
 
       {/* ===== SECTION 1: Unlock the Power of Innovation ===== */}
-      <div className="px-8 md:px-16 lg:px-24 pt-6 md:pt-16 pb-10 md:pb-20">
+      <div className="px-5 md:px-16 lg:px-24 pt-6 md:pt-16 pb-8 md:pb-20">
         
         {/* Breadcrumb */}
-        <div className="flex items-center gap-3 mb-6 md:mb-12">
+        <div className="flex items-center gap-3 mb-5 md:mb-12">
           <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#333]">Home</span>
           <ArrowUpRight size={12} className="text-[#888]" />
           <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-[#888]">Where Ideas Evolve</span>
@@ -23,55 +23,55 @@ const InnovationSection = () => {
           
           {/* Left Column — Text + Cards */}
           <div className="flex-1 max-w-[560px]">
-            <h2 className="text-[38px] lg:text-[46px] font-bold text-[#111] leading-[1.08] tracking-[-0.02em]">
+            <h2 className="text-[28px] md:text-[38px] lg:text-[46px] font-bold text-[#111] leading-[1.08] tracking-[-0.02em]">
               Intelligence Built for Every Stage
             </h2>
-            <p className="mt-4 text-[15px] text-[#555] font-medium leading-relaxed max-w-[440px]">
+            <p className="mt-3 md:mt-4 text-[13px] md:text-[15px] text-[#555] font-medium leading-relaxed max-w-[440px]">
               Deploy specialized AI agents engineered to create, enhance, and transform your enterprise infrastructure
             </p>
 
             {/* Feature Cards Row */}
-            <div className="mt-8 sm:mt-10 flex flex-row gap-4 sm:gap-5">
+            <div className="mt-6 sm:mt-10 grid grid-cols-2 gap-3 sm:gap-5">
               
               {/* Card 1: AI Strategies */}
-              <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[24px] p-6 border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-400 group cursor-pointer">
-                <div className="w-[44px] h-[44px] rounded-xl bg-[#F0F2F6] flex items-center justify-center mb-4 group-hover:bg-[#111] transition-colors duration-400">
-                  <Brain size={22} className="text-[#333] group-hover:text-white transition-colors duration-400" strokeWidth={1.5} />
+              <div className="bg-white/80 backdrop-blur-xl rounded-[20px] md:rounded-[24px] p-4 md:p-6 border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-400 group cursor-pointer">
+                <div className="w-[40px] h-[40px] md:w-[44px] md:h-[44px] rounded-xl bg-[#F0F2F6] flex items-center justify-center mb-3 md:mb-4 group-hover:bg-[#111] transition-colors duration-400">
+                  <Brain size={20} className="text-[#333] group-hover:text-white transition-colors duration-400" strokeWidth={1.5} />
                 </div>
-                <h4 className="text-[16px] font-bold text-[#111] tracking-tight">AI Strategies</h4>
-                <p className="mt-2 text-[12px] text-[#666] leading-relaxed font-medium">
+                <h4 className="text-[14px] md:text-[16px] font-bold text-[#111] tracking-tight">AI Strategies</h4>
+                <p className="mt-1.5 md:mt-2 text-[11px] md:text-[12px] text-[#666] leading-relaxed font-medium">
                   Harness the full potential of artificial intelligence
                 </p>
               </div>
 
               {/* Card 2: Technology Enablement */}
-              <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-[24px] p-6 border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-400 group cursor-pointer">
-                <div className="w-[44px] h-[44px] rounded-xl bg-[#F0F2F6] flex items-center justify-center mb-4 group-hover:bg-[#111] transition-colors duration-400">
-                  <Cpu size={22} className="text-[#333] group-hover:text-white transition-colors duration-400" strokeWidth={1.5} />
+              <div className="bg-white/80 backdrop-blur-xl rounded-[20px] md:rounded-[24px] p-4 md:p-6 border border-black/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-400 group cursor-pointer">
+                <div className="w-[40px] h-[40px] md:w-[44px] md:h-[44px] rounded-xl bg-[#F0F2F6] flex items-center justify-center mb-3 md:mb-4 group-hover:bg-[#111] transition-colors duration-400">
+                  <Cpu size={20} className="text-[#333] group-hover:text-white transition-colors duration-400" strokeWidth={1.5} />
                 </div>
-                <h4 className="text-[16px] font-bold text-[#111] tracking-tight">Legacy Modernization</h4>
-                <p className="mt-2 text-[12px] text-[#666] leading-relaxed font-medium">
+                <h4 className="text-[14px] md:text-[16px] font-bold text-[#111] tracking-tight">Legacy Modernization</h4>
+                <p className="mt-1.5 md:mt-2 text-[11px] md:text-[12px] text-[#666] leading-relaxed font-medium">
                   Safely migrate to modern AI-powered platforms
                 </p>
               </div>
             </div>
 
             {/* CTA Buttons Row */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <Link to="/services" className="flex items-center justify-between bg-[#111] rounded-full pl-6 pr-[4px] py-[4px] hover:scale-105 transition-transform group/btn shadow-md">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-white mr-3">
-                  See All Services
+            <div className="mt-6 md:mt-8 flex flex-row gap-2.5 sm:gap-4 w-full sm:w-auto">
+              <Link to="/services" className="flex-1 sm:flex-initial flex items-center justify-between bg-[#111] rounded-full pl-5 md:pl-6 pr-[4px] py-[4px] active:scale-[0.97] hover:scale-105 transition-transform group/btn shadow-md">
+                <span className="text-[9px] md:text-[10px] font-extrabold uppercase tracking-widest text-white mr-2 md:mr-3">
+                  Services
                 </span>
-                <span className="bg-white text-[#111] rounded-full w-[28px] h-[28px] flex items-center justify-center">
-                  <ArrowRight size={14} strokeWidth={3} />
+                <span className="bg-white text-[#111] rounded-full w-[26px] h-[26px] md:w-[28px] md:h-[28px] flex items-center justify-center flex-shrink-0">
+                  <ArrowRight size={13} strokeWidth={3} />
                 </span>
               </Link>
-              <Link to="/products" className="flex items-center justify-between bg-[#111] rounded-full pl-6 pr-[4px] py-[4px] hover:scale-105 transition-transform group/btn shadow-md">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-white mr-3">
-                  See All Products
+              <Link to="/products" className="flex-1 sm:flex-initial flex items-center justify-between bg-[#111] rounded-full pl-5 md:pl-6 pr-[4px] py-[4px] active:scale-[0.97] hover:scale-105 transition-transform group/btn shadow-md">
+                <span className="text-[9px] md:text-[10px] font-extrabold uppercase tracking-widest text-white mr-2 md:mr-3">
+                  Products
                 </span>
-                <span className="bg-white text-[#111] rounded-full w-[28px] h-[28px] flex items-center justify-center">
-                  <ArrowRight size={14} strokeWidth={3} />
+                <span className="bg-white text-[#111] rounded-full w-[26px] h-[26px] md:w-[28px] md:h-[28px] flex items-center justify-center flex-shrink-0">
+                  <ArrowRight size={13} strokeWidth={3} />
                 </span>
               </Link>
             </div>
@@ -90,8 +90,8 @@ const InnovationSection = () => {
         </div>
 
         {/* Mobile only — AI Brain Image as separate block below */}
-        <div className="lg:hidden mt-10 w-full">
-          <div className="w-full aspect-[4/3] rounded-[28px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-black/[0.06]">
+        <div className="lg:hidden mt-8 w-full">
+          <div className="w-full aspect-[16/10] rounded-[22px] overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-black/[0.06]">
             <img 
               src="/ai-brain-visual.png" 
               alt="AI Brain Visualization" 
