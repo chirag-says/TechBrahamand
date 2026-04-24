@@ -8,16 +8,16 @@
   position: fixed;
   top: 18px;
   left: 18px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(15, 15, 20, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 2px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,9 +42,8 @@ body.profile-open .nav-trigger {
   pointer-events: none;
 }
 
-.nav-trigger:hover {
-  transform: scale(1.06);
-  background: rgba(15, 15, 20, 0.85);
+.nav-trigger:active {
+  transform: scale(0.95);
 }
 
 .nav-trigger.is-open {
@@ -57,7 +56,7 @@ body.profile-open .nav-trigger {
   display: block;
   height: 2px;
   border-radius: 2px;
-  background: #fff;
+  background: #222;
   transform-origin: center;
 }
 
@@ -80,8 +79,9 @@ body.profile-open .nav-trigger {
 .nav-fs-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px 24px 16px;
+  justify-content: center;
+  padding: 25px 24px 16px;
+  padding-left: 34px;
   flex-shrink: 0;
 }
 
@@ -100,10 +100,10 @@ body.profile-open .nav-trigger {
 }
 
 .nav-fs-brand-text {
-  font-size: 14px;
+  font-size: 22px;
   font-weight: 800;
-  color: #111;
-  letter-spacing: 0.06em;
+  color: #1A1E23;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 

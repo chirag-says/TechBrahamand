@@ -148,9 +148,12 @@ function BezelBorderOverlay() {
 
   const { w, h } = dims;
   const mobile = w <= 768;
-  const p = mobile ? 8 : 16;
-  const R = mobile ? 20 : 36;
 
+  // No bezel border on mobile
+  if (mobile) return null;
+
+  const p = 16;
+  const R = 36;
   // Cutouts applied globally on desktop
   const applyCuts = !mobile && w >= 900;
 

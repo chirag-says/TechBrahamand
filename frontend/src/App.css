@@ -554,11 +554,11 @@
 
 @media (max-width: 768px) {
   .bezel-frame {
-    padding: 8px;
+    padding: 0;
   }
 
   .bezel-viewport {
-    border-radius: 20px;
+    border-radius: 0;
   }
 
   .bezel-nav {

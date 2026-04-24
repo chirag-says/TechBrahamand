@@ -74,21 +74,16 @@ const NewHero = () => {
 
         {/* ── TOP ZONE: Brand + Heading ── */}
         {/* Brand name — fixed top center */}
-        <motion.div {...fadeIn(0.1)} className="pointer-events-auto absolute top-[58px] left-0 right-0 flex items-center justify-center z-40">
-          <h1 className="font-heading font-extrabold text-[18px] sm:text-[22px] tracking-[0.14em] text-[#1A1E23] text-center">
+        <motion.div {...fadeIn(0.1)} className="pointer-events-auto absolute top-[25px] left-0 right-0 flex items-center justify-center z-40 pl-[10px]">
+          <h1 className="font-heading font-extrabold text-[22px] sm:text-[26px] tracking-[0.14em] text-[#1A1E23] text-center">
             TECH BRAHMAND
           </h1>
         </motion.div>
 
         <div className="flex flex-col px-4 mt-[36px]">
 
-          {/* Tag badge */}
-          <motion.div {...fadeUp(0.15)} className="pointer-events-auto pl-[54px] sm:pl-[64px] mt-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/50 border border-black/[0.06] backdrop-blur-sm shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-              <div className="w-[5px] h-[5px] rounded-full bg-gradient-to-r from-violet-500 to-blue-500 animate-pulse shadow-[0_0_6px_rgba(139,92,246,0.4)]" />
-              <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#666] leading-none">AI-Powered Solutions</span>
-            </div>
-          </motion.div>
+
+
 
           {/* Main heading */}
           <motion.div {...fadeUp(0.28)} className="pointer-events-auto pl-[54px] sm:pl-[64px] mt-3 z-20">

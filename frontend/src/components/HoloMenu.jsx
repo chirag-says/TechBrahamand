@@ -50,14 +50,7 @@ export default function HoloMenu({ visible = true }) {
           >
             {/* Top bar: brand + close */}
             <div className="nav-fs-header">
-              <div className="nav-fs-brand">
-                <img
-                  src="/techbrahmand-badge.png"
-                  alt="Tech Brahmand"
-                  className="nav-fs-logo"
-                />
-                <span className="nav-fs-brand-text">TECH BRAHMAND</span>
-              </div>
+              <span className="nav-fs-brand-text">TECH BRAHMAND</span>
             </div>
 
             {/* Navigation links */}
