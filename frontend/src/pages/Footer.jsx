@@ -43,7 +43,7 @@ export default function Footer() {
 
           {/* CTA card */}
           <Link
-            to="/contact"
+            to="/chatbot"
             className="block w-full bg-[#0A0A0A] rounded-[20px] p-5 mb-8 group active:scale-[0.98] transition-transform"
           >
             <div className="flex items-center justify-between">

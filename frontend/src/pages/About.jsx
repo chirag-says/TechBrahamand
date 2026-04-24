@@ -122,29 +122,45 @@ export default function About() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {trinityData.map((item, i) => (
               <div
                 key={i}
-                className={`p-6 sm:p-8 rounded-2xl border ${item.border} bg-gradient-to-b ${item.gradient}`}
+                className={`flex flex-col overflow-hidden rounded-3xl border ${item.border} bg-gradient-to-b ${item.gradient} shadow-sm`}
               >
-                {/* Image */}
-                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${item.border} mb-4 shadow-md`}>
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                {/* Mobile: Large Image Header */}
+                <div 
+                  className="sm:hidden relative w-full aspect-[4/3] -mb-4"
+                  style={{ 
+                    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+                    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)' 
+                  }}
+                >
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover object-top" />
                 </div>
 
-                <span className={`text-[10px] uppercase tracking-widest font-bold ${item.text}`}>
-                  Phase 0{i + 1}
-                </span>
-                <h3 className="text-lg sm:text-xl font-black mt-3 mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-xs uppercase text-slate-400 mb-4">
-                  {item.subtitle}
-                </p>
-                <p className="text-sm text-slate-600">
-                  {item.desc}
-                </p>
+                {/* Content Area */}
+                <div className="p-6 sm:p-8 pt-2 sm:pt-8 flex-1 flex flex-col relative z-10">
+                  {/* Desktop: Image Icon */}
+                  <div className={`hidden sm:block w-16 h-16 rounded-2xl overflow-hidden border-2 ${item.border} mb-6 shadow-sm bg-white`}>
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  </div>
+
+                  {/* Desktop Phase Badge */}
+                  <span className={`hidden sm:block text-[11px] uppercase tracking-[0.2em] font-black ${item.text} mb-3`}>
+                    Phase 0{i + 1}
+                  </span>
+
+                  <h3 className="text-2xl sm:text-2xl font-black mb-1 text-slate-900 tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className={`text-[11px] sm:text-xs uppercase font-extrabold tracking-[0.15em] ${item.text} opacity-80 mb-4`}>
+                    {item.subtitle}
+                  </p>
+                  <p className="text-[14px] sm:text-[15px] text-slate-600 font-medium leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
