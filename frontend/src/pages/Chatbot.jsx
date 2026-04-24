@@ -213,24 +213,24 @@ KEY RULES:
       </aside>
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden pt-[72px]">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden pt-[56px] md:pt-[72px]">
         
         {/* Header */}
-        <div className="flex-shrink-0 text-center py-5 px-4">
-          <h1 className="text-2xl md:text-4xl font-black text-gray-900 tracking-tight">
+        <div className="flex-shrink-0 text-center py-3 md:py-5 px-4">
+          <h1 className="text-xl md:text-4xl font-black text-gray-900 tracking-tight">
             Project Estimator AI
           </h1>
-          <p className="text-gray-400 text-sm mt-1">— Turn Ideas into Scalable Products —</p>
-          <p className="text-[11px] text-gray-500 font-bold tracking-[0.3em] uppercase mt-1">
+          <p className="text-gray-400 text-xs md:text-sm mt-0.5 md:mt-1">— Turn Ideas into Scalable Products —</p>
+          <p className="text-[10px] md:text-[11px] text-gray-500 font-bold tracking-[0.3em] uppercase mt-0.5 md:mt-1">
             Powered by Techbrahmand
           </p>
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl px-4">
+        <div className="flex-1 overflow-hidden flex flex-col mx-auto w-full max-w-4xl px-3 md:px-4">
           
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto rounded-2xl bg-gray-50 border border-gray-200 px-4 md:px-8 py-6 space-y-5" style={{ scrollbarWidth: 'thin', scrollbarColor: '#d1d5db transparent' }}>
+          <div className="flex-1 overflow-y-auto rounded-2xl bg-gray-50 border border-gray-200 px-3 md:px-8 py-4 md:py-6 space-y-4 md:space-y-5" style={{ scrollbarWidth: 'thin', scrollbarColor: '#d1d5db transparent' }}>
             
             {messages.map((msg) => (
               <motion.div 
@@ -308,14 +308,14 @@ KEY RULES:
           </AnimatePresence>
 
           {/* Input Area */}
-          <div className="flex-shrink-0 py-4">
+          <div className="flex-shrink-0 py-2.5 md:py-4">
             <form onSubmit={handleSend} className="relative flex items-center w-full">
               <input 
                 type="text" 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Describe your project vision..."
-                className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl py-4 pl-5 pr-14 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 focus:bg-white transition-all placeholder:text-gray-400 text-sm"
+                className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl py-3 md:py-4 pl-4 md:pl-5 pr-14 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 focus:bg-white transition-all placeholder:text-gray-400 text-sm"
                 disabled={isTyping}
               />
               <button 
@@ -326,7 +326,7 @@ KEY RULES:
                 <Send size={16} className="ml-0.5" />
               </button>
             </form>
-            <p className="text-center text-[10px] text-gray-400 uppercase tracking-widest mt-2">
+            <p className="text-center text-[10px] text-gray-400 uppercase tracking-widest mt-1.5 md:mt-2">
               Estimates are indicative. AI may make mistakes.
             </p>
           </div>
@@ -334,33 +334,33 @@ KEY RULES:
         </div>
 
         {/* Bottom Info Cards — Dynamic */}
-        <div className="flex-shrink-0 px-4 pb-4">
-          <div className="max-w-4xl mx-auto grid grid-cols-3 gap-3">
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
-                <Hash size={16} className="text-white" />
+        <div className="flex-shrink-0 px-3 md:px-4 pb-3 md:pb-4" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+          <div className="max-w-4xl mx-auto grid grid-cols-3 gap-2 md:gap-3">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 md:px-4 py-2.5 md:py-3 flex items-center gap-2 md:gap-3">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
+                <Hash size={14} className="text-white" />
               </div>
-              <div>
-                <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Messages</p>
-                <p className="text-sm font-bold text-gray-900">{messages.length - 1} exchanges</p>
-              </div>
-            </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
-                <Clock size={16} className="text-white" />
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Session Time</p>
-                <p className="text-sm font-bold text-gray-900">{elapsed}</p>
+              <div className="min-w-0">
+                <p className="text-[9px] md:text-[11px] font-semibold text-gray-500 uppercase tracking-wide truncate">Messages</p>
+                <p className="text-xs md:text-sm font-bold text-gray-900">{messages.length - 1}</p>
               </div>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
-                <Activity size={16} className="text-white" />
+            <div className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 md:px-4 py-2.5 md:py-3 flex items-center gap-2 md:gap-3">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
+                <Clock size={14} className="text-white" />
               </div>
-              <div>
-                <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Status</p>
-                <p className="text-sm font-bold text-gray-900">{isTyping ? 'AI Thinking...' : hasConversation ? 'In Progress' : 'Ready'}</p>
+              <div className="min-w-0">
+                <p className="text-[9px] md:text-[11px] font-semibold text-gray-500 uppercase tracking-wide truncate">Time</p>
+                <p className="text-xs md:text-sm font-bold text-gray-900">{elapsed}</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 rounded-xl px-2.5 md:px-4 py-2.5 md:py-3 flex items-center gap-2 md:gap-3">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-black flex items-center justify-center flex-shrink-0">
+                <Activity size={14} className="text-white" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[9px] md:text-[11px] font-semibold text-gray-500 uppercase tracking-wide truncate">Status</p>
+                <p className="text-xs md:text-sm font-bold text-gray-900">{isTyping ? 'Thinking...' : hasConversation ? 'Active' : 'Ready'}</p>
               </div>
             </div>
           </div>

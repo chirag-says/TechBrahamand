@@ -4,28 +4,25 @@
 
 .profile-rail {
   position: absolute;
-  top: 130px;
-  /* Aligned with 'Turning Ideas' text */
-  bottom: 280px;
+  top: 100px;
+  bottom: 200px;
   left: 10px;
   height: auto;
   min-height: 200px;
   max-height: none;
   width: 52px;
-  background: rgba(10, 14, 23, 0.85);
-  /* Deep navy black */
+  background: rgba(6, 8, 16, 0.94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 0 20px rgba(255, 255, 255, 0.02);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
+  justify-content: center;
+  padding: 16px 0;
   z-index: 40;
-  /* High enough to be over robot, below holo menu */
 }
 
 @media (min-width: 768px) {
@@ -37,21 +34,19 @@
   }
 }
 
-/* Avatar Top Button */
+/* Brand Badge (Top) */
 .pr-avatar-btn {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.12);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #1a1d24;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 @media (min-width: 768px) {
@@ -61,28 +56,26 @@
   }
 }
 
-.pr-avatar-btn:hover {
-  transform: scale(1.08);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
-}
-
 .pr-avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+}
+
+.pr-avatar-generic {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pr-avatar-generic img {
-  width: 110%;
-  height: 110%;
-  max-width: none;
-}
-
-.pr-avatar-initial {
-  color: white;
-  font-weight: 800;
-  font-size: 18px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* Center Rotated Text */
@@ -115,309 +108,23 @@
   }
 }
 
-/* Bottom Glow Trigger Button */
-.pr-trigger-btn {
+/* Bottom Scroll Hint */
+.pr-scroll-hint {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #11141c;
+  background: rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  position: relative;
-  cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-  transition: all 0.3s ease;
   flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 @media (min-width: 768px) {
-  .pr-trigger-btn {
-    width: 50px;
-    height: 50px;
+  .pr-scroll-hint {
+    width: 44px;
+    height: 44px;
   }
-}
-
-.pr-trigger-btn:hover {
-  transform: scale(1.05);
-  border-color: rgba(60, 130, 246, 0.4);
-}
-
-.pr-trigger-glow {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(60, 130, 246, 0.4) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 5;
-}
-
-/* =========================================
-   ACCOUNT MENU (FLOATING POPUP)
-   ========================================= */
-
-.pr-account-menu {
-  position: absolute;
-  left: 50%;
-  /* Center horizontally with the rail */
-  top: 100%;
-  /* Placed below the rail */
-  margin-top: 16px;
-  width: 140px;
-  /* Thinner so it doesn't leak out too far */
-  background: rgba(15, 17, 21, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transform: translateX(-50%);
-  transform-origin: top center;
-}
-
-.pr-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  background: transparent;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none;
-  text-align: left;
-}
-
-.pr-menu-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-/* Purple login style */
-.pr-menu-item.login-btn {
-  background: rgba(138, 43, 226, 0.2);
-  color: #e2c2ff;
-}
-
-.pr-menu-item.login-btn:hover {
-  background: rgba(138, 43, 226, 0.4);
-}
-
-.pr-menu-item.logout-btn {
-  color: #ff5e5e;
-}
-
-.pr-menu-item.logout-btn:hover {
-  background: rgba(255, 94, 94, 0.1);
-}
-
-
-/* =========================================
-   FULL PROFILE SLIDE-OUT PANEL (Light Theme)
-   ========================================= */
-
-.pr-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 10005;
-}
-
-.pr-slide-panel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 400px;
-  height: 100vh;
-  background: #F3F5F9;
-  border-right: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 20px 0 60px rgba(0, 0, 0, 0.08);
-  z-index: 10006;
-  display: flex;
-  flex-direction: column;
-  padding: 28px 24px;
-  overflow-y: auto;
-}
-
-.pr-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 36px;
-  flex-shrink: 0;
-}
-
-.pr-header h2 {
-  color: #111;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.pr-close-btn {
-  background: #111;
-  border: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-}
-
-.pr-close-btn:hover {
-  transform: scale(1.08) rotate(90deg);
-  background: #222;
-}
-
-.pr-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.pr-large-avatar-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 24px 0;
-}
-
-.pr-large-avatar {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #fff;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-}
-
-.pr-large-initial {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  font-weight: 800;
-  color: white;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
-.pr-welcome-text {
-  color: #888;
-  font-size: 14px;
-  text-align: center;
-  line-height: 1.4;
-  font-weight: 500;
-}
-
-.pr-welcome-text span {
-  color: #111;
-  font-size: 22px;
-  font-weight: 800;
-  display: block;
-  margin-top: 4px;
-  letter-spacing: -0.02em;
-}
-
-.pr-info-card {
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 20px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-}
-
-.pr-info-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: #333;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.pr-info-icon {
-  color: #111;
-  opacity: 0.5;
-}
-
-.pr-actions {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-bottom: 8px;
-}
-
-.pr-btn-outline {
-  background: #fff;
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.pr-btn-outline:hover {
-  background: #f0f0f0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.pr-btn-danger {
-  background: #fff;
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(220, 60, 60, 0.15);
-  color: #dc3c3c;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-
-.pr-btn-danger:hover {
-  background: #fef2f2;
-  border-color: rgba(220, 60, 60, 0.25);
 }
