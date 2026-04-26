@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Send,
@@ -8,7 +9,7 @@ import {
   ArrowUpRight,
   MessageCircle,
 } from "lucide-react";
-import axios from "axios";
+import emailjs from "@emailjs/browser";
 
 /* ================= ANIMATION ================= */
 
@@ -34,6 +35,25 @@ export default function Contact() {
   });
 
   const [status, setStatus] = useState(null); // 'success' | 'error' | 'loading'
+  const [isPreFilled, setIsPreFilled] = useState(false);
+  const location = useLocation();
+
+  // Pre-fill form from chatbot navigation state
+  useEffect(() => {
+    if (location.state?.prefill) {
+      const { target, budget, description, timeline } = location.state.prefill;
+      setFormData(prev => ({
+        ...prev,
+        ...(target && { target }),
+        ...(budget && { budget }),
+        ...(description && { description }),
+        ...(timeline && { timeline }),
+      }));
+      setIsPreFilled(true);
+      // Clear the navigation state so refresh doesn't re-apply
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,9 +64,24 @@ export default function Contact() {
     setStatus("loading");
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:2000/api";
-      await axios.post(`${apiUrl}/projects/start-project`, formData);
+      // Send email directly from the browser via EmailJS
+      // No backend needed — configure these IDs at https://www.emailjs.com
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.contactEmail,
+          phone: formData.phone,
+          service: formData.target,
+          budget: formData.budget,
+          timeline: formData.timeline,
+          message: formData.description,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
       setStatus("success");
+      setIsPreFilled(false);
       setFormData({
         name: "",
         phone: "",
@@ -205,6 +240,24 @@ export default function Contact() {
                     Something went wrong. Please try again or reach out via email.
                   </p>
                 </div>
+              )}
+
+              {/* PRE-FILLED FROM CHATBOT BANNER */}
+              {isPreFilled && status !== "success" && (
+                <motion.div
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate="visible"
+                  className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200/60 rounded-xl flex items-start gap-3"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <MessageCircle size={16} className="text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-purple-800 font-semibold text-sm">Auto-filled from your AI chat</p>
+                    <p className="text-purple-600/80 text-xs mt-0.5">We've pre-filled your project details. Just add your name, email, and phone to connect!</p>
+                  </div>
+                </motion.div>
               )}
 
               {/* FORM */}

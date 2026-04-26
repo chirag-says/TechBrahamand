@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Sparkles, Plus, MessageSquare, Compass, Clock, Zap, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2 } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Plus, MessageSquare, Compass, Clock, Zap, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 const EXAMPLE_PROMPTS = [
@@ -16,6 +17,7 @@ const DEFAULT_MSG = {
 };
 
 const Chatbot = () => {
+  const navigate = useNavigate();
   const [chatSessions, setChatSessions] = useState([{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now() }]);
   const [activeSessionId, setActiveSessionId] = useState(chatSessions[0].id);
   const [input, setInput] = useState('');
@@ -158,7 +160,87 @@ KEY RULES:
     }
   };
 
+  // === CTA: Extract chat summary and navigate to Contact page ===
+  const handleConnectWithUs = () => {
+    const userMessages = messages.filter(m => m.sender === 'user').map(m => m.text);
+    const aiMessages = messages.filter(m => m.sender === 'ai').map(m => m.text);
+
+    // Build a human-readable summary from the conversation
+    const projectIdea = userMessages[0] || '';
+    const allUserInput = userMessages.join('\n- ');
+    
+    // Try to extract budget from AI messages (look for ₹ amounts)
+    let detectedBudget = 'Not sure yet';
+    const budgetPatterns = [
+      /₹5,00,000\+|₹5,00,000/,
+      /₹1,00,000\s*[-–]\s*₹5,00,000|₹[1-4],\d{2},\d{3}/,
+      /₹50,000\s*[-–]\s*₹1,00,000|₹[5-9]\d,\d{3}/,
+      /₹25,000\s*[-–]\s*₹50,000|₹[2-4]\d,\d{3}/,
+      /Under ₹25,000|₹[1]?\d,\d{3}/,
+    ];
+    const budgetValues = [
+      '₹5,00,000+',
+      '₹1,00,000 - ₹5,00,000',
+      '₹50,000 - ₹1,00,000',
+      '₹25,000 - ₹50,000',
+      'Under ₹25,000',
+    ];
+    const fullAiText = aiMessages.join(' ');
+    for (let i = 0; i < budgetPatterns.length; i++) {
+      if (budgetPatterns[i].test(fullAiText)) {
+        detectedBudget = budgetValues[i];
+        break;
+      }
+    }
+
+    // Determine which service pillar was discussed
+    let detectedTarget = 'Multiple Services';
+    const lowerAiText = fullAiText.toLowerCase();
+    if (lowerAiText.includes('brahma') && !lowerAiText.includes('vishnu') && !lowerAiText.includes('mahesh')) {
+      detectedTarget = 'TechCreator';
+    } else if (lowerAiText.includes('vishnu') && !lowerAiText.includes('brahma') && !lowerAiText.includes('mahesh')) {
+      detectedTarget = 'TechPreserver';
+    } else if (lowerAiText.includes('mahesh') && !lowerAiText.includes('brahma') && !lowerAiText.includes('vishnu')) {
+      detectedTarget = 'TechTransformer';
+    }
+
+    // Build a clean, professional project brief
+    const uniqueRequirements = [...new Set(userMessages)];
+    const numberedRequirements = uniqueRequirements.map((msg, i) => `  ${i + 1}. ${msg}`).join('\n');
+
+    const timestamp = new Date().toLocaleDateString('en-IN', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    const summary = [
+      `PROJECT BRIEF`,
+      `Generated via TechBrahmand AI Estimator on ${timestamp}`,
+      ``,
+      `Project Overview:`,
+      `${projectIdea}`,
+      ``,
+      `Client Requirements:`,
+      numberedRequirements,
+      ``,
+      `Indicative Budget Range: ${detectedBudget}`,
+      ``,
+      `Note: This is an auto-generated summary from the AI consultation. Final scope and pricing will be confirmed after a detailed discussion with the TechBrahmand team.`,
+    ].join('\n');
+
+    // Navigate to contact page with pre-filled data
+    navigate('/contact', {
+      state: {
+        prefill: {
+          target: detectedTarget,
+          budget: detectedBudget,
+          description: summary,
+        }
+      }
+    });
+  };
+
   const hasConversation = messages.length > 1;
+  const showCTA = messages.filter(m => m.sender === 'user').length >= 2; // Show after 2+ user messages
 
   return (
     <div className="w-full h-full flex overflow-hidden bg-white">
@@ -287,6 +369,37 @@ KEY RULES:
             )}
             <div ref={messagesEndRef} />
           </div>
+
+          {/* === CTA: Connect With Us === */}
+          <AnimatePresence>
+            {showCTA && !isTyping && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="flex-shrink-0 mt-3"
+              >
+                <button
+                  onClick={handleConnectWithUs}
+                  className="w-full group relative overflow-hidden bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white rounded-2xl px-6 py-4 flex items-center justify-between hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition-all duration-500 active:scale-[0.99]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <Rocket size={18} className="text-white" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-bold text-sm tracking-tight">Ready to build? Connect with us</p>
+                      <p className="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors">We'll auto-fill your project details from this chat</p>
+                    </div>
+                  </div>
+                  <ArrowRight size={20} className="text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Example Prompts — only show when no conversation yet */}
           <AnimatePresence>
