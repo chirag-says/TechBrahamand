@@ -121,26 +121,109 @@
 /* ═══════════════════════════════
    LAYER 5: COLLISION EFFECTS
    ═══════════════════════════════ */
+
+/* Full-screen white flash */
+.intro-screen-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(200, 230, 255, 0.6) 30%,
+    rgba(100, 150, 255, 0.15) 60%,
+    transparent 80%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Main radial flash */
 .intro-collision-flash {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 250px;
-  height: 250px;
-  margin-left: -125px;
-  margin-top: -125px;
+  width: 300px;
+  height: 300px;
+  margin-left: -150px;
+  margin-top: -150px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
     rgba(255, 255, 255, 0.95) 0%,
-    rgba(160, 220, 255, 0.6) 25%,
-    rgba(100, 150, 255, 0.2) 50%,
+    rgba(180, 230, 255, 0.7) 20%,
+    rgba(100, 160, 255, 0.3) 45%,
     transparent 70%
   );
   pointer-events: none;
   z-index: 3;
 }
 
+/* Golden divine flash variant */
+.intro-collision-flash--golden {
+  background: radial-gradient(
+    circle,
+    rgba(255, 240, 180, 0.9) 0%,
+    rgba(255, 200, 60, 0.5) 25%,
+    rgba(255, 160, 40, 0.15) 50%,
+    transparent 70%
+  );
+}
+
+/* Divine light rays — conic gradient for sun-ray effect */
+.intro-light-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  margin-left: -250px;
+  margin-top: -250px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 220, 100, 0.15) 10deg,
+    transparent 20deg,
+    transparent 30deg,
+    rgba(160, 210, 255, 0.12) 40deg,
+    transparent 50deg,
+    transparent 60deg,
+    rgba(180, 160, 255, 0.10) 70deg,
+    transparent 80deg,
+    transparent 90deg,
+    rgba(255, 220, 100, 0.15) 100deg,
+    transparent 110deg,
+    transparent 120deg,
+    rgba(160, 210, 255, 0.12) 130deg,
+    transparent 140deg,
+    transparent 150deg,
+    rgba(180, 160, 255, 0.10) 160deg,
+    transparent 170deg,
+    transparent 180deg,
+    rgba(255, 220, 100, 0.15) 190deg,
+    transparent 200deg,
+    transparent 210deg,
+    rgba(160, 210, 255, 0.12) 220deg,
+    transparent 230deg,
+    transparent 240deg,
+    rgba(180, 160, 255, 0.10) 250deg,
+    transparent 260deg,
+    transparent 270deg,
+    rgba(255, 220, 100, 0.15) 280deg,
+    transparent 290deg,
+    transparent 300deg,
+    rgba(160, 210, 255, 0.12) 310deg,
+    transparent 320deg,
+    transparent 330deg,
+    rgba(180, 160, 255, 0.10) 340deg,
+    transparent 360deg
+  );
+  filter: blur(8px);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Shockwave rings */
 .intro-shockwave {
   position: absolute;
   top: 50%;
@@ -150,12 +233,26 @@
   margin-left: -40px;
   margin-top: -40px;
   border-radius: 50%;
-  border: 1.5px solid rgba(160, 210, 255, 0.45);
+  border: 2px solid rgba(160, 220, 255, 0.5);
   box-shadow:
-    0 0 12px rgba(100, 180, 255, 0.2),
-    inset 0 0 8px rgba(100, 180, 255, 0.1);
+    0 0 16px rgba(100, 200, 255, 0.3),
+    inset 0 0 10px rgba(100, 200, 255, 0.12);
   pointer-events: none;
   z-index: 3;
+}
+
+.intro-shockwave--golden {
+  border-color: rgba(255, 200, 60, 0.45);
+  box-shadow:
+    0 0 20px rgba(255, 200, 60, 0.25),
+    inset 0 0 12px rgba(255, 200, 60, 0.08);
+}
+
+.intro-shockwave--purple {
+  border-color: rgba(160, 130, 255, 0.4);
+  box-shadow:
+    0 0 18px rgba(160, 130, 255, 0.2),
+    inset 0 0 10px rgba(160, 130, 255, 0.08);
 }
 
 /* ═══════════════════════════════════
@@ -260,8 +357,12 @@ body.intro-active {
   }
   .intro-space { width: 0.25em; }
   .intro-collision-flash {
-    width: 160px; height: 160px;
-    margin-left: -80px; margin-top: -80px;
+    width: 180px; height: 180px;
+    margin-left: -90px; margin-top: -90px;
+  }
+  .intro-light-rays {
+    width: 300px; height: 300px;
+    margin-left: -150px; margin-top: -150px;
   }
   .intro-text-glow { width: 80vw; height: 80px; }
   .intro-feather-container { width: clamp(240px, 80vw, 400px); }

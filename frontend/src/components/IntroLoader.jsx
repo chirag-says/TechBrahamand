@@ -88,6 +88,7 @@ function generateSanskritParticles(count) {
    ────────────────────────────────────────────────── */
 const CYAN_PALETTE = [[0, 220, 255], [80, 200, 255], [140, 230, 255], [220, 245, 255]];
 const PURPLE_PALETTE = [[160, 130, 255], [130, 100, 255], [180, 160, 255], [210, 200, 255]];
+const GOLDEN_PALETTE = [[255, 200, 60], [255, 180, 40], [255, 220, 100], [255, 240, 180]];
 
 const EnergyCanvas = React.memo(() => {
   const canvasRef = useRef(null);
@@ -211,19 +212,37 @@ const EnergyCanvas = React.memo(() => {
 
       // ── Explosion at collision ──
       if (dt >= COLLISION_MS && !exploded) {
-        const allColors = [...CYAN_PALETTE, ...PURPLE_PALETTE];
-        for (let i = 0; i < 35; i++) {
-          const ang = (i / 35) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
-          const spd = 2 + Math.random() * 5;
+        const allColors = [...CYAN_PALETTE, ...PURPLE_PALETTE, ...GOLDEN_PALETTE];
+        // Main burst — 80 particles
+        for (let i = 0; i < 80; i++) {
+          const ang = (i / 80) * Math.PI * 2 + (Math.random() - 0.5) * 0.6;
+          const spd = 1.5 + Math.random() * 7;
           explode.push({
-            x: CX + (Math.random() - 0.5) * 8,
-            y: CY + (Math.random() - 0.5) * 8,
+            x: CX + (Math.random() - 0.5) * 10,
+            y: CY + (Math.random() - 0.5) * 10,
             vx: Math.cos(ang) * spd,
             vy: Math.sin(ang) * spd,
-            r: 0.3 + Math.random() * 1.5,
+            r: 0.4 + Math.random() * 2,
             life: 1,
-            dec: 0.02 + Math.random() * 0.025,
+            dec: 0.012 + Math.random() * 0.02,
             col: allColors[Math.floor(Math.random() * allColors.length)],
+            isEmber: false,
+          });
+        }
+        // Divine golden embers — slow, long-lasting
+        for (let i = 0; i < 25; i++) {
+          const ang = Math.random() * Math.PI * 2;
+          const spd = 0.5 + Math.random() * 2;
+          explode.push({
+            x: CX + (Math.random() - 0.5) * 6,
+            y: CY + (Math.random() - 0.5) * 6,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd - 0.5, // drift upward
+            r: 0.8 + Math.random() * 1.5,
+            life: 1,
+            dec: 0.006 + Math.random() * 0.008,
+            col: GOLDEN_PALETTE[Math.floor(Math.random() * GOLDEN_PALETTE.length)],
+            isEmber: true,
           });
         }
         exploded = true;
@@ -233,24 +252,44 @@ const EnergyCanvas = React.memo(() => {
         if (p.life <= 0) return;
         p.x += p.vx;
         p.y += p.vy;
-        p.vx *= 0.96;
-        p.vy *= 0.96;
+        const drag = p.isEmber ? 0.99 : 0.96;
+        p.vx *= drag;
+        p.vy *= drag;
+        if (p.isEmber) p.vy -= 0.02; // embers float up
         p.life -= p.dec;
 
-        const a = Math.max(0, p.life) * 0.6;
-        const gl = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
-        gl.addColorStop(0, `rgba(${p.col[0]},${p.col[1]},${p.col[2]},${a * 0.35})`);
+        const a = Math.max(0, p.life);
+        const haloSize = p.isEmber ? p.r * 5 : p.r * 3.5;
+
+        // Outer glow halo
+        const gl = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, haloSize);
+        gl.addColorStop(0, `rgba(${p.col[0]},${p.col[1]},${p.col[2]},${a * 0.45})`);
+        gl.addColorStop(0.5, `rgba(${p.col[0]},${p.col[1]},${p.col[2]},${a * 0.12})`);
         gl.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, haloSize, 0, Math.PI * 2);
         ctx.fillStyle = gl;
         ctx.fill();
 
+        // Bright core
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 0.3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.arc(p.x, p.y, p.r * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${a * 0.9})`;
         ctx.fill();
       });
+
+      // ── Post-collision divine glow that lingers ──
+      if (exploded && dt < COLLISION_MS + 800) {
+        const gP = Math.max(0, 1 - (dt - COLLISION_MS) / 800);
+        const dg = ctx.createRadialGradient(CX, CY, 0, CX, CY, 120);
+        dg.addColorStop(0, `rgba(255,220,100,${gP * 0.12})`);
+        dg.addColorStop(0.4, `rgba(100,180,255,${gP * 0.06})`);
+        dg.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.beginPath();
+        ctx.arc(CX, CY, 120, 0, Math.PI * 2);
+        ctx.fillStyle = dg;
+        ctx.fill();
+      }
 
       if (dt < COLLISION_MS + 1000) {
         raf = requestAnimationFrame(draw);
@@ -367,24 +406,80 @@ const IntroLoader = ({ onComplete }) => {
       {/* ── Layer 4: Energy stream canvas ── */}
       <EnergyCanvas />
 
-      {/* ── Layer 5: Collision flash + shockwave ── */}
+      {/* ── Layer 5: Collision flash + shockwaves + light rays ── */}
       {showCollision && (
         <>
+          {/* Full-screen white flash */}
+          <motion.div
+            className="intro-screen-flash"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.7, 0] }}
+            transition={{
+              duration: 0.4,
+              times: [0, 0.15, 1],
+              ease: 'easeOut',
+            }}
+          />
+
+          {/* Main collision flash — larger & brighter */}
           <motion.div
             className="intro-collision-flash"
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: [0, 1.3, 2.8], opacity: [0, 0.85, 0] }}
+            animate={{ scale: [0, 1.5, 3.5], opacity: [0, 0.95, 0] }}
             transition={{
-              duration: 0.45,
+              duration: 0.55,
+              times: [0, 0.2, 1],
+              ease: 'easeOut',
+            }}
+          />
+
+          {/* Secondary golden divine flash */}
+          <motion.div
+            className="intro-collision-flash intro-collision-flash--golden"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: [0, 1, 2.2], opacity: [0, 0.6, 0] }}
+            transition={{
+              duration: 0.65,
+              times: [0, 0.25, 1],
+              ease: 'easeOut',
+              delay: 0.05,
+            }}
+          />
+
+          {/* Divine light rays */}
+          <motion.div
+            className="intro-light-rays"
+            initial={{ opacity: 0, scale: 0.3, rotate: 0 }}
+            animate={{ opacity: [0, 0.6, 0], scale: [0.3, 1.8, 2.5], rotate: 25 }}
+            transition={{
+              duration: 1,
               times: [0, 0.25, 1],
               ease: 'easeOut',
             }}
           />
+
+          {/* Shockwave ring 1 — cyan, fast */}
           <motion.div
             className="intro-shockwave"
+            initial={{ scale: 0, opacity: 0.6 }}
+            animate={{ scale: 6, opacity: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+          />
+
+          {/* Shockwave ring 2 — golden, medium */}
+          <motion.div
+            className="intro-shockwave intro-shockwave--golden"
             initial={{ scale: 0, opacity: 0.5 }}
             animate={{ scale: 5, opacity: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            transition={{ duration: 0.85, ease: 'easeOut', delay: 0.08 }}
+          />
+
+          {/* Shockwave ring 3 — purple, slow */}
+          <motion.div
+            className="intro-shockwave intro-shockwave--purple"
+            initial={{ scale: 0, opacity: 0.4 }}
+            animate={{ scale: 4, opacity: 0 }}
+            transition={{ duration: 1, ease: 'easeOut', delay: 0.15 }}
           />
         </>
       )}
