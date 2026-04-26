@@ -30,6 +30,7 @@ const MAX_DIST = CENTER_IDX;
 
 /* ── Timing constants (ms) ── */
 const COLLISION_MS = 2000;
+const FEATHER_MS = 1800;   // Feather starts rising just before text
 const TEXT_REVEAL_MS = 2400;
 const EXIT_MS = 4000;
 
@@ -270,6 +271,7 @@ const EnergyCanvas = React.memo(() => {
    ────────────────────────────────────────────────── */
 const IntroLoader = ({ onComplete }) => {
   const [showCollision, setShowCollision] = useState(false);
+  const [showFeather, setShowFeather] = useState(false);
   const [showText, setShowText] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [isDone, setIsDone] = useState(false);
@@ -286,10 +288,12 @@ const IntroLoader = ({ onComplete }) => {
   // Phase timeline
   useEffect(() => {
     const t1 = setTimeout(() => setShowCollision(true), COLLISION_MS);
+    const tF = setTimeout(() => setShowFeather(true), FEATHER_MS);
     const t2 = setTimeout(() => setShowText(true), TEXT_REVEAL_MS);
     const t3 = setTimeout(() => setIsExiting(true), EXIT_MS);
     return () => {
       clearTimeout(t1);
+      clearTimeout(tF);
       clearTimeout(t2);
       clearTimeout(t3);
     };
@@ -385,7 +389,28 @@ const IntroLoader = ({ onComplete }) => {
         </>
       )}
 
-      {/* ── Layer 6: Text glow aura ── */}
+      {/* ── Layer 6: Peacock feather (behind text) ── */}
+      {showFeather && (
+        <motion.div
+          className="intro-feather-container"
+          initial={{ y: '100vh', opacity: 0, rotate: -15 }}
+          animate={{ y: '0%', opacity: 0.45, rotate: 0 }}
+          transition={{
+            y: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
+            opacity: { duration: 0.8, ease: 'easeOut' },
+            rotate: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
+          }}
+        >
+          <img
+            src="/image copy 6.png"
+            alt=""
+            className="intro-feather-img"
+            draggable={false}
+          />
+        </motion.div>
+      )}
+
+      {/* ── Layer 6b: Text glow aura ── */}
       {showText && (
         <motion.div
           className="intro-text-glow"
