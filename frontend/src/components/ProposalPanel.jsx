@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Layers, Wallet, Clock, CheckCircle2, Circle, AlertCircle } from "lucide-react";
+import { Layers, Wallet, Clock, CheckCircle2, Circle, AlertCircle, RotateCcw } from "lucide-react";
 
 const DIVISION_LABEL = {
   brahma: "Brahma — Creator",
@@ -16,7 +16,7 @@ const DIVISION_ICON = {
 
 const inr = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
-export default function ProposalPanel({ state, versions }) {
+export default function ProposalPanel({ state, versions, onUndo }) {
   const hasContent =
     state &&
     (state.recommendedDivision ||
@@ -227,11 +227,22 @@ export default function ProposalPanel({ state, versions }) {
         </motion.div>
       )}
 
-      {/* Revisions footer */}
-      <div className="flex-shrink-0 mt-auto pt-3 border-t border-gray-100">
-        <p className="text-[10px] text-gray-300 text-center">
-          {revisionCount > 0 ? `${revisionCount} revision${revisionCount !== 1 ? "s" : ""} tracked` : "No revisions yet"}
+      {/* Revisions footer + Undo */}
+      <div className="flex-shrink-0 mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+        <p className="text-[10px] text-gray-300">
+          Revisions: {revisionCount}
         </p>
+        {onUndo && (
+          <button
+            onClick={onUndo}
+            disabled={revisionCount < 2}
+            title={revisionCount < 2 ? "Nothing to undo yet" : "Undo last change"}
+            className="flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-2 py-1 rounded-lg hover:bg-gray-100 disabled:hover:bg-transparent"
+          >
+            <RotateCcw size={11} />
+            Undo
+          </button>
+        )}
       </div>
     </div>
   );

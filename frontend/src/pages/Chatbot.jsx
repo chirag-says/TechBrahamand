@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Sparkles, Plus, MessageSquare, Compass, Clock, Zap, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket } from 'lucide-react';
+import { Send, Bot, User, Plus, MessageSquare, Clock, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket, PanelRightOpen, X, Wallet } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { SYSTEM_PROMPT } from '../lib/systemPrompt';
 import { emptyProjectState, recomputeTotal, pushVersion } from '../lib/projectState';
+import ProposalPanel from '../components/ProposalPanel';
 
 const EXAMPLE_PROMPTS = [
   { icon: ShoppingCart, text: 'Build me an e-commerce app for handmade gifts' },
@@ -26,6 +27,7 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [sessionStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState('0:00');
+  const [showMobilePanel, setShowMobilePanel] = useState(false);
   const messagesEndRef = useRef(null);
 
   // Get active session
@@ -59,7 +61,18 @@ const Chatbot = () => {
     }));
   };
 
-  // Live session timer
+  // Undo: restore the second-to-last version snapshot (drop the most recent one).
+  const handleUndo = () => {
+    setChatSessions(prev => prev.map(s => {
+      if (s.id !== activeSessionId) return s;
+      const versionList = s.versions || [];
+      if (versionList.length < 2) return s; // Nothing to undo to
+      const restored = versionList[versionList.length - 2].state;
+      const trimmed = versionList.slice(0, -1);
+      return { ...s, projectState: restored, versions: trimmed };
+    }));
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       const diff = Math.floor((Date.now() - sessionStart) / 1000);
@@ -193,6 +206,8 @@ const Chatbot = () => {
 
   const hasConversation = messages.length > 1;
   const showCTA = messages.filter(m => m.sender === 'user').length >= 2; // Show after 2+ user messages
+
+  const inr = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
 
   return (
     <div className="w-full h-full flex overflow-hidden bg-white">
@@ -432,6 +447,71 @@ const Chatbot = () => {
         </div>
 
       </main>
+
+      {/* ===== RIGHT PANEL — DESKTOP ===== */}
+      <aside className="hidden lg:flex w-[340px] flex-shrink-0 flex-col border-l border-gray-200 bg-gray-50 pt-[72px]">
+        <ProposalPanel state={projectState} versions={activeSession.versions} onUndo={handleUndo} />
+      </aside>
+
+      {/* ===== MOBILE PROPOSAL TOGGLE BUTTON ===== */}
+      <div className="lg:hidden fixed bottom-24 right-4 z-40">
+        <motion.button
+          whileTap={{ scale: 0.93 }}
+          onClick={() => setShowMobilePanel(true)}
+          className="flex items-center gap-2 bg-black text-white rounded-2xl px-4 py-3 shadow-xl text-sm font-semibold"
+        >
+          <PanelRightOpen size={16} />
+          {projectState.totalCost > 0 ? (
+            <span>{inr(projectState.totalCost)}</span>
+          ) : (
+            <span>Proposal</span>
+          )}
+        </motion.button>
+      </div>
+
+      {/* ===== MOBILE PROPOSAL DRAWER ===== */}
+      <AnimatePresence>
+        {showMobilePanel && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              onClick={() => setShowMobilePanel(false)}
+            />
+            {/* Drawer */}
+            <motion.div
+              key="drawer"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl border-t border-gray-200 shadow-2xl"
+              style={{ maxHeight: "80vh" }}
+            >
+              {/* Drawer handle + close */}
+              <div className="flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0">
+                <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto absolute left-1/2 -translate-x-1/2 top-2" />
+                <p className="text-sm font-bold text-gray-900">Live Proposal</p>
+                <button
+                  onClick={() => setShowMobilePanel(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+                >
+                  <X size={15} className="text-gray-600" />
+                </button>
+              </div>
+              {/* Scrollable content */}
+              <div style={{ overflowY: "auto", maxHeight: "calc(80vh - 56px)" }}>
+                <ProposalPanel state={projectState} versions={activeSession.versions} onUndo={handleUndo} />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
