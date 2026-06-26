@@ -7,11 +7,10 @@ export default defineConfig({
   server: {
     allowedHosts: true,
     proxy: {
-      '/api/grok': {
-        target: 'https://api.groq.com/openai/v1/chat/completions',
+      '/api': {
+        target: 'http://localhost:2000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/grok/, ''),
-      }
+      },
     }
   }
 })

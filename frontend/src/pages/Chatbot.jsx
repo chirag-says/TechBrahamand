@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Sparkles, Plus, MessageSquare, Compass, Clock, Zap, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket } from 'lucide-react';
+import { Send, Bot, User, Plus, MessageSquare, Clock, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket, PanelRightOpen, X, Wallet } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { SYSTEM_PROMPT } from '../lib/systemPrompt';
+import { emptyProjectState, recomputeTotal, pushVersion } from '../lib/projectState';
+import ProposalPanel from '../components/ProposalPanel';
 
 const EXAMPLE_PROMPTS = [
   { icon: ShoppingCart, text: 'Build me an e-commerce app for handmade gifts' },
@@ -16,19 +19,53 @@ const DEFAULT_MSG = {
   text: "I am the TechBrahmand AI Architect. Tell me about the digital universe you want to build, and I will generate a real-time budget and roadmap for your idea."
 };
 
+const LS_KEY = 'techbrahmand_chat_v1';
+
+// Phase 9: Hydrate sessions from localStorage; fall back to a fresh session if
+// the stored data is missing, corrupt, or from an incompatible schema version.
+function loadSessions() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+    // Ensure every session has the Phase-3+ fields to avoid crashes on old data.
+    return parsed.map(s => ({
+      ...s,
+      projectState: s.projectState ?? emptyProjectState(),
+      versions: s.versions ?? [],
+    }));
+  } catch {
+    return null; // Corrupt JSON — start fresh.
+  }
+}
+
 const Chatbot = () => {
   const navigate = useNavigate();
-  const [chatSessions, setChatSessions] = useState([{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now() }]);
-  const [activeSessionId, setActiveSessionId] = useState(chatSessions[0].id);
+
+  const initialSessions = loadSessions() ?? [{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] }];
+  const [chatSessions, setChatSessions] = useState(initialSessions);
+  const [activeSessionId, setActiveSessionId] = useState(initialSessions[0].id);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [sessionStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState('0:00');
+  const [showMobilePanel, setShowMobilePanel] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Phase 9: Persist to localStorage whenever sessions change.
+  useEffect(() => {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(chatSessions));
+    } catch {
+      // Storage quota exceeded or unavailable — silently ignore.
+    }
+  }, [chatSessions]);
 
   // Get active session
   const activeSession = chatSessions.find(s => s.id === activeSessionId) || chatSessions[0];
   const messages = activeSession.messages;
+  const projectState = activeSession.projectState || emptyProjectState();
 
   // Update messages helper
   const updateMessages = (newMsgs) => {
@@ -39,7 +76,35 @@ const Chatbot = () => {
     }));
   };
 
-  // Live session timer
+  // Update projectState helper — recomputes total and pushes a version snapshot.
+  // Guard: recommendedDivision must be one of the three known values or null.
+  const VALID_DIVISIONS = new Set(['brahma', 'vishnu', 'mahesh']);
+  const updateProjectState = (newState) => {
+    setChatSessions(prev => prev.map(s => {
+      if (s.id !== activeSessionId) return s;
+      const sanitised = {
+        ...newState,
+        recommendedDivision: VALID_DIVISIONS.has(newState.recommendedDivision)
+          ? newState.recommendedDivision
+          : null,
+      };
+      const fixed = recomputeTotal(sanitised);
+      return { ...s, projectState: fixed, versions: pushVersion(s.versions, fixed, 'update') };
+    }));
+  };
+
+  // Undo: restore the second-to-last version snapshot (drop the most recent one).
+  const handleUndo = () => {
+    setChatSessions(prev => prev.map(s => {
+      if (s.id !== activeSessionId) return s;
+      const versionList = s.versions || [];
+      if (versionList.length < 2) return s; // Nothing to undo to
+      const restored = versionList[versionList.length - 2].state;
+      const trimmed = versionList.slice(0, -1);
+      return { ...s, projectState: restored, versions: trimmed };
+    }));
+  };
+
   useEffect(() => {
     const timer = setInterval(() => {
       const diff = Math.floor((Date.now() - sessionStart) / 1000);
@@ -75,172 +140,112 @@ const Chatbot = () => {
 
     try {
       const apiMessages = [
-        {
-          role: "system",
-          content: `You are the TechBrahmand AI Architect — a warm, confident, and consultative digital strategist for TechBrahmand, a rising startup based in India.
-
-YOUR PERSONALITY:
-- You are NOT a price calculator. You are a trusted advisor who makes clients feel heard, understood, and excited about their idea.
-- Speak like a senior consultant who genuinely cares. Be warm, reassuring, and confident — never robotic or transactional.
-- Use "we" language: "Here's what we can build together..." not "The cost will be..."
-
-CONVERSATION FLOW (follow this strictly):
-1. UNDERSTAND FIRST: When a client describes their idea, respond with genuine enthusiasm. Summarize what you understood in your own words to show you're listening. Ask 1-2 clarifying questions MAX — never bombard them with a list of questions.
-2. REFRAME & EDUCATE: If they reference big platforms ("like Myntra", "like Zomato"), gently reframe expectations: "That's a great inspiration! For your stage, we'd focus on the core experience that makes your brand unique — things like [specific features]. The beauty is we can start lean and scale up."
-3. RECOMMEND A SOLUTION: Before any pricing, proactively suggest what you'd build and WHY. Structure it as phases if appropriate. Help them see the roadmap, not just a price tag.
-4. THEN PRICE (only when context is clear): Break down costs by the three pillars. Keep it conversational, not like an invoice. Briefly explain what each cost covers and why it's worth it.
-5. HANDLE PUSHBACK GRACEFULLY: If they say it's expensive, never just lower the price. Instead, suggest phased approaches: "We could start with Phase 1 for ₹X and add the rest once you're generating revenue."
-
-PRICING GUIDELINES (Indian market, startup-friendly):
-- Simple static/portfolio website: ₹3,000 – ₹8,000
-- Dynamic website with CMS: ₹8,000 – ₹15,000
-- E-commerce store: ₹10,000 – ₹25,000
-- Custom web application: ₹20,000 – ₹50,000
-- Logo & brand identity: ₹2,000 – ₹5,000
-- SEO: ₹2,000 – ₹5,000/month
-- Maintenance: ₹1,000 – ₹3,000/month
-All prices in ₹ (INR). Most projects under ₹25,000. Never quote in lakhs for standard projects.
-
-SERVICE PILLARS (use naturally, don't force):
-- Brahma (Creation): Design, development, brand identity
-- Vishnu (Protection): Maintenance, security, updates, hosting
-- Mahesh (Disruption): SEO, marketing, competitor analysis, growth
-
-KEY RULES:
-- Never ask more than 2 questions at a time. If unsure, make a smart recommendation and ask "Does this direction feel right?"
-- Never list technical jargon without a simple explanation
-- Always end your message with a clear next step or gentle question — never leave the client hanging
-- If the client seems unsure or overwhelmed, simplify and guide: "Based on what you've shared, here's what I'd suggest we start with..."
-- Format responses with markdown for readability`
-        },
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: `CURRENT_PROJECT_STATE:\n${JSON.stringify(projectState)}` },
         ...newMessages.map(msg => ({
           role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text
-        }))
+          content: msg.text,
+        })),
       ];
 
-      const response = await fetch("/api/grok", {
+      const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_GROK_API_KEY}`
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: apiMessages,
           model: "llama-3.3-70b-versatile",
-          stream: false,
-          temperature: 0.7
-        })
+          temperature: 0.7,
+        }),
       });
 
+      if (response.status === 429) {
+        updateMessages([...newMessages, {
+          id: Date.now() + 1,
+          sender: 'ai',
+          text: "You're going a bit fast — please wait a moment before sending more messages."
+        }]);
+        return;
+      }
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`API error ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
-      const aiResponseText = data.choices?.[0]?.message?.content || "I'm having trouble processing that right now.";
-      
-      const aiResponse = { 
-        id: Date.now() + 1, 
-        sender: 'ai', 
-        text: aiResponseText 
-      };
-      
-      updateMessages([...newMessages, aiResponse]);
+      const raw = data.choices?.[0]?.message?.content ?? "";
+
+      // Parse the structured {reply, projectState} envelope from the model
+      let replyText = raw;
+      let newState = projectState;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object' && parsed.reply) {
+          replyText = parsed.reply;
+          if (parsed.projectState) newState = parsed.projectState;
+        }
+      } catch (e) {
+        // Fallback: model didn't return clean JSON. Show raw text, keep old state.
+        console.warn('Could not parse projectState JSON, showing raw reply.', e);
+      }
+
+      updateMessages([...newMessages, { id: Date.now() + 1, sender: 'ai', text: replyText || "I'm having trouble processing that right now." }]);
+      updateProjectState(newState);
     } catch (error) {
-      console.error("Error connecting to Grok:", error);
-      updateMessages([...newMessages, { 
-        id: Date.now() + 1, 
-        sender: 'ai', 
-        text: "System overload: Error connecting to the TechBrahmand neural network. Please try again." 
+      console.error("Error connecting to AI:", error);
+      updateMessages([...newMessages, {
+        id: Date.now() + 1,
+        sender: 'ai',
+        text: "System overload: Error connecting to the TechBrahmand neural network. Please try again."
       }]);
     } finally {
       setIsTyping(false);
     }
   };
 
-  // === CTA: Extract chat summary and navigate to Contact page ===
+  // === Phase 8: Real proposal handoff — full structured brief from projectState ===
+  // Deleted: regex budgetPatterns/budgetValues detection, keyword division detection.
+  // Now builds a complete, itemized proposal brief from live projectState.
+  const DIVISION_TO_TARGET = { brahma: 'TechCreator', vishnu: 'TechPreserver', mahesh: 'TechTransformer' };
+
   const handleConnectWithUs = () => {
-    const userMessages = messages.filter(m => m.sender === 'user').map(m => m.text);
-    const aiMessages = messages.filter(m => m.sender === 'ai').map(m => m.text);
+    const s = projectState;
+    const target = DIVISION_TO_TARGET[s.recommendedDivision] || 'Multiple Services';
+    const budget = s.totalCost ? `₹${Number(s.totalCost).toLocaleString('en-IN')}` : 'Not sure yet';
 
-    // Build a human-readable summary from the conversation
-    const projectIdea = userMessages[0] || '';
-    const allUserInput = userMessages.join('\n- ');
-    
-    // Try to extract budget from AI messages (look for ₹ amounts)
-    let detectedBudget = 'Not sure yet';
-    const budgetPatterns = [
-      /₹5,00,000\+|₹5,00,000/,
-      /₹1,00,000\s*[-–]\s*₹5,00,000|₹[1-4],\d{2},\d{3}/,
-      /₹50,000\s*[-–]\s*₹1,00,000|₹[5-9]\d,\d{3}/,
-      /₹25,000\s*[-–]\s*₹50,000|₹[2-4]\d,\d{3}/,
-      /Under ₹25,000|₹[1]?\d,\d{3}/,
-    ];
-    const budgetValues = [
-      '₹5,00,000+',
-      '₹1,00,000 - ₹5,00,000',
-      '₹50,000 - ₹1,00,000',
-      '₹25,000 - ₹50,000',
-      'Under ₹25,000',
-    ];
-    const fullAiText = aiMessages.join(' ');
-    for (let i = 0; i < budgetPatterns.length; i++) {
-      if (budgetPatterns[i].test(fullAiText)) {
-        detectedBudget = budgetValues[i];
-        break;
-      }
+    const lines = [];
+    lines.push('PROJECT PROPOSAL (auto-generated by TechBrahmand AI Architect)');
+    lines.push('');
+    if (s.recommendedDivision) lines.push(`Recommended Division: ${s.recommendedDivision.toUpperCase()} — ${s.divisionReason}`);
+    if (s.businessGoal) lines.push(`Business Goal: ${s.businessGoal}`);
+    if (s.industry) lines.push(`Industry: ${s.industry}`);
+    if (s.targetAudience) lines.push(`Target Audience: ${s.targetAudience}`);
+    if (s.competitor) lines.push(`Competitor: ${s.competitor}`);
+    if (s.timeline) lines.push(`Estimated Timeline: ${s.timeline}`);
+    if (s.techStack?.length) {
+      lines.push('', 'Tech Stack:');
+      s.techStack.forEach(t => lines.push(`  - ${t.layer}: ${t.choice} (${t.reason})`));
     }
-
-    // Determine which service pillar was discussed
-    let detectedTarget = 'Multiple Services';
-    const lowerAiText = fullAiText.toLowerCase();
-    if (lowerAiText.includes('brahma') && !lowerAiText.includes('vishnu') && !lowerAiText.includes('mahesh')) {
-      detectedTarget = 'TechCreator';
-    } else if (lowerAiText.includes('vishnu') && !lowerAiText.includes('brahma') && !lowerAiText.includes('mahesh')) {
-      detectedTarget = 'TechPreserver';
-    } else if (lowerAiText.includes('mahesh') && !lowerAiText.includes('brahma') && !lowerAiText.includes('vishnu')) {
-      detectedTarget = 'TechTransformer';
+    if (s.features?.length) {
+      lines.push('', 'Features:');
+      s.features.filter(f => f.included).forEach(f => lines.push(`  - ${f.name}`));
     }
+    if (s.costBreakdown?.length) {
+      lines.push('', 'Quotation:');
+      s.costBreakdown.forEach(c => lines.push(`  - ${c.item}: ₹${Number(c.cost).toLocaleString('en-IN')} (${c.reason})`));
+      lines.push(`  TOTAL: ${budget}`);
+    }
+    if (s.assumptions?.length) { lines.push('', 'Assumptions:'); s.assumptions.forEach(a => lines.push(`  - ${a}`)); }
+    if (s.risks?.length) { lines.push('', 'Risks:'); s.risks.forEach(r => lines.push(`  - ${r}`)); }
 
-    // Build a clean, professional project brief
-    const uniqueRequirements = [...new Set(userMessages)];
-    const numberedRequirements = uniqueRequirements.map((msg, i) => `  ${i + 1}. ${msg}`).join('\n');
-
-    const timestamp = new Date().toLocaleDateString('en-IN', {
-      day: 'numeric', month: 'long', year: 'numeric'
-    });
-
-    const summary = [
-      `PROJECT BRIEF`,
-      `Generated via TechBrahmand AI Estimator on ${timestamp}`,
-      ``,
-      `Project Overview:`,
-      `${projectIdea}`,
-      ``,
-      `Client Requirements:`,
-      numberedRequirements,
-      ``,
-      `Indicative Budget Range: ${detectedBudget}`,
-      ``,
-      `Note: This is an auto-generated summary from the AI consultation. Final scope and pricing will be confirmed after a detailed discussion with the TechBrahmand team.`,
-    ].join('\n');
-
-    // Navigate to contact page with pre-filled data
     navigate('/contact', {
-      state: {
-        prefill: {
-          target: detectedTarget,
-          budget: detectedBudget,
-          description: summary,
-        }
-      }
+      state: { prefill: { target, budget, timeline: s.timeline || '', description: lines.join('\n') } },
     });
   };
 
   const hasConversation = messages.length > 1;
   const showCTA = messages.filter(m => m.sender === 'user').length >= 2; // Show after 2+ user messages
+
+  const inr = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
 
   return (
     <div className="w-full h-full flex overflow-hidden bg-white">
@@ -250,7 +255,7 @@ KEY RULES:
         
         {/* New Project Button */}
         <button onClick={() => {
-          const newSession = { id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now() };
+          const newSession = { id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] };
           setChatSessions(prev => [newSession, ...prev]);
           setActiveSessionId(newSession.id);
           setInput('');
@@ -426,8 +431,9 @@ KEY RULES:
               <input 
                 type="text" 
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => setInput(e.target.value.slice(0, 1000))}
                 placeholder="Describe your project vision..."
+                maxLength={1000}
                 className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl py-3 md:py-4 pl-4 md:pl-5 pr-14 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 focus:bg-white transition-all placeholder:text-gray-400 text-sm"
                 disabled={isTyping}
               />
@@ -480,6 +486,71 @@ KEY RULES:
         </div>
 
       </main>
+
+      {/* ===== RIGHT PANEL — DESKTOP ===== */}
+      <aside className="hidden lg:flex w-[340px] flex-shrink-0 flex-col border-l border-gray-200 bg-gray-50 pt-[72px]">
+        <ProposalPanel state={projectState} versions={activeSession.versions} onUndo={handleUndo} />
+      </aside>
+
+      {/* ===== MOBILE PROPOSAL TOGGLE BUTTON ===== */}
+      <div className="lg:hidden fixed bottom-24 right-4 z-40">
+        <motion.button
+          whileTap={{ scale: 0.93 }}
+          onClick={() => setShowMobilePanel(true)}
+          className="flex items-center gap-2 bg-black text-white rounded-2xl px-4 py-3 shadow-xl text-sm font-semibold"
+        >
+          <PanelRightOpen size={16} />
+          {projectState.totalCost > 0 ? (
+            <span>{inr(projectState.totalCost)}</span>
+          ) : (
+            <span>Proposal</span>
+          )}
+        </motion.button>
+      </div>
+
+      {/* ===== MOBILE PROPOSAL DRAWER ===== */}
+      <AnimatePresence>
+        {showMobilePanel && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              onClick={() => setShowMobilePanel(false)}
+            />
+            {/* Drawer */}
+            <motion.div
+              key="drawer"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl border-t border-gray-200 shadow-2xl"
+              style={{ maxHeight: "80vh" }}
+            >
+              {/* Drawer handle + close */}
+              <div className="flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0">
+                <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto absolute left-1/2 -translate-x-1/2 top-2" />
+                <p className="text-sm font-bold text-gray-900">Live Proposal</p>
+                <button
+                  onClick={() => setShowMobilePanel(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+                >
+                  <X size={15} className="text-gray-600" />
+                </button>
+              </div>
+              {/* Scrollable content */}
+              <div style={{ overflowY: "auto", maxHeight: "calc(80vh - 56px)" }}>
+                <ProposalPanel state={projectState} versions={activeSession.versions} onUndo={handleUndo} />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
