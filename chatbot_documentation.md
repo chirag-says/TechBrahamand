@@ -944,7 +944,7 @@ This section is an honest assessment of the security posture of the current impl
 
 ```
 # frontend/.env
-VITE_GROK_API_KEY=gsk_REDACTED_ROTATE_NOW
+VITE_GROK_API_KEY=gsk_<REDACTED — rotate this key immediately>
 ```
 
 **This is a critical security issue.** Any environment variable prefixed with `VITE_` is bundled into the frontend JavaScript by Vite and is visible to anyone who opens the browser's developer tools and inspects the network requests or the bundled JS files.

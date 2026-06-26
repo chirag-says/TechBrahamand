@@ -726,7 +726,7 @@ Do **not** open a PR to `main` until all phases are ✅ and the reviewer says so
 | Phase | Title | Status | Reviewer notes |
 |---|---|---|---|
 | 0 | Branch setup | 🟡 Pushed, awaiting review | Branch created from `abhitha` (latest working branch). Build ✅ 2356 modules, 10.45s. Commit: `8517f94`. Push needs `git push -u origin chatbot-redesign` from a terminal with GitHub credentials. |
-| 1 | Express proxy + key server-side | ⬜ Pending | |
+| 1 | Express proxy + key server-side | 🟡 Pushed, awaiting review | `server/index.js`, `server/package.json`, `server/.env.example` created. `frontend/vite.config.js` proxy updated to `/api → http://localhost:2000`. `Chatbot.jsx` fetch moved to `/api/chat` with no Authorization header; `VITE_GROK_API_KEY` fully removed. `npm run build` ✅ 2356 modules, 10.70s. Commit: `1606fd7`. Push manually with credentials: `git push --set-upstream origin chatbot-redesign`. |
 | 2 | System prompt + state scaffolding | ⬜ Pending | |
 | 3 | Wire JSON-mode call | ⬜ Pending | |
 | 4 | Single-division recommendation | ⬜ Pending | |

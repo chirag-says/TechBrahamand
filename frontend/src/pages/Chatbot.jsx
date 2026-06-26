@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User, Sparkles, Plus, MessageSquare, Compass, Clock, Zap, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { SYSTEM_PROMPT } from '../lib/systemPrompt';
+import { emptyProjectState, recomputeTotal, pushVersion } from '../lib/projectState';
 
 const EXAMPLE_PROMPTS = [
   { icon: ShoppingCart, text: 'Build me an e-commerce app for handmade gifts' },
@@ -18,7 +20,7 @@ const DEFAULT_MSG = {
 
 const Chatbot = () => {
   const navigate = useNavigate();
-  const [chatSessions, setChatSessions] = useState([{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now() }]);
+  const [chatSessions, setChatSessions] = useState([{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] }]);
   const [activeSessionId, setActiveSessionId] = useState(chatSessions[0].id);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -29,6 +31,7 @@ const Chatbot = () => {
   // Get active session
   const activeSession = chatSessions.find(s => s.id === activeSessionId) || chatSessions[0];
   const messages = activeSession.messages;
+  const projectState = activeSession.projectState || emptyProjectState();
 
   // Update messages helper
   const updateMessages = (newMsgs) => {
@@ -36,6 +39,15 @@ const Chatbot = () => {
       if (s.id !== activeSessionId) return s;
       const title = newMsgs.find(m => m.sender === 'user')?.text?.slice(0, 30) || s.title;
       return { ...s, messages: newMsgs, title: s.title === 'New Chat' && title !== s.title ? title : s.title };
+    }));
+  };
+
+  // Update projectState helper — recomputes total and pushes a version snapshot
+  const updateProjectState = (newState) => {
+    setChatSessions(prev => prev.map(s => {
+      if (s.id !== activeSessionId) return s;
+      const fixed = recomputeTotal(newState);
+      return { ...s, projectState: fixed, versions: pushVersion(s.versions, fixed, 'update') };
     }));
   };
 
@@ -75,48 +87,12 @@ const Chatbot = () => {
 
     try {
       const apiMessages = [
-        {
-          role: "system",
-          content: `You are the TechBrahmand AI Architect — a warm, confident, and consultative digital strategist for TechBrahmand, a rising startup based in India.
-
-YOUR PERSONALITY:
-- You are NOT a price calculator. You are a trusted advisor who makes clients feel heard, understood, and excited about their idea.
-- Speak like a senior consultant who genuinely cares. Be warm, reassuring, and confident — never robotic or transactional.
-- Use "we" language: "Here's what we can build together..." not "The cost will be..."
-
-CONVERSATION FLOW (follow this strictly):
-1. UNDERSTAND FIRST: When a client describes their idea, respond with genuine enthusiasm. Summarize what you understood in your own words to show you're listening. Ask 1-2 clarifying questions MAX — never bombard them with a list of questions.
-2. REFRAME & EDUCATE: If they reference big platforms ("like Myntra", "like Zomato"), gently reframe expectations: "That's a great inspiration! For your stage, we'd focus on the core experience that makes your brand unique — things like [specific features]. The beauty is we can start lean and scale up."
-3. RECOMMEND A SOLUTION: Before any pricing, proactively suggest what you'd build and WHY. Structure it as phases if appropriate. Help them see the roadmap, not just a price tag.
-4. THEN PRICE (only when context is clear): Break down costs by the three pillars. Keep it conversational, not like an invoice. Briefly explain what each cost covers and why it's worth it.
-5. HANDLE PUSHBACK GRACEFULLY: If they say it's expensive, never just lower the price. Instead, suggest phased approaches: "We could start with Phase 1 for ₹X and add the rest once you're generating revenue."
-
-PRICING GUIDELINES (Indian market, startup-friendly):
-- Simple static/portfolio website: ₹3,000 – ₹8,000
-- Dynamic website with CMS: ₹8,000 – ₹15,000
-- E-commerce store: ₹10,000 – ₹25,000
-- Custom web application: ₹20,000 – ₹50,000
-- Logo & brand identity: ₹2,000 – ₹5,000
-- SEO: ₹2,000 – ₹5,000/month
-- Maintenance: ₹1,000 – ₹3,000/month
-All prices in ₹ (INR). Most projects under ₹25,000. Never quote in lakhs for standard projects.
-
-SERVICE PILLARS (use naturally, don't force):
-- Brahma (Creation): Design, development, brand identity
-- Vishnu (Protection): Maintenance, security, updates, hosting
-- Mahesh (Disruption): SEO, marketing, competitor analysis, growth
-
-KEY RULES:
-- Never ask more than 2 questions at a time. If unsure, make a smart recommendation and ask "Does this direction feel right?"
-- Never list technical jargon without a simple explanation
-- Always end your message with a clear next step or gentle question — never leave the client hanging
-- If the client seems unsure or overwhelmed, simplify and guide: "Based on what you've shared, here's what I'd suggest we start with..."
-- Format responses with markdown for readability`
-        },
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: `CURRENT_PROJECT_STATE:\n${JSON.stringify(projectState)}` },
         ...newMessages.map(msg => ({
           role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text
-        }))
+          content: msg.text,
+        })),
       ];
 
       const response = await fetch("/api/chat", {
@@ -135,15 +111,24 @@ KEY RULES:
       }
 
       const data = await response.json();
-      const aiResponseText = data.choices?.[0]?.message?.content || "I'm having trouble processing that right now.";
-      
-      const aiResponse = { 
-        id: Date.now() + 1, 
-        sender: 'ai', 
-        text: aiResponseText 
-      };
-      
-      updateMessages([...newMessages, aiResponse]);
+      const raw = data.choices?.[0]?.message?.content ?? "";
+
+      // Parse the structured {reply, projectState} envelope from the model
+      let replyText = raw;
+      let newState = projectState;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object' && parsed.reply) {
+          replyText = parsed.reply;
+          if (parsed.projectState) newState = parsed.projectState;
+        }
+      } catch (e) {
+        // Fallback: model didn't return clean JSON. Show raw text, keep old state.
+        console.warn('Could not parse projectState JSON, showing raw reply.', e);
+      }
+
+      updateMessages([...newMessages, { id: Date.now() + 1, sender: 'ai', text: replyText || "I'm having trouble processing that right now." }]);
+      updateProjectState(newState);
     } catch (error) {
       console.error("Error connecting to AI:", error);
       updateMessages([...newMessages, {
@@ -246,7 +231,7 @@ KEY RULES:
         
         {/* New Project Button */}
         <button onClick={() => {
-          const newSession = { id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now() };
+          const newSession = { id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] };
           setChatSessions(prev => [newSession, ...prev]);
           setActiveSessionId(newSession.id);
           setInput('');
