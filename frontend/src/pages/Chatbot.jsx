@@ -19,16 +19,48 @@ const DEFAULT_MSG = {
   text: "I am the TechBrahmand AI Architect. Tell me about the digital universe you want to build, and I will generate a real-time budget and roadmap for your idea."
 };
 
+const LS_KEY = 'techbrahmand_chat_v1';
+
+// Phase 9: Hydrate sessions from localStorage; fall back to a fresh session if
+// the stored data is missing, corrupt, or from an incompatible schema version.
+function loadSessions() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return null;
+    // Ensure every session has the Phase-3+ fields to avoid crashes on old data.
+    return parsed.map(s => ({
+      ...s,
+      projectState: s.projectState ?? emptyProjectState(),
+      versions: s.versions ?? [],
+    }));
+  } catch {
+    return null; // Corrupt JSON — start fresh.
+  }
+}
+
 const Chatbot = () => {
   const navigate = useNavigate();
-  const [chatSessions, setChatSessions] = useState([{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] }]);
-  const [activeSessionId, setActiveSessionId] = useState(chatSessions[0].id);
+
+  const initialSessions = loadSessions() ?? [{ id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] }];
+  const [chatSessions, setChatSessions] = useState(initialSessions);
+  const [activeSessionId, setActiveSessionId] = useState(initialSessions[0].id);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [sessionStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState('0:00');
   const [showMobilePanel, setShowMobilePanel] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Phase 9: Persist to localStorage whenever sessions change.
+  useEffect(() => {
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(chatSessions));
+    } catch {
+      // Storage quota exceeded or unavailable — silently ignore.
+    }
+  }, [chatSessions]);
 
   // Get active session
   const activeSession = chatSessions.find(s => s.id === activeSessionId) || chatSessions[0];
@@ -126,6 +158,14 @@ const Chatbot = () => {
         }),
       });
 
+      if (response.status === 429) {
+        updateMessages([...newMessages, {
+          id: Date.now() + 1,
+          sender: 'ai',
+          text: "You're going a bit fast — please wait a moment before sending more messages."
+        }]);
+        return;
+      }
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`API error ${response.status}: ${errorText}`);
@@ -391,8 +431,9 @@ const Chatbot = () => {
               <input 
                 type="text" 
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => setInput(e.target.value.slice(0, 1000))}
                 placeholder="Describe your project vision..."
+                maxLength={1000}
                 className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-2xl py-3 md:py-4 pl-4 md:pl-5 pr-14 focus:outline-none focus:border-gray-900 focus:ring-2 focus:ring-gray-900/10 focus:bg-white transition-all placeholder:text-gray-400 text-sm"
                 disabled={isTyping}
               />
