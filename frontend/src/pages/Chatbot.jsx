@@ -119,18 +119,14 @@ KEY RULES:
         }))
       ];
 
-      const response = await fetch("/api/grok", {
+      const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_GROK_API_KEY}`
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: apiMessages,
           model: "llama-3.3-70b-versatile",
-          stream: false,
-          temperature: 0.7
-        })
+          temperature: 0.7,
+        }),
       });
 
       if (!response.ok) {
@@ -149,11 +145,11 @@ KEY RULES:
       
       updateMessages([...newMessages, aiResponse]);
     } catch (error) {
-      console.error("Error connecting to Grok:", error);
-      updateMessages([...newMessages, { 
-        id: Date.now() + 1, 
-        sender: 'ai', 
-        text: "System overload: Error connecting to the TechBrahmand neural network. Please try again." 
+      console.error("Error connecting to AI:", error);
+      updateMessages([...newMessages, {
+        id: Date.now() + 1,
+        sender: 'ai',
+        text: "System overload: Error connecting to the TechBrahmand neural network. Please try again."
       }]);
     } finally {
       setIsTyping(false);

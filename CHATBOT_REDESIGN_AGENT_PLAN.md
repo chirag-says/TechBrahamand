@@ -725,7 +725,7 @@ Do **not** open a PR to `main` until all phases are ✅ and the reviewer says so
 
 | Phase | Title | Status | Reviewer notes |
 |---|---|---|---|
-| 0 | Branch setup | ⬜ Pending | |
+| 0 | Branch setup | 🟡 Pushed, awaiting review | Branch created from `abhitha` (latest working branch). Build ✅ 2356 modules, 10.45s. Commit: `8517f94`. Push needs `git push -u origin chatbot-redesign` from a terminal with GitHub credentials. |
 | 1 | Express proxy + key server-side | ⬜ Pending | |
 | 2 | System prompt + state scaffolding | ⬜ Pending | |
 | 3 | Wire JSON-mode call | ⬜ Pending | |
