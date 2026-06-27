@@ -1,0 +1,83 @@
+/* ================================================ */
+/*  Trust Bar — Small credibility badges             */
+/* ================================================ */
+
+.trust-bar {
+  width: 100%;
+  padding: 28px 24px;
+  background: #0F1115;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.trust-bar__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 720px;
+}
+
+/* Individual badge */
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: default;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.trust-badge:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.trust-badge__icon {
+  color: rgba(255, 255, 255, 0.25);
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.trust-badge:hover .trust-badge__icon {
+  color: rgba(139, 92, 246, 0.6);
+}
+
+.trust-badge__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.3);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.trust-badge:hover .trust-badge__label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .trust-bar {
+    padding: 20px 12px;
+  }
+  .trust-bar__row {
+    gap: 6px;
+  }
+  .trust-badge {
+    padding: 5px 10px;
+    gap: 5px;
+  }
+  .trust-badge__label {
+    font-size: 9px;
+  }
+}

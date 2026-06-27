@@ -1,0 +1,121 @@
+/* ============================================= */
+/*  Cyborg Robot — Premium Ambient Animations     */
+/* ============================================= */
+
+/* --- Breathing: gentle float + micro-scale --- */
+@keyframes cyborgBreathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-10px) scale(1.006); }
+}
+
+/* --- Glow: ambient pulse behind robot --- */
+@keyframes cyborgGlowPulse {
+  0%, 100% { opacity: 0.3;  transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.52; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+/* --- Shadow: contracts when robot floats up --- */
+@keyframes cyborgShadowFloat {
+  0%, 100% { transform: translateX(-50%) scaleX(1);    opacity: 0.22; }
+  50%      { transform: translateX(-50%) scaleX(0.85); opacity: 0.12; }
+}
+
+/* --- Container --- */
+.cyborg-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cyborg-wrap--desktop {
+  width: 100%;
+  height: 100%;
+}
+
+.cyborg-wrap--mobile {
+  width: 100%;
+}
+
+/* --- Ambient Glow --- */
+.cyborg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.14) 0%,
+    rgba(59, 130, 246, 0.09) 35%,
+    rgba(6, 182, 212, 0.04) 60%,
+    transparent 80%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  animation: cyborgGlowPulse 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+.cyborg-wrap--mobile .cyborg-glow {
+  width: 60%;
+  height: 55%;
+  filter: blur(28px);
+}
+
+/* --- Breather wrapper (CSS breathing animation) --- */
+.cyborg-breather {
+  position: relative;
+  z-index: 1;
+  animation: cyborgBreathe 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* --- Robot Image --- */
+.cyborg-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.12));
+}
+
+.cyborg-wrap--desktop .cyborg-img {
+  width: 100%;
+  height: 100%;
+  object-position: center;
+  filter: drop-shadow(0 24px 70px rgba(0, 0, 0, 0.1));
+}
+
+/* --- Floating Shadow --- */
+.cyborg-shadow {
+  position: absolute;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%;
+  height: 4%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 0, 0, 0.16) 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 80%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  animation: cyborgShadowFloat 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+.cyborg-wrap--mobile .cyborg-shadow {
+  bottom: 3%;
+  width: 45%;
+  height: 3.5%;
+  filter: blur(7px);
+}

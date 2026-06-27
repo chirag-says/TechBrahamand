@@ -1,0 +1,96 @@
+/* ================================================ */
+/*  Floating Cards — AI status tags around robot     */
+/* ================================================ */
+
+@keyframes fcFloat {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateY(-8px) translateX(3px);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-4px) translateX(-2px);
+    opacity: 0.75;
+  }
+  75% {
+    transform: translateY(-10px) translateX(1px);
+    opacity: 0.85;
+  }
+}
+
+.floating-cards {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Base card style */
+.fc {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.06);
+  animation: fcFloat 12s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.fc__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+  flex-shrink: 0;
+}
+
+.fc__text {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+/* ── Positions (tuned for desktop hero robot area) ── */
+.fc--top-left {
+  top: 12%;
+  left: 2%;
+}
+.fc--top-right {
+  top: 8%;
+  right: 2%;
+}
+.fc--mid-left {
+  top: 42%;
+  left: -4%;
+}
+.fc--mid-right {
+  top: 48%;
+  right: -2%;
+}
+.fc--bot-left {
+  bottom: 22%;
+  left: 0%;
+}
+.fc--bot-right {
+  bottom: 18%;
+  right: 0%;
+}
+
+/* ── Mobile: hide to prevent overflow ── */
+@media (max-width: 1024px) {
+  .floating-cards {
+    display: none;
+  }
+}

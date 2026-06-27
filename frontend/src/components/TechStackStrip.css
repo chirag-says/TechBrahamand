@@ -1,0 +1,100 @@
+/* ================================================ */
+/*  Tech Stack Strip — Foreground-dominant theme      */
+/* ================================================ */
+
+@keyframes techScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.tech-strip {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 28px 0;
+  background: transparent;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  z-index: 10;
+  user-select: none;
+}
+
+/* Edge fade masks */
+.tech-strip__fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.tech-strip__fade--left {
+  left: 0;
+  background: linear-gradient(to right, rgba(243,245,249,0.8), transparent);
+}
+.tech-strip__fade--right {
+  right: 0;
+  background: linear-gradient(to left, rgba(243,245,249,0.8), transparent);
+}
+
+/* Scroll container */
+.tech-strip__track {
+  display: flex;
+  width: max-content;
+}
+
+.tech-strip__scroll {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-right: 40px;
+  animation: techScroll 45s linear infinite;
+  will-change: transform;
+}
+
+/* Each tech name — dark text, high readability */
+.tech-strip__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6B7280;
+  opacity: 0.9;
+  white-space: nowrap;
+  transition: color 0.4s ease;
+}
+
+.tech-strip__item:hover {
+  color: #111111;
+}
+
+/* Small separator dot */
+.tech-strip__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tech-strip {
+    padding: 20px 0;
+  }
+  .tech-strip__scroll {
+    gap: 28px;
+    padding-right: 28px;
+    animation-duration: 35s;
+  }
+  .tech-strip__item {
+    font-size: 11px;
+    gap: 8px;
+  }
+  .tech-strip__fade {
+    width: 40px;
+  }
+}
