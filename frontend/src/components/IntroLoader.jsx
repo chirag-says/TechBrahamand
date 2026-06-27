@@ -29,10 +29,10 @@ const CENTER_IDX = (CHARS.length - 1) / 2;
 const MAX_DIST = CENTER_IDX;
 
 /* ── Timing constants (ms) ── */
-const COLLISION_MS = 2000;
-const FEATHER_MS = 1800;   // Feather starts rising just before text
-const TEXT_REVEAL_MS = 2400;
-const EXIT_MS = 4000;
+const COLLISION_MS = 2200;
+const FEATHER_MS = 2000;   // Feather starts rising just before text
+const TEXT_REVEAL_MS = 2700;
+const EXIT_MS = 5200;
 
 /* ──────────────────────────────
    STAR GENERATOR
@@ -345,12 +345,12 @@ const IntroLoader = ({ onComplete }) => {
       className="intro-loader"
       animate={
         isExiting
-          ? { opacity: 0, filter: 'blur(5px)' }
-          : { opacity: 1, filter: 'blur(0px)' }
+          ? { opacity: 0, filter: 'blur(12px)', scale: 1.03 }
+          : { opacity: 1, filter: 'blur(0px)', scale: 1 }
       }
       transition={
         isExiting
-          ? { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+          ? { duration: 1.1, ease: [0.4, 0, 0.2, 1] }
           : { duration: 0 }
       }
       onAnimationComplete={() => {
@@ -413,22 +413,22 @@ const IntroLoader = ({ onComplete }) => {
           <motion.div
             className="intro-screen-flash"
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0.7, 0] }}
+            animate={{ opacity: [0, 0.28, 0] }}
             transition={{
-              duration: 0.4,
-              times: [0, 0.15, 1],
+              duration: 0.9,
+              times: [0, 0.18, 1],
               ease: 'easeOut',
             }}
           />
 
-          {/* Main collision flash — larger & brighter */}
+          {/* Main collision flash — softer & slower */}
           <motion.div
             className="intro-collision-flash"
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: [0, 1.5, 3.5], opacity: [0, 0.95, 0] }}
+            animate={{ scale: [0, 1.2, 2.8], opacity: [0, 0.55, 0] }}
             transition={{
-              duration: 0.55,
-              times: [0, 0.2, 1],
+              duration: 0.9,
+              times: [0, 0.22, 1],
               ease: 'easeOut',
             }}
           />
@@ -437,49 +437,49 @@ const IntroLoader = ({ onComplete }) => {
           <motion.div
             className="intro-collision-flash intro-collision-flash--golden"
             initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: [0, 1, 2.2], opacity: [0, 0.6, 0] }}
+            animate={{ scale: [0, 0.9, 1.9], opacity: [0, 0.35, 0] }}
             transition={{
-              duration: 0.65,
-              times: [0, 0.25, 1],
+              duration: 1.0,
+              times: [0, 0.28, 1],
               ease: 'easeOut',
-              delay: 0.05,
+              delay: 0.08,
             }}
           />
 
           {/* Divine light rays */}
           <motion.div
             className="intro-light-rays"
-            initial={{ opacity: 0, scale: 0.3, rotate: 0 }}
-            animate={{ opacity: [0, 0.6, 0], scale: [0.3, 1.8, 2.5], rotate: 25 }}
+            initial={{ opacity: 0, scale: 0.4, rotate: 0 }}
+            animate={{ opacity: [0, 0.3, 0], scale: [0.4, 1.5, 2.2], rotate: 18 }}
             transition={{
-              duration: 1,
-              times: [0, 0.25, 1],
+              duration: 1.6,
+              times: [0, 0.28, 1],
               ease: 'easeOut',
             }}
           />
 
-          {/* Shockwave ring 1 — cyan, fast */}
+          {/* Shockwave ring 1 — cyan, smooth */}
           <motion.div
             className="intro-shockwave"
-            initial={{ scale: 0, opacity: 0.6 }}
-            animate={{ scale: 6, opacity: 0 }}
-            transition={{ duration: 0.7, ease: 'easeOut' }}
+            initial={{ scale: 0, opacity: 0.35 }}
+            animate={{ scale: 5, opacity: 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           />
 
           {/* Shockwave ring 2 — golden, medium */}
           <motion.div
             className="intro-shockwave intro-shockwave--golden"
-            initial={{ scale: 0, opacity: 0.5 }}
-            animate={{ scale: 5, opacity: 0 }}
-            transition={{ duration: 0.85, ease: 'easeOut', delay: 0.08 }}
+            initial={{ scale: 0, opacity: 0.28 }}
+            animate={{ scale: 4, opacity: 0 }}
+            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
           />
 
           {/* Shockwave ring 3 — purple, slow */}
           <motion.div
             className="intro-shockwave intro-shockwave--purple"
-            initial={{ scale: 0, opacity: 0.4 }}
-            animate={{ scale: 4, opacity: 0 }}
-            transition={{ duration: 1, ease: 'easeOut', delay: 0.15 }}
+            initial={{ scale: 0, opacity: 0.22 }}
+            animate={{ scale: 3.5, opacity: 0 }}
+            transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1], delay: 0.22 }}
           />
         </>
       )}
@@ -519,14 +519,14 @@ const IntroLoader = ({ onComplete }) => {
       {showText && (
         <motion.div
           className="intro-title-container"
-          initial={{ scale: 1.2 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ scale: 1.08, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
           {CHARS.map((char, i) => {
             const isSpace = char === ' ';
             // Center-outward stagger: center letters appear first
-            const revealDelay = (Math.abs(i - CENTER_IDX) / MAX_DIST) * 0.12;
+            const revealDelay = (Math.abs(i - CENTER_IDX) / MAX_DIST) * 0.22;
 
             return (
               <motion.span
@@ -534,18 +534,18 @@ const IntroLoader = ({ onComplete }) => {
                 className={isSpace ? 'intro-space' : 'intro-letter'}
                 initial={{
                   opacity: 0,
-                  filter: 'blur(10px)',
-                  scale: 1.15,
+                  filter: 'blur(14px)',
+                  y: 10,
                 }}
                 animate={{
                   opacity: 1,
                   filter: 'blur(0px)',
-                  scale: 1,
+                  y: 0,
                 }}
                 transition={{
-                  opacity: { duration: 0.18, delay: revealDelay, ease: 'easeOut' },
-                  filter: { duration: 0.22, delay: revealDelay, ease: 'easeOut' },
-                  scale: { duration: 0.3, delay: revealDelay, ease: [0.16, 1, 0.3, 1] },
+                  opacity: { duration: 0.55, delay: revealDelay, ease: 'easeOut' },
+                  filter: { duration: 0.6, delay: revealDelay, ease: 'easeOut' },
+                  y: { duration: 0.65, delay: revealDelay, ease: [0.16, 1, 0.3, 1] },
                 }}
               >
                 {isSpace ? null : char}

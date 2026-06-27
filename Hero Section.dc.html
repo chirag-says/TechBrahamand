@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: #f7f8fc; }
+    @keyframes scan {
+      0%   { top: -2px; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    @keyframes glow {
+      0%, 100% { opacity: 0.3; }
+      50%       { opacity: 0.65; }
+    }
+    @keyframes slideRight {
+      from { transform: translateX(-12px); opacity: 0; }
+      to   { transform: translateX(0);     opacity: 1; }
+    }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:#f7f8fc; font-family:'Space Grotesk',sans-serif; color:#0c0c1e; overflow-x:hidden; position:relative;">
+
+  <!-- Background: subtle dot grid -->
+  <div style="position:fixed; inset:0; pointer-events:none; z-index:0;">
+    <div style="position:absolute; inset:0; background-image:radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px); background-size:28px 28px;"></div>
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 72% 48%, oklch(92% 0.06 195 / 0.6) 0%, transparent 65%);"></div>
+    <div style="position:absolute; bottom:0; left:0; right:0; height:180px; background:linear-gradient(to top, #f7f8fc 20%, transparent);"></div>
+  </div>
+
+  <!-- ─── NAV ─── -->
+  <nav style="position:relative; z-index:20; display:flex; align-items:center; justify-content:space-between; padding:0 60px; height:72px; border-bottom:1px solid rgba(0,0,0,0.07); background:rgba(247,248,252,0.85); backdrop-filter:blur(12px);">
+
+    <!-- Logo -->
+    <div style="display:flex; align-items:center; gap:11px;">
+      <div style="position:relative; width:34px; height:34px; border-radius:50%; border:1.5px solid oklch(55% 0.18 195); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <div style="width:10px; height:10px; border-radius:50%; background:oklch(55% 0.18 195);"></div>
+        <div style="position:absolute; width:22px; height:22px; border-radius:50%; border:1px solid oklch(55% 0.18 195 / 0.3);"></div>
+      </div>
+      <span style="font-size:14px; font-weight:700; letter-spacing:0.09em; color:#0c0c1e;">TECH BRAHMAND</span>
+    </div>
+
+    <!-- Links -->
+    <div style="display:flex; align-items:center; gap:34px;">
+      <a href="/" style="font-size:12px; font-weight:600; letter-spacing:0.07em; color:oklch(42% 0.18 195); text-decoration:none;">HOME</a>
+      <a href="/about"    style="font-size:12px; font-weight:500; letter-spacing:0.07em; color:rgba(12,12,30,0.4); text-decoration:none; transition:color 0.2s;" style-hover="color:#0c0c1e">ABOUT</a>
+      <a href="/services" style="font-size:12px; font-weight:500; letter-spacing:0.07em; color:rgba(12,12,30,0.4); text-decoration:none; transition:color 0.2s;" style-hover="color:#0c0c1e">SERVICES</a>
+      <a href="/products" style="font-size:12px; font-weight:500; letter-spacing:0.07em; color:rgba(12,12,30,0.4); text-decoration:none; transition:color 0.2s;" style-hover="color:#0c0c1e">PRODUCTS</a>
+      <a href="/contact"  style="font-size:12px; font-weight:500; letter-spacing:0.07em; color:rgba(12,12,30,0.4); text-decoration:none; transition:color 0.2s;" style-hover="color:#0c0c1e">CONTACT</a>
+    </div>
+
+    <!-- Nav CTA -->
+    <a href="/chatbot" style="font-size:12px; font-weight:700; letter-spacing:0.06em; color:#fff; background:oklch(42% 0.18 195); padding:10px 22px; border-radius:40px; text-decoration:none; transition:all 0.2s; white-space:nowrap;" style-hover="background:oklch(48% 0.18 195); box-shadow:0 4px 20px oklch(42% 0.18 195 / 0.35);">Get Free Estimate</a>
+  </nav>
+
+  <!-- ─── HERO BODY ─── -->
+  <div style="position:relative; z-index:10; display:flex; align-items:center; min-height:calc(100vh - 72px); padding:0 60px; gap:24px;">
+
+    <!-- LEFT COLUMN -->
+    <div style="flex:0 0 auto; width:min(580px, 52%); display:flex; flex-direction:column;">
+
+      <!-- Badge -->
+      <div data-anim="badge" style="display:inline-flex; align-items:center; gap:9px; padding:7px 16px; border:1px solid oklch(55% 0.18 195 / 0.35); border-radius:40px; width:fit-content; margin-bottom:36px; background:oklch(55% 0.18 195 / 0.06);">
+        <div style="width:6px; height:6px; border-radius:50%; background:oklch(55% 0.18 195); box-shadow:0 0 8px oklch(55% 0.18 195 / 0.5);"></div>
+        <span style="font-family:'DM Mono',monospace; font-size:10.5px; letter-spacing:0.15em; color:oklch(42% 0.18 195);">AI-POWERED CLIENT ONBOARDING</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 data-anim="h1" style="font-size:clamp(50px, 5.2vw, 78px); font-weight:700; line-height:1.04; letter-spacing:-0.025em; margin-bottom:22px; color:#0c0c1e;">
+        Turning Ideas<br>Into <em style="font-style:normal; color:oklch(42% 0.18 195);">Intelligent</em><br>Experiences
+      </h1>
+
+      <!-- Sub -->
+      <p data-anim="sub" style="font-size:17px; line-height:1.72; color:rgba(12,12,30,0.52); max-width:430px; margin-bottom:44px;">
+        Describe your vision — our AI Architect instantly builds a real-time budget and roadmap tailored to your project.
+      </p>
+
+      <!-- CTAs -->
+      <div data-anim="ctas" style="display:flex; align-items:center; gap:16px; margin-bottom:60px;">
+        <a href="/chatbot" style="display:inline-flex; align-items:center; gap:10px; padding:15px 30px; background:oklch(42% 0.18 195); color:#fff; font-size:14px; font-weight:700; letter-spacing:0.05em; border-radius:3px; text-decoration:none; transition:all 0.25s; flex-shrink:0;" style-hover="background:oklch(48% 0.18 195); transform:translateY(-2px); box-shadow:0 14px 40px oklch(42% 0.18 195 / 0.3);">
+          Estimate My Project
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0">
+            <path d="M2.5 7.5h10M9 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/services" style="display:inline-flex; align-items:center; gap:8px; padding:15px 26px; background:transparent; color:rgba(12,12,30,0.6); font-size:14px; font-weight:500; letter-spacing:0.04em; border:1px solid rgba(0,0,0,0.14); border-radius:3px; text-decoration:none; transition:all 0.25s;" style-hover="border-color:rgba(0,0,0,0.3); color:#0c0c1e;">
+          Explore Services
+        </a>
+      </div>
+
+      <!-- Stats -->
+      <div data-anim="stats" style="display:flex; align-items:stretch; gap:0; border-top:1px solid rgba(0,0,0,0.08); padding-top:30px;">
+        <div style="flex:1; padding-right:20px;">
+          <div style="font-size:30px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:#0c0c1e;">50<span style="font-size:17px; color:oklch(42% 0.18 195); margin-left:1px;">+</span></div>
+          <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.11em; color:rgba(12,12,30,0.35); margin-top:6px; text-wrap:nowrap;">PROJECTS DELIVERED</div>
+        </div>
+        <div style="width:1px; background:rgba(0,0,0,0.08);"></div>
+        <div style="flex:1; padding:0 20px;">
+          <div style="font-size:30px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:#0c0c1e;">99<span style="font-size:17px; color:oklch(42% 0.18 195); margin-left:1px;">%</span></div>
+          <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.11em; color:rgba(12,12,30,0.35); margin-top:6px;">CLIENT RETENTION</div>
+        </div>
+        <div style="width:1px; background:rgba(0,0,0,0.08);"></div>
+        <div style="flex:1; padding:0 20px;">
+          <div style="font-size:30px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:#0c0c1e;">24<span style="font-size:17px; color:oklch(42% 0.18 195); margin-left:1px;">/7</span></div>
+          <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.11em; color:rgba(12,12,30,0.35); margin-top:6px;">ACTIVE SUPPORT</div>
+        </div>
+        <div style="width:1px; background:rgba(0,0,0,0.08);"></div>
+        <div style="flex:1; padding-left:20px;">
+          <div style="font-size:30px; font-weight:700; letter-spacing:-0.03em; line-height:1; color:#0c0c1e;">5<span style="font-size:17px; color:oklch(42% 0.18 195); margin-left:1px;">★</span></div>
+          <div style="font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:0.11em; color:rgba(12,12,30,0.35); margin-top:6px;">TRUSTED PARTNER</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div data-anim="right" style="flex:1; display:flex; align-items:center; justify-content:center; position:relative; height:calc(100vh - 72px); max-height:640px;">
+
+      <!-- Soft glow behind frame -->
+      <div style="position:absolute; width:360px; height:360px; border-radius:50%; background:oklch(80% 0.12 195 / 0.35); filter:blur(72px); animation:glow 4s ease-in-out infinite; pointer-events:none;"></div>
+
+      <!-- Papers frame -->
+      <div style="position:relative; width:min(400px, 90%); height:500px; border-radius:4px; overflow:hidden; border:1px solid rgba(0,0,0,0.1); background:#eef0f5; box-shadow:0 20px 60px rgba(0,0,0,0.1);">
+
+        <!-- Paper 1: BRD (back left) -->
+        <div style="position:absolute; left:12px; top:72px; width:200px; height:258px; background:#fffef8; border-radius:2px; box-shadow:0 6px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08); transform:rotate(-11deg); transform-origin:center top; z-index:1; overflow:hidden; padding:13px 15px; font-family:Caveat,cursive;">
+          <div style="position:absolute; inset:0; background-image:repeating-linear-gradient(transparent, transparent 23px, #c8ddc8 23px, #c8ddc8 24px); background-position:0 34px; opacity:0.35;"></div>
+          <div style="position:relative;">
+            <div style="font-family:'DM Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.12em; color:#1a2a5e; border-bottom:2px solid #1a2a5e; padding-bottom:3px; margin-bottom:9px;">B.R.D.</div>
+            <div style="font-size:15px; color:#1a1a2e; line-height:1.55;">Project: ___________<br>Client: ___________<br>Budget: ₹__________</div>
+            <div style="margin-top:9px; font-size:14px; color:#2a2a4a; line-height:2.05;">☐ User Auth &amp; Login<br>☐ Dashboard UI<br>☐ API Integration<br>☐ Mobile Ready<br>☐ Analytics</div>
+            <div style="margin-top:9px; font-size:12px; color:#999; font-style:italic;">Sign: _______________</div>
+          </div>
+        </div>
+
+        <!-- Paper 2: Idea (front center) -->
+        <div style="position:absolute; left:92px; top:44px; width:216px; height:272px; background:#fffef8; border-radius:2px; box-shadow:0 10px 36px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.1); transform:rotate(-1.5deg); transform-origin:center top; z-index:5; overflow:hidden; padding:14px 16px; font-family:Caveat,cursive;">
+          <div style="position:absolute; top:0; bottom:0; left:38px; width:1.5px; background:#ff6b6b; opacity:0.35;"></div>
+          <div style="position:absolute; inset:0; background-image:repeating-linear-gradient(transparent, transparent 25px, #c8d8f0 25px, #c8d8f0 26px); background-position:0 40px; opacity:0.3;"></div>
+          <div style="position:relative; padding-left:10px;">
+            <div style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">MY IDEA 💡</div>
+            <svg width="38" height="44" viewBox="0 0 38 44" fill="none" style="float:right; margin:-2px 0 4px 4px; opacity:0.55;">
+              <ellipse cx="19" cy="16" rx="10" ry="11" stroke="#1a1a2e" stroke-width="1.5"/>
+              <path d="M13 26h12M14 30h10M16 34h6" stroke="#1a1a2e" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M16 38h6" stroke="#1a1a2e" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 5V2M7 9L5 7M31 9l2-2M5 18H2M36 18h-3" stroke="#1a1a2e" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <div style="font-size:15px; color:#2a2a4a; line-height:1.65; clear:both;">"An app that ______<br>_______ for people<br>who need _______"</div>
+            <div style="margin-top:8px; font-size:14px; color:#1a1a2e; line-height:2.1;">→ Feature One<br>→ Feature Two<br>→ Feature Three</div>
+            <div style="margin-top:10px; font-size:17px; font-weight:700; color:#2244cc; border-top:1px dashed #ccd; padding-top:8px;">Total Cost = ❓</div>
+          </div>
+        </div>
+
+        <!-- Paper 3: Specs (back right) -->
+        <div style="position:absolute; left:168px; top:82px; width:200px; height:258px; background:#fff9f0; border-radius:2px; box-shadow:0 6px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08); transform:rotate(10deg); transform-origin:center top; z-index:3; overflow:hidden; padding:13px 15px; font-family:Caveat,cursive;">
+          <div style="position:absolute; inset:0; background-image:repeating-linear-gradient(transparent, transparent 23px, #e8d8b8 23px, #e8d8b8 24px); background-position:0 34px; opacity:0.4;"></div>
+          <div style="position:relative;">
+            <div style="font-family:'DM Mono',monospace; font-size:10px; font-weight:700; letter-spacing:0.1em; color:#7a3a00; border-bottom:1.5px solid #cc7700; padding-bottom:3px; margin-bottom:9px;">TECH SPECS</div>
+            <div style="font-size:12px; color:#7a3a00; margin-bottom:5px; font-family:Caveat,cursive;">Phase timeline:</div>
+            <div style="display:flex; align-items:center; margin-bottom:11px;">
+              <div style="width:8px; height:8px; border-radius:50%; border:1.5px solid #7a3a00; flex-shrink:0;"></div>
+              <div style="flex:1; height:1.5px; background:#7a3a00;"></div>
+              <div style="width:8px; height:8px; border-radius:50%; border:1.5px solid #7a3a00; background:#7a3a00; flex-shrink:0;"></div>
+              <div style="flex:1; height:1px; background:#7a3a00; opacity:0.35;"></div>
+              <div style="width:8px; height:8px; border-radius:50%; border:1.5px solid #7a3a00; opacity:0.4; flex-shrink:0;"></div>
+            </div>
+            <div style="font-size:14px; color:#3a2000; line-height:2.0;">Backend: Node.js<br>Frontend: React<br>DB: PostgreSQL<br>↳ ~3 months<br>↳ 3 devs needed</div>
+            <div style="margin-top:8px; font-size:12px; color:#aaa; font-style:italic;">*rough estimates</div>
+          </div>
+        </div>
+
+        <!-- JS-driven scan beam -->
+        <div id="paper-scan-beam" style="position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent 0%, oklch(42% 0.18 195 / 0.9) 50%, transparent 100%); pointer-events:none; z-index:9; top:0; opacity:0;"></div>
+
+        <!-- Corner brackets -->
+        <div style="position:absolute; top:12px; left:12px; width:16px; height:16px; border-top:1.5px solid oklch(42% 0.18 195 / 0.6); border-left:1.5px solid oklch(42% 0.18 195 / 0.6); z-index:10;"></div>
+        <div style="position:absolute; top:12px; right:12px; width:16px; height:16px; border-top:1.5px solid oklch(42% 0.18 195 / 0.6); border-right:1.5px solid oklch(42% 0.18 195 / 0.6); z-index:10;"></div>
+        <div style="position:absolute; bottom:12px; left:12px; width:16px; height:16px; border-bottom:1.5px solid oklch(42% 0.18 195 / 0.6); border-left:1.5px solid oklch(42% 0.18 195 / 0.6); z-index:10;"></div>
+        <div style="position:absolute; bottom:12px; right:12px; width:16px; height:16px; border-bottom:1.5px solid oklch(42% 0.18 195 / 0.6); border-right:1.5px solid oklch(42% 0.18 195 / 0.6); z-index:10;"></div>
+      </div>
+
+      <!-- Floating chatbot preview card -->
+      <div data-anim="card" style="position:absolute; bottom:60px; right:0; width:252px; background:#fff; border:1px solid rgba(0,0,0,0.1); border-radius:10px; padding:20px; box-shadow:0 12px 40px rgba(0,0,0,0.1);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:13px;">
+          <div style="width:30px; height:30px; flex-shrink:0; border-radius:50%; background:oklch(55% 0.18 195 / 0.12); border:1px solid oklch(55% 0.18 195 / 0.35); display:flex; align-items:center; justify-content:center;">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <circle cx="6.5" cy="6.5" r="2.5" fill="oklch(42% 0.18 195)"/>
+              <circle cx="6.5" cy="6.5" r="5" stroke="oklch(42% 0.18 195)" stroke-width="1" opacity="0.35"/>
+            </svg>
+          </div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:11.5px; font-weight:600; color:#0c0c1e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Project Estimator AI</div>
+            <div style="font-family:'DM Mono',monospace; font-size:8.5px; letter-spacing:0.08em; color:rgba(12,12,30,0.35); margin-top:1px;">POWERED BY TECHBRAHMAND</div>
+          </div>
+          <div style="flex-shrink:0;">
+            <div style="width:6px; height:6px; border-radius:50%; background:oklch(55% 0.18 195); box-shadow:0 0 6px oklch(55% 0.18 195 / 0.6); animation:glow 2s ease-in-out infinite;"></div>
+          </div>
+        </div>
+        <div style="background:rgba(0,0,0,0.03); border-radius:6px; padding:11px 13px; margin-bottom:14px; border:1px solid rgba(0,0,0,0.05);">
+          <p style="font-size:11.5px; color:rgba(12,12,30,0.6); line-height:1.65;">"Tell me about your project — I'll generate a real-time budget and roadmap."</p>
+        </div>
+        <a href="/chatbot" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 0; background:oklch(42% 0.18 195); border-radius:5px; color:#fff; font-size:11px; font-weight:700; letter-spacing:0.08em; text-decoration:none; transition:all 0.2s;" style-hover="background:oklch(48% 0.18 195); box-shadow:0 4px 16px oklch(42% 0.18 195 / 0.3);">
+          START ONBOARDING
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+            <path d="M1.5 5.5h8M6 2l3.5 3.5L6 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Pill label -->
+      <div data-anim="pill" style="position:absolute; top:60px; left:16px; display:flex; align-items:center; gap:8px; padding:7px 12px; background:#fff; border:1px solid rgba(0,0,0,0.09); border-radius:40px; box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+        <div style="width:5px; height:5px; border-radius:50%; background:oklch(42% 0.18 195); box-shadow:0 0 6px oklch(42% 0.18 195 / 0.5);"></div>
+        <span style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; color:rgba(12,12,30,0.45);">AUTONOMOUS EVOLUTION</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div data-anim="scroll" style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; z-index:10;">
+    <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; color:rgba(12,12,30,0.25);">SCROLL</div>
+    <div style="width:1px; height:28px; background:linear-gradient(to bottom, rgba(0,0,0,0.2), transparent);"></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900},
+  &quot;accentColor&quot;: {
+    &quot;editor&quot;: &quot;color&quot;,
+    &quot;default&quot;: &quot;#0891b2&quot;,
+    &quot;options&quot;: [&quot;#0891b2&quot;, &quot;#6366f1&quot;, &quot;#dc6803&quot;, &quot;#16a34a&quot;],
+    &quot;section&quot;: &quot;Theme&quot;,
+    &quot;tsType&quot;: &quot;string&quot;
+  },
+  &quot;primaryCTALabel&quot;: {
+    &quot;editor&quot;: &quot;text&quot;,
+    &quot;default&quot;: &quot;Estimate My Project&quot;,
+    &quot;section&quot;: &quot;Copy&quot;,
+    &quot;tsType&quot;: &quot;string&quot;
+  },
+  &quot;chatbotUrl&quot;: {
+    &quot;editor&quot;: &quot;text&quot;,
+    &quot;default&quot;: &quot;/chatbot&quot;,
+    &quot;section&quot;: &quot;Links&quot;,
+    &quot;tsType&quot;: &quot;string&quot;
+  }
+}">
+class Component extends DCLogic {
+  componentDidMount() {
+    // Inject transition styles via stylesheet (React can't reset these)
+    const existing = document.getElementById('tb-hero-anims');
+    if (existing) existing.remove();
+    const s = document.createElement('style');
+    s.id = 'tb-hero-anims';
+    s.textContent = `
+      [data-anim] {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+      }
+      [data-anim="right"]  { transform: none; }
+      [data-anim="scroll"] { transform: none; }
+      [data-anim="pill"]   { transform: translateX(-12px); }
+    `;
+    document.head.appendChild(s);
+
+    // Staggered fade-in
+    const delays = { badge:50, h1:180, sub:300, ctas:420, stats:540, right:280, card:900, pill:1100, scroll:1400 };
+    Object.entries(delays).forEach(([key, delay]) => {
+      setTimeout(() => {
+        const el = document.querySelector('[data-anim="' + key + '"]');
+        if (el) { el.style.opacity = '1'; el.style.transform = 'none'; }
+      }, delay);
+    });
+
+    // Paper scan beam — rAF driven, React-proof
+    const beam = document.getElementById('paper-scan-beam');
+    if (beam) {
+      const papers = [[0.13, 0.72], [0.08, 0.66], [0.15, 0.74]];
+      let paperIdx = 0;
+      let phase = 'scan';
+      let phaseStart = null;
+      const scanDur = 1800, pauseDur = 320, jumpDur = 280;
+
+      function tick(ts) {
+        if (!phaseStart) phaseStart = ts;
+        const elapsed = ts - phaseStart;
+        const [start, end] = papers[paperIdx];
+
+        if (phase === 'scan') {
+          const t = Math.min(elapsed / scanDur, 1);
+          const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+          beam.style.top = (start + (end - start) * ease) * 100 + '%';
+          beam.style.opacity = t < 0.06 ? String(t / 0.06) : t > 0.94 ? String((1 - t) / 0.06) : '1';
+          if (t >= 1) { phase = 'pause'; phaseStart = ts; }
+        } else if (phase === 'pause') {
+          beam.style.opacity = '0';
+          if (elapsed >= pauseDur) { paperIdx = (paperIdx + 1) % papers.length; phase = 'jump'; phaseStart = ts; }
+        } else if (phase === 'jump') {
+          if (elapsed >= jumpDur) { beam.style.top = papers[paperIdx][0] * 100 + '%'; phase = 'scan'; phaseStart = ts; }
+        }
+        requestAnimationFrame(tick);
+      }
+      setTimeout(() => requestAnimationFrame(tick), 600);
+    }
+  }
+}
+</script>
+</body>
+</html>

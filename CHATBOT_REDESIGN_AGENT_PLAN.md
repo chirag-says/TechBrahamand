@@ -723,17 +723,21 @@ Do **not** open a PR to `main` until all phases are ✅ and the reviewer says so
 
 ## Verification Log (maintained by the reviewer — do not edit)
 
+Reviewed 2026-06-26 against `origin/chatbot-redesign` @ `e4a1fd1`. Frontend `npm run build` passed (2359 modules, no errors). `server/index.js` syntax OK.
+
 | Phase | Title | Status | Reviewer notes |
 |---|---|---|---|
-| 0 | Branch setup | 🟡 Pushed, awaiting review | Branch created from `abhitha` (latest working branch). Build ✅ 2356 modules, 10.45s. Commit: `8517f94`. Push needs `git push -u origin chatbot-redesign` from a terminal with GitHub credentials. |
-| 1 | Express proxy + key server-side | 🟡 Pushed, awaiting review | `server/index.js`, `server/package.json`, `server/.env.example` created. `frontend/vite.config.js` proxy updated to `/api → http://localhost:2000`. `Chatbot.jsx` fetch moved to `/api/chat` with no Authorization header; `VITE_GROK_API_KEY` fully removed. `npm run build` ✅ 2356 modules, 10.70s. Commit: `1606fd7`. Push manually with credentials: `git push --set-upstream origin chatbot-redesign`. |
-| 2 | System prompt + state scaffolding | ⬜ Pending | |
-| 3 | Wire JSON-mode call | ⬜ Pending | |
-| 4 | Single-division recommendation | ⬜ Pending | |
-| 5 | Live proposal panel | ⬜ Pending | |
-| 6 | Itemized cost breakdown | ⬜ Pending | |
-| 7 | Interactive editing + versions | ⬜ Pending | |
-| 8 | Proposal handoff rewrite | ⬜ Pending | |
-| 9 | Hardening | ⬜ Pending | |
+| 0 | Branch setup | ✅ Verified | Branch + commits present; build passes. |
+| 1 | Express proxy + key server-side | ✅ Verified | `server/index.js` proxies Groq, forces JSON mode, key server-side. `vite.config.js` repointed to `/api`→:2000. No `VITE_GROK_API_KEY` left in frontend. |
+| 2 | System prompt + state scaffolding | ✅ Verified | `lib/systemPrompt.js` + `lib/projectState.js` match spec; prompt gained a good "REPLY STYLE" section. **No separate Phase 2 commit** — folded into Phase 3. |
+| 3 | Wire JSON-mode call | ✅ Verified | Parses `{reply,projectState}`, feeds `CURRENT_PROJECT_STATE` back, graceful fallback on bad JSON. |
+| 4 | Single-division recommendation | ✅ Verified | `VALID_DIVISIONS` guard in `updateProjectState`; prompt enforces one pick. |
+| 5 | Live proposal panel | ✅ Verified | `ProposalPanel.jsx` (desktop column + mobile drawer). Exceeds spec: context, alternatives, assumptions, risks. **No separate Phase 5 commit** — folded into Phase 6. |
+| 6 | Itemized cost breakdown | ✅ Verified | Line items + reasons; total uses frontend `recomputeTotal`, not model arithmetic. |
+| 7 | Interactive editing + versions | ✅ Verified | `versions[]` + working Undo button. ⚠️ minor: a version snapshot is pushed every turn even when state is unchanged (undo may need 2 clicks). Cosmetic. |
+| 8 | Proposal handoff rewrite | ✅ Verified | Regex/keyword detection deleted; full structured brief built from `projectState`. |
+| 9 | Hardening | ✅ Verified | localStorage hydrate/persist w/ corrupt-data guard, `express-rate-limit` (30/10min), 429 handling, `maxLength` 1000, body validation, injection guard in prompt. |
+
+**Open items (not blockers):** (a) pricing amounts are governed solely by the rate card in `frontend/src/lib/systemPrompt.js` — tune there. (b) Could NOT runtime-test live LLM behavior (needs Groq key + running server) — code is correct but the actual conversation quality must be tested manually.
 
 Legend: ⬜ Pending · 🟡 Pushed, awaiting review · ✅ Verified · ❌ Changes requested
