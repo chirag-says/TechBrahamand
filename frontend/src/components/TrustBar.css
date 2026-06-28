@@ -5,7 +5,7 @@
 .trust-bar {
   width: 100%;
   padding: 28px 24px;
-  background: #0F1115;
+  background: #F3F5F9;
   display: flex;
   justify-content: center;
   position: relative;
@@ -27,8 +27,8 @@
   gap: 6px;
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 12, 30, 0.05);
+  border: 1px solid rgba(10, 12, 30, 0.1);
   cursor: default;
   transition:
     background 0.35s ease,
@@ -37,13 +37,13 @@
 }
 
 .trust-badge:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(10, 12, 30, 0.09);
+  border-color: rgba(10, 12, 30, 0.18);
   transform: translateY(-2px);
 }
 
 .trust-badge__icon {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(10, 12, 30, 0.35);
   flex-shrink: 0;
   transition: color 0.3s ease;
 }
@@ -56,13 +56,13 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(10, 12, 30, 0.55);
   white-space: nowrap;
   transition: color 0.3s ease;
 }
 
 .trust-badge:hover .trust-badge__label {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(10, 12, 30, 0.85);
 }
 
 /* Responsive */
