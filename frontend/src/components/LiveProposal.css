@@ -1,0 +1,268 @@
+/* ================================================ */
+/*  Live Proposal — AI output showcase card          */
+/* ================================================ */
+
+.live-proposal {
+  width: 100%;
+  padding: 56px 24px 64px;
+  background: #F3F5F9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 10;
+}
+
+.live-proposal__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(139, 92, 246, 0.6);
+}
+
+.live-proposal__subtitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.35);
+  text-align: center;
+  max-width: 360px;
+  margin-bottom: 8px;
+}
+
+/* ── The card ── */
+.proposal-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 60px -12px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+
+.proposal-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 28px 70px -12px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(139, 92, 246, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Top shimmer line */
+.proposal-card__shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3), transparent);
+}
+
+/* ── Header ── */
+.proposal-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.proposal-card__header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(59, 130, 246, 0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B5CF6;
+}
+
+.proposal-card__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.proposal-card__header-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #111;
+}
+
+.proposal-card__header-badge {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(139, 92, 246, 0.6);
+}
+
+.proposal-card__live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* ── Divider ── */
+.proposal-card__divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.06), transparent);
+  margin: 16px 0;
+}
+
+/* ── Project name ── */
+.proposal-card__project {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.proposal-card__project-label {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.proposal-card__project-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111;
+}
+
+/* ── Fields grid ── */
+.proposal-card__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.proposal-card__field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.proposal-card__field-icon {
+  color: rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.proposal-card__field-icon--green {
+  color: #10B981;
+}
+
+.proposal-card__field-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.proposal-card__field-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.proposal-card__field-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  letter-spacing: -0.01em;
+}
+
+.proposal-card__field-value--brahma {
+  color: #EAB308;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+}
+
+.proposal-card__field-value--green {
+  color: #10B981;
+}
+
+/* Tech pills */
+.proposal-card__tech-pills {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.proposal-card__tech-pill {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ── CTA ── */
+.proposal-card__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  background: #0A0A0A;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.proposal-card__cta:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .live-proposal {
+    padding: 40px 16px 48px;
+  }
+  .proposal-card {
+    max-width: 360px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .proposal-card__project-name {
+    font-size: 16px;
+  }
+}

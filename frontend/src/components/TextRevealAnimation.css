@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&display=swap');
+
+/* ══════════════════════════════════════════
+   TEXT REVEAL ANIMATION — TECH BRAHMAND
+   Cinematic letter-by-letter reveal with
+   shine sweep and glow effects
+   ══════════════════════════════════════════ */
+
+/* Container for the animated title */
+.text-reveal-container {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  position: relative;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* Each word wrapper */
+.text-reveal-word {
+  display: inline-flex;
+  align-items: baseline;
+  overflow: visible;
+}
+
+/* Space between TECH and BRAHMAND */
+.text-reveal-space {
+  display: inline-block;
+  width: 0.3em;
+}
+
+/* Individual letter span */
+.text-reveal-letter {
+  display: inline-block;
+  position: relative;
+  will-change: transform, opacity, filter;
+  /* Prevent layout shift — reserve space */
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════════
+   SHINE SWEEP OVERLAY
+   A single bright gradient that sweeps left→right
+   across the full text after all letters land
+   ══════════════════════════════════════════ */
+
+.text-reveal-shine-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.text-reveal-shine-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.text-reveal-shine-gradient {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 38%,
+    rgba(255, 255, 255, 0.25) 44%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0.25) 56%,
+    rgba(255, 255, 255, 0.08) 62%,
+    transparent 70%,
+    transparent 100%
+  );
+  will-change: transform;
+}
+
+/* ══════════════════════════════════════════
+   GLOW EFFECT
+   Subtle ambient glow behind the text after
+   all letters have been revealed
+   ══════════════════════════════════════════ */
+
+.text-reveal-glow {
+  position: absolute;
+  inset: -20% -10%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(26, 30, 35, 0.12) 0%,
+    transparent 70%
+  );
+}
+
+.text-reveal-glow.active {
+  opacity: 1;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE ADJUSTMENTS
+   ══════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .text-reveal-space {
+    width: 0.25em;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .text-reveal-space {
+    width: 0.2em;
+  }
+}

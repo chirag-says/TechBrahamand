@@ -1,0 +1,255 @@
+/* =========================================
+   TECH BRAHMAND — MOBILE NAVIGATION
+   Clean, light, professional theme
+   ========================================= */
+
+/* ── Hamburger Trigger Button ── */
+.nav-trigger {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  gap: 0;
+  padding: 0;
+}
+
+/* Hide on desktop — desktop has its own navbar */
+@media (min-width: 768px) {
+  .nav-trigger {
+    display: none;
+  }
+}
+
+/* Hide when profile slide-out is open */
+body.profile-open .nav-trigger {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-trigger:active {
+  transform: scale(0.95);
+}
+
+.nav-trigger.is-open {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.nav-trigger-line {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: #222;
+  transform-origin: center;
+}
+
+.nav-trigger.is-open .nav-trigger-line {
+  background: #111;
+}
+
+/* ── Full-screen Menu ── */
+.nav-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #F3F5F9;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ── Top Header ── */
+.nav-fs-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 24px 16px;
+  padding-left: 34px;
+  flex-shrink: 0;
+}
+
+.nav-fs-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-fs-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-fs-brand-text {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1A1E23;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nav-fs-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.nav-fs-close:hover {
+  transform: scale(1.08) rotate(90deg);
+  background: #222;
+}
+
+/* ── Navigation Links ── */
+.nav-fs-links {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 32px;
+  gap: 0;
+}
+
+.nav-fs-link-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nav-fs-link-row:last-child {
+  border-bottom: none;
+}
+
+.nav-fs-num {
+  font-size: 11px;
+  font-weight: 600;
+  color: #bbb;
+  letter-spacing: 0.03em;
+  min-width: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-fs-link {
+  font-size: 32px;
+  font-weight: 700;
+  color: #999;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.1;
+}
+
+.nav-fs-link:hover {
+  color: #111;
+  transform: translateX(6px);
+}
+
+.nav-fs-link.active {
+  color: #111;
+  font-weight: 800;
+}
+
+.nav-fs-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #111;
+  flex-shrink: 0;
+}
+
+/* ── Bottom Section ── */
+.nav-fs-bottom {
+  padding: 20px 32px 32px;
+  flex-shrink: 0;
+}
+
+.nav-fs-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 16px 6px 16px 24px;
+  border-radius: 60px;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.nav-fs-cta:hover {
+  background: #222;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+}
+
+.nav-fs-cta-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-fs-cta:hover .nav-fs-cta-icon {
+  transform: rotate(-45deg);
+}
+
+.nav-fs-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 20px;
+  font-size: 10px;
+  color: #aaa;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.nav-fs-footer-dot {
+  font-size: 14px;
+  line-height: 1;
+}
