@@ -1,0 +1,221 @@
+/* ================================================ */
+/*  IndustryStack — Stacking cards parallax          */
+/* ================================================ */
+
+.industry-stack {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  font-family: 'Space Grotesk', sans-serif;
+  background: #fff;
+}
+
+/* ── Header — scrolls away naturally (this is a scroll experience) ── */
+.industry-stack__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 52px 24px 32px;
+  text-align: center;
+}
+
+.industry-stack__label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #6B7280;
+  margin: 0;
+}
+
+.industry-stack__heading {
+  font-size: clamp(22px, 2.8vw, 30px);
+  font-weight: 700;
+  color: #0c0c1e;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.industry-stack__heading-accent {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Sticky card wrapper — full viewport, original pattern ── */
+.industry-card-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Card ── */
+.industry-card {
+  position: relative;
+  display: flex;
+  gap: 48px;
+  width: 90%;
+  max-width: 1020px;
+  min-height: 420px;
+  border-radius: 28px;
+  padding: 52px 52px 52px 56px;
+  transform-origin: top center;
+  overflow: hidden;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Progress indicator ── */
+.industry-card__progress {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(12, 12, 30, 0.3);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.industry-card__progress-sep {
+  margin: 0 2px;
+  opacity: 0.5;
+}
+
+/* ── Left column ── */
+.industry-card__left {
+  flex: 0 0 42%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.industry-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.industry-card__num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(12, 12, 30, 0.25);
+}
+
+.industry-card__subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.industry-card__name {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  color: #0c0c1e;
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.industry-card__desc {
+  font-size: 14px;
+  color: rgba(12, 12, 30, 0.58);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 340px;
+}
+
+.industry-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  width: fit-content;
+  margin-top: 4px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.industry-card__cta:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ── Right column ── */
+.industry-card__right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.industry-card__icon-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.industry-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.industry-card__list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: rgba(12, 12, 30, 0.7);
+  font-weight: 500;
+}
+
+.industry-card__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 760px) {
+  .industry-card {
+    flex-direction: column;
+    gap: 28px;
+    padding: 36px 28px;
+    min-height: unset;
+    width: 92%;
+  }
+
+  .industry-card__left {
+    flex: unset;
+  }
+
+  .industry-card-sticky {
+    height: auto;
+    position: relative;
+    padding: 12px 0;
+  }
+}

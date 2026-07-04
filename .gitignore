@@ -87,4 +87,4 @@ frontend/public/video-frames/
 # Ignored directories
 .claude/
 local_backup/
-components/
+/components/
