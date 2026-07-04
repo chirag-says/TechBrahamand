@@ -6,7 +6,7 @@ import MarqueeBanner from './MarqueeBanner';
 
 const InnovationSection = () => {
   return (
-    <div className="w-full bg-[#F3F5F9] font-sans tracking-tight">
+    <div className="w-full bg-white font-sans tracking-tight">
 
       {/* ===== SECTION 1: Unlock the Power of Innovation ===== */}
       <div className="px-5 md:px-16 lg:px-24 pt-6 md:pt-16 pb-8 md:pb-20">

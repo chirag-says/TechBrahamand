@@ -3,16 +3,14 @@ import NewHero from "../components/NewHero";
 import InnovationSection from "../components/InnovationSection";
 import MarqueeBanner from "../components/MarqueeBanner";
 import TechStackStrip from "../components/TechStackStrip";
-import IndustryPills from "../components/IndustryPills";
+import IndustryStack from "../components/IndustryStack";
 import DivisionCards from "../components/DivisionCards";
-import ProcessTimeline from "../components/ProcessTimeline";
-import ProposalShowcase from "../components/ProposalShowcase";
+import HowWeBuild from "../components/HowWeBuild";
 import SocialProof from "../components/SocialProof";
-import TrustBar from "../components/TrustBar";
 
 const Home = () => {
   return (
-    <div className="w-full overflow-y-auto" style={{ zoom: 1.12 }}>
+    <div className="w-full" style={{ zoom: 1.12 }}>
       <NewHero />
       <div className="hidden md:block">
         <MarqueeBanner containerBg="bg-[#F3F5F9]" />
@@ -113,14 +111,15 @@ const Home = () => {
         {/* Content */}
         <div className="relative z-10">
           <TechStackStrip />
-          <IndustryPills />
-          <DivisionCards />
-          <ProcessTimeline />
+          <IndustryStack />
+          {/* This div gets a solid background so it slides over the last pinned industry card */}
+          <div style={{ position: 'relative', zIndex: 20, background: 'rgba(243,245,249,0.98)', backdropFilter: 'blur(8px)' }}>
+            <DivisionCards />
+            <HowWeBuild />
+          </div>
         </div>
       </div>
-      <ProposalShowcase />
       <SocialProof />
-      <TrustBar />
 
       {/* ── Marquee Divider — between dark TrustBar and light InnovationSection ── */}
       <MarqueeBanner

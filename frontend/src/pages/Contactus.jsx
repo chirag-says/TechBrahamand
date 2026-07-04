@@ -329,11 +329,11 @@ export default function Contact() {
                     }}
                   >
                     <option value="">Budget range</option>
-                    <option value="Under ₹25,000">Under ₹25,000</option>
-                    <option value="₹25,000 - ₹50,000">₹25,000 - ₹50,000</option>
-                    <option value="₹50,000 - ₹1,00,000">₹50,000 - ₹1,00,000</option>
-                    <option value="₹1,00,000 - ₹5,00,000">₹1,00,000 - ₹5,00,000</option>
-                    <option value="₹5,00,000+">₹5,00,000+</option>
+                    <option value="Under ₹1,00,000">Under ₹1,00,000</option>
+                    <option value="₹1,00,000 - ₹3,00,000">₹1,00,000 - ₹3,00,000</option>
+                    <option value="₹3,00,000 - ₹5,00,000">₹3,00,000 - ₹5,00,000</option>
+                    <option value="₹5,00,000 - ₹10,00,000">₹5,00,000 - ₹10,00,000</option>
+                    <option value="₹10,00,000+">₹10,00,000+</option>
                     <option value="Not sure yet">Not sure yet</option>
                   </select>
 

@@ -12,7 +12,7 @@
   width: 100%;
   overflow: hidden;
   padding: 28px 0;
-  background: transparent;
+  background: #fff;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   z-index: 10;
@@ -30,11 +30,11 @@
 }
 .tech-strip__fade--left {
   left: 0;
-  background: linear-gradient(to right, rgba(243,245,249,0.8), transparent);
+  background: linear-gradient(to right, rgba(255,255,255,0.9), transparent);
 }
 .tech-strip__fade--right {
   right: 0;
-  background: linear-gradient(to left, rgba(243,245,249,0.8), transparent);
+  background: linear-gradient(to left, rgba(255,255,255,0.9), transparent);
 }
 
 /* Scroll container */
@@ -69,6 +69,14 @@
 
 .tech-strip__item:hover {
   color: #111111;
+}
+
+/* Brand icon */
+.tech-strip__icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 /* Small separator dot */

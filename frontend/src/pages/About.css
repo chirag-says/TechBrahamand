@@ -316,7 +316,7 @@
 .ab-principle__desc{font-size:.8rem;color:#64748B;line-height:1.6}
 
 /* ── CTA ── */
-.ab-cta{position:relative;z-index:1;overflow:hidden;background:#0F172A;margin:0 40px 80px;border-radius:32px;padding:100px 80px;text-align:center;box-shadow:0 8px 60px rgba(0,0,0,.2)}
+.ab-cta{position:relative;z-index:1;overflow:hidden;background:radial-gradient(125% 125% at 50% 0%,#0F172A 40%,#2563eb,#ffffff 100%);margin:0 40px 80px;border-radius:32px;padding:100px 80px;text-align:center;box-shadow:0 8px 60px rgba(0,0,0,.2)}
 .ab-cta__bg{position:absolute;inset:0;pointer-events:none}
 .ab-cta__orb{position:absolute;border-radius:50%;filter:blur(80px)}
 .ab-cta__orb--1{width:500px;height:500px;top:-150px;left:-100px;background:oklch(42% 0.18 195 / 0.18)}

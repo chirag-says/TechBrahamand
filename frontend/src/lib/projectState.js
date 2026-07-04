@@ -2,6 +2,7 @@
 export function emptyProjectState() {
   return {
     stage: "greeting", // greeting|discovery|analysis|recommendation|architecture|quotation|refinement|handoff
+    readyForHandoff: false,
     recommendedDivision: null, // 'brahma' | 'vishnu' | 'mahesh'
     divisionScores: { brahma: 0, vishnu: 0, mahesh: 0 },
     divisionReason: "",

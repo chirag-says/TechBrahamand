@@ -1,11 +1,64 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Bot, User, Plus, MessageSquare, Clock, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, Trash2, ArrowRight, Rocket, PanelRightOpen, X, Wallet } from 'lucide-react';
+import { Send, Bot, User, Clock, Hash, Activity, ShoppingCart, BarChart3, HeartPulse, ArrowRight, Rocket, PanelRightOpen, X, Wallet } from 'lucide-react';
+import ChatSidebar from '../components/ChatSidebar';
 import ReactMarkdown from 'react-markdown';
 import { SYSTEM_PROMPT } from '../lib/systemPrompt';
 import { emptyProjectState, recomputeTotal, pushVersion } from '../lib/projectState';
 import ProposalPanel from '../components/ProposalPanel';
+
+/**
+ * Robustly extract {reply, projectState} from the model's raw output.
+ * The Groq model with response_format: json_object SHOULD return clean JSON,
+ * but in practice it sometimes wraps in ```json fences, adds trailing prose,
+ * or nests the JSON inside conversational text. This function tries multiple
+ * extraction strategies before giving up.
+ */
+function parseAIResponse(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+
+  // Strategy 1: Direct JSON.parse (cleanest case)
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object' && parsed.reply) return parsed;
+  } catch { /* continue */ }
+
+  // Strategy 2: Strip markdown code fences (```json ... ``` or ``` ... ```)
+  const fenceMatch = raw.match(/```(?:json)?\s*\n?([\s\S]*?)\n?\s*```/);
+  if (fenceMatch) {
+    try {
+      const parsed = JSON.parse(fenceMatch[1].trim());
+      if (parsed && typeof parsed === 'object' && parsed.reply) return parsed;
+    } catch { /* continue */ }
+  }
+
+  // Strategy 3: Find the first top-level { ... } block using brace matching
+  const firstBrace = raw.indexOf('{');
+  if (firstBrace !== -1) {
+    let depth = 0;
+    let inString = false;
+    let escapeNext = false;
+    for (let i = firstBrace; i < raw.length; i++) {
+      const ch = raw[i];
+      if (escapeNext) { escapeNext = false; continue; }
+      if (ch === '\\' && inString) { escapeNext = true; continue; }
+      if (ch === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === '{') depth++;
+      if (ch === '}') depth--;
+      if (depth === 0) {
+        try {
+          const parsed = JSON.parse(raw.slice(firstBrace, i + 1));
+          if (parsed && typeof parsed === 'object' && parsed.reply) return parsed;
+        } catch { /* continue */ }
+        break;
+      }
+    }
+  }
+
+  return null;
+}
 
 const EXAMPLE_PROMPTS = [
   { icon: ShoppingCart, text: 'Build me an e-commerce app for handmade gifts' },
@@ -54,9 +107,15 @@ const Chatbot = () => {
   const messagesEndRef = useRef(null);
 
   // Phase 9: Persist to localStorage whenever sessions change.
+  // Strip rawJSON from messages to avoid storage bloat — it's only needed
+  // for the current session's API context, not for hydration.
   useEffect(() => {
     try {
-      localStorage.setItem(LS_KEY, JSON.stringify(chatSessions));
+      const stripped = chatSessions.map(s => ({
+        ...s,
+        messages: s.messages.map(({ rawJSON, ...rest }) => rest),
+      }));
+      localStorage.setItem(LS_KEY, JSON.stringify(stripped));
     } catch {
       // Storage quota exceeded or unavailable — silently ignore.
     }
@@ -144,7 +203,10 @@ const Chatbot = () => {
         { role: "system", content: `CURRENT_PROJECT_STATE:\n${JSON.stringify(projectState)}` },
         ...newMessages.map(msg => ({
           role: msg.sender === 'user' ? 'user' : 'assistant',
-          content: msg.text,
+          // For AI messages, replay the full JSON response so the model sees
+          // its own prior structured output (with projectState), not just the
+          // stripped reply text. This is critical for proposal continuity.
+          content: msg.sender === 'ai' && msg.rawJSON ? msg.rawJSON : msg.text,
         })),
       ];
 
@@ -174,21 +236,21 @@ const Chatbot = () => {
       const data = await response.json();
       const raw = data.choices?.[0]?.message?.content ?? "";
 
-      // Parse the structured {reply, projectState} envelope from the model
+      // Robustly extract {reply, projectState} from the model output.
+      // The model can return: plain JSON, JSON inside ```json fences,
+      // or JSON with trailing/leading prose. We try multiple strategies.
       let replyText = raw;
       let newState = projectState;
-      try {
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.reply) {
-          replyText = parsed.reply;
-          if (parsed.projectState) newState = parsed.projectState;
-        }
-      } catch (e) {
-        // Fallback: model didn't return clean JSON. Show raw text, keep old state.
-        console.warn('Could not parse projectState JSON, showing raw reply.', e);
+
+      const extracted = parseAIResponse(raw);
+      if (extracted) {
+        replyText = extracted.reply;
+        if (extracted.projectState) newState = extracted.projectState;
+      } else {
+        console.warn('Could not parse projectState JSON, showing raw reply.');
       }
 
-      updateMessages([...newMessages, { id: Date.now() + 1, sender: 'ai', text: replyText || "I'm having trouble processing that right now." }]);
+      updateMessages([...newMessages, { id: Date.now() + 1, sender: 'ai', text: replyText || "I'm having trouble processing that right now.", rawJSON: extracted ? raw : undefined }]);
       updateProjectState(newState);
     } catch (error) {
       console.error("Error connecting to AI:", error);
@@ -210,94 +272,99 @@ const Chatbot = () => {
   const handleConnectWithUs = () => {
     const s = projectState;
     const target = DIVISION_TO_TARGET[s.recommendedDivision] || 'Multiple Services';
-    const budget = s.totalCost ? `₹${Number(s.totalCost).toLocaleString('en-IN')}` : 'Not sure yet';
+    const budgetBracket = getBudgetBracket(s.totalCost);
+    const totalFormatted = s.totalCost ? `₹${Number(s.totalCost).toLocaleString('en-IN')}` : 'TBD';
 
     const lines = [];
-    lines.push('PROJECT PROPOSAL (auto-generated by TechBrahmand AI Architect)');
+    lines.push('PROJECT BRIEF — TechBrahmand AI Architect');
+    lines.push('------------------------------------------');
     lines.push('');
-    if (s.recommendedDivision) lines.push(`Recommended Division: ${s.recommendedDivision.toUpperCase()} — ${s.divisionReason}`);
-    if (s.businessGoal) lines.push(`Business Goal: ${s.businessGoal}`);
+
+    if (s.businessGoal) lines.push(`Goal: ${s.businessGoal}`);
     if (s.industry) lines.push(`Industry: ${s.industry}`);
-    if (s.targetAudience) lines.push(`Target Audience: ${s.targetAudience}`);
+    if (s.targetAudience) lines.push(`Audience: ${s.targetAudience}`);
     if (s.competitor) lines.push(`Competitor: ${s.competitor}`);
-    if (s.timeline) lines.push(`Estimated Timeline: ${s.timeline}`);
+    if (s.recommendedDivision) lines.push(`Division: ${s.recommendedDivision.toUpperCase()} — ${s.divisionReason}`);
+    if (s.timeline) lines.push(`Timeline: ${s.timeline}`);
+
+    const includedFeatures = s.features?.filter(f => f.included) || [];
+    if (includedFeatures.length) {
+      lines.push('');
+      lines.push(`Features (${includedFeatures.length}):`);
+      includedFeatures.forEach(f => lines.push(`  - ${f.name}`));
+    }
+
     if (s.techStack?.length) {
-      lines.push('', 'Tech Stack:');
-      s.techStack.forEach(t => lines.push(`  - ${t.layer}: ${t.choice} (${t.reason})`));
+      lines.push('');
+      lines.push('Tech Stack:');
+      s.techStack.forEach(t => lines.push(`  - ${t.layer}: ${t.choice}`));
     }
-    if (s.features?.length) {
-      lines.push('', 'Features:');
-      s.features.filter(f => f.included).forEach(f => lines.push(`  - ${f.name}`));
-    }
+
     if (s.costBreakdown?.length) {
-      lines.push('', 'Quotation:');
-      s.costBreakdown.forEach(c => lines.push(`  - ${c.item}: ₹${Number(c.cost).toLocaleString('en-IN')} (${c.reason})`));
-      lines.push(`  TOTAL: ${budget}`);
+      lines.push('');
+      lines.push('Cost Breakdown:');
+      s.costBreakdown.forEach(c =>
+        lines.push(`  - ${c.item}: Rs.${Number(c.cost).toLocaleString('en-IN')}`)
+      );
+      lines.push(`  TOTAL ESTIMATE: ${totalFormatted}`);
     }
-    if (s.assumptions?.length) { lines.push('', 'Assumptions:'); s.assumptions.forEach(a => lines.push(`  - ${a}`)); }
-    if (s.risks?.length) { lines.push('', 'Risks:'); s.risks.forEach(r => lines.push(`  - ${r}`)); }
+
+    if (s.assumptions?.length) {
+      lines.push('');
+      lines.push('Assumptions:');
+      s.assumptions.forEach(a => lines.push(`  - ${a}`));
+    }
 
     navigate('/contact', {
-      state: { prefill: { target, budget, timeline: s.timeline || '', description: lines.join('\n') } },
+      state: {
+        prefill: {
+          target,
+          budget: budgetBracket,
+          timeline: s.timeline || '',
+          description: lines.join('\n'),
+        },
+      },
     });
   };
 
   const hasConversation = messages.length > 1;
-  const showCTA = messages.filter(m => m.sender === 'user').length >= 2; // Show after 2+ user messages
+  // Show CTA only when there's a real proposal (cost breakdown exists) or the bot signals handoff is ready
+  const showCTA = projectState.totalCost > 0 || projectState.readyForHandoff ||
+    ['quotation', 'refinement', 'handoff'].includes(projectState.stage);
 
   const inr = (n) => `₹${Number(n || 0).toLocaleString('en-IN')}`;
+
+  // Map a computed total cost to the nearest contact-form budget bracket
+  const getBudgetBracket = (total) => {
+    if (!total || total <= 0) return 'Not sure yet';
+    if (total < 100000) return 'Under ₹1,00,000';
+    if (total < 300000) return '₹1,00,000 - ₹3,00,000';
+    if (total < 500000) return '₹3,00,000 - ₹5,00,000';
+    if (total < 1000000) return '₹5,00,000 - ₹10,00,000';
+    return '₹10,00,000+';
+  };
 
   return (
     <div className="w-full h-full flex overflow-hidden bg-white">
       
       {/* ===== LEFT SIDEBAR ===== */}
-      <aside className="hidden md:flex w-[240px] flex-shrink-0 flex-col bg-gray-50 border-r border-gray-200 p-4 pt-10 pb-4 gap-2">
-        
-        {/* New Project Button */}
-        <button onClick={() => {
+      <ChatSidebar
+        sessions={chatSessions}
+        activeSessionId={activeSessionId}
+        onSelectSession={setActiveSessionId}
+        onNewSession={() => {
           const newSession = { id: Date.now(), title: 'New Chat', messages: [DEFAULT_MSG], createdAt: Date.now(), projectState: emptyProjectState(), versions: [] };
           setChatSessions(prev => [newSession, ...prev]);
           setActiveSessionId(newSession.id);
           setInput('');
         }}
-          className="flex items-center gap-2 bg-black text-white rounded-xl px-4 py-3 font-semibold text-sm hover:bg-gray-800 transition-all active:scale-[0.98] mb-3">
-          <Plus size={18} /> New Project
-        </button>
-
-        {/* Chat Sessions */}
-        <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-          <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">Your Chats</p>
-          <div className="flex flex-col gap-1">
-            {chatSessions.map((session) => (
-              <button key={session.id} onClick={() => setActiveSessionId(session.id)}
-                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-all truncate group ${
-                  session.id === activeSessionId ? 'bg-black text-white' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
-                }`}>
-                <MessageSquare size={14} className="flex-shrink-0" />
-                <span className="truncate flex-1 text-left">{session.title}</span>
-                {chatSessions.length > 1 && (
-                  <Trash2 size={12} className={`flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity ${
-                    session.id === activeSessionId ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-red-500'
-                  }`} onClick={(e) => {
-                    e.stopPropagation();
-                    const remaining = chatSessions.filter(s => s.id !== session.id);
-                    setChatSessions(remaining);
-                    if (session.id === activeSessionId) setActiveSessionId(remaining[0].id);
-                  }} />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Session Info */}
-        <div className="mt-auto border-t border-gray-200/60 pt-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-400">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span>Session active · {elapsed}</span>
-          </div>
-        </div>
-      </aside>
+        onDeleteSession={(id) => {
+          const remaining = chatSessions.filter(s => s.id !== id);
+          setChatSessions(remaining);
+          if (id === activeSessionId) setActiveSessionId(remaining[0].id);
+        }}
+        elapsed={elapsed}
+      />
 
       {/* ===== MAIN CONTENT ===== */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden pt-[56px] md:pt-[72px]">
@@ -394,8 +461,14 @@ const Chatbot = () => {
                       <Rocket size={18} className="text-white" />
                     </div>
                     <div className="text-left">
-                      <p className="font-bold text-sm tracking-tight">Ready to build? Connect with us</p>
-                      <p className="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors">We'll auto-fill your project details from this chat</p>
+                      <p className="font-bold text-sm tracking-tight">
+                        {projectState.readyForHandoff ? 'Your proposal is ready — let\'s connect' : 'Ready to build? Connect with us'}
+                      </p>
+                      <p className="text-[11px] text-gray-400 group-hover:text-gray-300 transition-colors">
+                        {projectState.totalCost > 0
+                          ? `Estimated ${inr(projectState.totalCost)} · proposal auto-filled`
+                          : 'We\'ll auto-fill your project details from this chat'}
+                      </p>
                     </div>
                   </div>
                   <ArrowRight size={20} className="text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all" />

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Layers, Wallet, Clock, CheckCircle2, Circle, AlertCircle, RotateCcw } from "lucide-react";
+import { Layers, Wallet, Clock, CheckCircle2, Circle, AlertCircle, RotateCcw, Sparkles, RefreshCw, Zap } from "lucide-react";
 
 const DIVISION_LABEL = {
   brahma: "Brahma — Creator",
@@ -9,10 +9,61 @@ const DIVISION_LABEL = {
 };
 
 const DIVISION_ICON = {
-  brahma: "✦",
-  vishnu: "⟳",
-  mahesh: "⚡",
+  brahma: Sparkles,
+  vishnu: RefreshCw,
+  mahesh: Zap,
 };
+
+// Maps common tech names (lowercase) to devicon CDN slugs.
+// Pattern: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/{slug}/{slug}-original.svg
+const DEVICON_MAP = {
+  react:       'react',
+  'next.js':   'nextjs',
+  nextjs:      'nextjs',
+  'node.js':   'nodejs',
+  nodejs:      'nodejs',
+  node:        'nodejs',
+  python:      'python',
+  django:      'django',
+  fastapi:     'fastapi',
+  postgresql:  'postgresql',
+  postgres:    'postgresql',
+  mongodb:     'mongodb',
+  mongo:       'mongodb',
+  mysql:       'mysql',
+  redis:       'redis',
+  docker:      'docker',
+  kubernetes:  'kubernetes',
+  aws:         'amazonwebservices',
+  gcp:         'googlecloud',
+  azure:       'azure',
+  typescript:  'typescript',
+  javascript:  'javascript',
+  flutter:     'flutter',
+  dart:        'dart',
+  graphql:     'graphql',
+  tailwind:    'tailwindcss',
+  'tailwind css': 'tailwindcss',
+  firebase:    'firebase',
+  supabase:    'supabase',
+  vercel:      'vercel',
+  nginx:       'nginx',
+  linux:       'linux',
+  git:         'git',
+};
+
+function TechIcon({ name }) {
+  const slug = DEVICON_MAP[name?.toLowerCase()];
+  if (!slug) return null;
+  return (
+    <img
+      src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${slug}/${slug}-original.svg`}
+      alt={name}
+      className="w-4 h-4 flex-shrink-0"
+      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+    />
+  );
+}
 
 const inr = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
@@ -55,7 +106,7 @@ export default function ProposalPanel({ state, versions, onUndo }) {
           >
             <p className="text-[10px] uppercase tracking-wider text-gray-400 mb-1">Recommended Division</p>
             <p className="text-base font-black flex items-center gap-2">
-              <span className="text-lg">{DIVISION_ICON[state.recommendedDivision]}</span>
+              {(() => { const Icon = DIVISION_ICON[state.recommendedDivision]; return Icon ? <Icon size={16} className="text-white flex-shrink-0" /> : null; })()}
               {DIVISION_LABEL[state.recommendedDivision]}
             </p>
             {state.divisionReason && (
@@ -151,7 +202,10 @@ export default function ProposalPanel({ state, versions, onUndo }) {
               <li key={i} className="rounded-xl border border-gray-100 p-2.5 bg-white">
                 <div className="flex justify-between items-start text-sm">
                   <span className="text-gray-400 text-[11px] uppercase tracking-wide">{t.layer}</span>
-                  <span className="font-semibold text-gray-900 text-[13px]">{t.choice}</span>
+                  <span className="font-semibold text-gray-900 text-[13px] flex items-center gap-1.5">
+                    <TechIcon name={t.choice} />
+                    {t.choice}
+                  </span>
                 </div>
                 {t.reason && (
                   <p className="text-[10px] text-gray-400 mt-0.5 leading-relaxed">{t.reason}</p>

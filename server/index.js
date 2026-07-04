@@ -14,10 +14,13 @@ app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
-// === Phase 9: Rate limiting — 30 requests per 10 minutes per IP ===
+// === Rate limiting — 60 requests per 10 minutes per IP ===
+// A genuine consultation is a fast back-and-forth (scope questions, edits, re-quotes);
+// 30/10min interrupted real conversations. 60/10min still guards against abuse/cost
+// while comfortably covering a 20+ message proposal session.
 const chatLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 30,
+  max: 60,
   standardHeaders: true,
   legacyHeaders: false,
   message: {

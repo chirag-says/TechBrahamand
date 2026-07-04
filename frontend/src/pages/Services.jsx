@@ -67,22 +67,24 @@ const INDUSTRIES = [
 ];
 
 /* ── Tech Ecosystem ── */
+const DI = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
+const SI = 'https://cdn.simpleicons.org';
 const TECH_NODES = [
-  { label: "React", color: "#61DAFB", r: 110, angle: 0 },
-  { label: "Next.js", color: "#0F172A", r: 110, angle: 72 },
-  { label: "Flutter", color: "#54C5F8", r: 110, angle: 144 },
-  { label: "Node.js", color: "#68A063", r: 110, angle: 216 },
-  { label: "Python", color: "#F7CA3B", r: 110, angle: 288 },
-  { label: "MongoDB", color: "#47A248", r: 195, angle: 20 },
-  { label: "PostgreSQL", color: "#336791", r: 195, angle: 80 },
-  { label: "Docker", color: "#2496ED", r: 195, angle: 140 },
-  { label: "AWS", color: "#FF9900", r: 195, angle: 200 },
-  { label: "Redis", color: "#DC382D", r: 195, angle: 260 },
-  { label: "Azure", color: "#0078D4", r: 195, angle: 320 },
-  { label: "OpenAI", color: "#10A37F", r: 235, angle: 10 },
-  { label: "Claude", color: "#D97706", r: 235, angle: 90 },
-  { label: "Gemini", color: "#4285F4", r: 235, angle: 190 },
-  { label: "Groq", color: "#F97316", r: 235, angle: 285 },
+  { label: "React",      color: "#61DAFB", r: 110, angle: 0,   icon: `${DI}/react/react-original.svg` },
+  { label: "Next.js",    color: "#0F172A", r: 110, angle: 72,  icon: `${DI}/nextjs/nextjs-plain.svg` },
+  { label: "Flutter",    color: "#54C5F8", r: 110, angle: 144, icon: `${DI}/flutter/flutter-original.svg` },
+  { label: "Node.js",    color: "#68A063", r: 110, angle: 216, icon: `${DI}/nodejs/nodejs-original.svg` },
+  { label: "Python",     color: "#F7CA3B", r: 110, angle: 288, icon: `${DI}/python/python-original.svg` },
+  { label: "MongoDB",    color: "#47A248", r: 195, angle: 20,  icon: `${DI}/mongodb/mongodb-original.svg` },
+  { label: "PostgreSQL", color: "#336791", r: 195, angle: 80,  icon: `${DI}/postgresql/postgresql-original.svg` },
+  { label: "Docker",     color: "#2496ED", r: 195, angle: 140, icon: `${DI}/docker/docker-original.svg` },
+  { label: "AWS",        color: "#FF9900", r: 195, angle: 200, icon: `${DI}/amazonwebservices/amazonwebservices-plain-wordmark.svg` },
+  { label: "Redis",      color: "#DC382D", r: 195, angle: 260, icon: `${DI}/redis/redis-original.svg` },
+  { label: "Azure",      color: "#0078D4", r: 195, angle: 320, icon: `${DI}/azure/azure-original.svg` },
+  { label: "OpenAI",     color: "#10A37F", r: 235, angle: 10,  icon: `${SI}/openai/10A37F` },
+  { label: "Claude",     color: "#D97706", r: 235, angle: 90,  icon: `${SI}/anthropic/D97706` },
+  { label: "Gemini",     color: "#4285F4", r: 235, angle: 190, icon: `${SI}/googlegemini/4285F4` },
+  { label: "Groq",       color: "#F97316", r: 235, angle: 285, icon: `${SI}/groq/F97316` },
 ];
 
 /* ── Journey ── */
@@ -277,7 +279,7 @@ export default function Services() {
             return (
               <div key={i} className="sv-tech__node" style={{ left: `${x}%`, top: `${y}%` }}>
                 <div className="sv-tech__pill">
-                  <span className="sv-tech__pill-dot" style={{ background: n.color }} />
+                  <img src={n.icon} alt={n.label} className="sv-tech__pill-icon" loading="lazy" onError={e => { e.currentTarget.style.display='none'; }} />
                   {n.label}
                 </div>
               </div>

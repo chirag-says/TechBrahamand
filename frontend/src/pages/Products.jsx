@@ -2,6 +2,7 @@ import React,{useState,useRef,useEffect} from 'react';
 import {motion,useInView,AnimatePresence} from 'framer-motion';
 import {Link} from 'react-router-dom';
 import {ArrowRight,ChevronDown,Check,X,Zap,Globe,Smartphone,Server,Brain,Settings,Cloud,RefreshCw,Heart,GraduationCap,TrendingUp,ShoppingBag,Plane,Building,Factory,Coffee,Shield,Star,Layers} from 'lucide-react';
+import TypingKeyboard from '../components/TypingKeyboard';
 import './Products.css';
 
 const E=[0.22,1,0.36,1];
@@ -135,7 +136,7 @@ function SolutionPanel({sol,onClose}){
 
           <div className="sp-footer">
             <div className="sp-footer__meta">
-              <span>⏱ {sol.time}</span>
+              <span className="flex items-center gap-1"><Clock size={11}/>{sol.time}</span>
               <span>From {sol.price}</span>
             </div>
             <Link to="/chatbot" onClick={onClose}>
@@ -179,14 +180,14 @@ export default function Products(){
           </motion.div>
         </div>
         <motion.div className="pd-hero__card" initial={{opacity:0,y:40,rotate:-2}} animate={{opacity:1,y:0,rotate:0}} transition={{duration:0.9,ease:E,delay:0.3}}>
-          <div className="pd-proposal-card">
-            <div className="pd-proposal-card__head"><span className="pd-proposal-card__dot"/>AI Proposal · Live</div>
-            <div className="pd-proposal-card__row"><span>Project</span><b>AI Hospital System</b></div>
-            <div className="pd-proposal-card__row"><span>Division</span><b className="pd-indigo">BRAHMA</b></div>
-            <div className="pd-proposal-card__row"><span>Stack</span><b>React · Node · PostgreSQL</b></div>
-            <div className="pd-proposal-card__divider"/>
-            <div className="pd-proposal-card__budget">₹68,000</div>
-            <div className="pd-proposal-card__meta"><span>⏱ 6 Weeks</span><span className="pd-green-pill">Ready to Build</span></div>
+          <div className="pd-keyboard-wrap">
+            <TypingKeyboard
+              scale={0.65}
+              accentColor="oklch(42% 0.18 195)"
+              secondaryAccent="#8b5cf6"
+              autoTypeText="Analyzing project idea... Recommending BRAHMA division... Stack: React, Node, PostgreSQL... Budget: Rs.68,000... Timeline: 6 Weeks... Architecture ready. Lets build.       "
+              typingSpeed={[45, 110]}
+            />
           </div>
         </motion.div>
       </section>

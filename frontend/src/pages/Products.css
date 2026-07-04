@@ -9,7 +9,8 @@
 .pd-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;letter-spacing:-.035em;color:#0F172A;line-height:1.1;margin-bottom:14px}
 .pd-sub{font-size:.95rem;color:#64748B;line-height:1.75;max-width:560px}
 .pd-section{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:56px 40px}
-.pd-section-hdr{margin-bottom:36px}
+.pd-section-hdr{margin-bottom:36px;text-align:center}
+.pd-section-hdr .pd-sub{margin-left:auto;margin-right:auto}
 
 /* Buttons */
 .pd-btn-primary{display:inline-flex;align-items:center;gap:9px;padding:14px 32px;border-radius:999px;background:#0F172A;color:#fff;font-size:13px;font-weight:700;letter-spacing:.02em;border:none;cursor:pointer;transition:box-shadow .3s}
@@ -18,14 +19,16 @@
 .pd-btn-ghost:hover{border-color:#CBD5E1;background:#fff}
 
 /* HERO */
-.pd-hero{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:80px 40px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.pd-hero{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:80px 40px 48px;display:flex;align-items:center;gap:0;overflow:hidden}
+.pd-hero__left{flex:0 0 560px;max-width:560px}
+.pd-hero__card{flex:1;min-width:0;display:flex;justify-content:flex-end}
+.pd-keyboard-wrap{width:520px;height:520px;overflow:visible;display:flex;align-items:center;justify-content:center;margin-right:-60px;margin-top:60px}
 .pd-hero__pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;background:oklch(42% 0.18 195 / 0.08);border:1px solid oklch(42% 0.18 195 / 0.2);color:oklch(42% 0.18 195);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:28px}
 .pd-hero__h1{font-size:clamp(2.8rem,5vw,4.2rem);font-weight:900;letter-spacing:-.045em;line-height:1.05;margin-bottom:24px}
 .pd-hero__sub{font-size:1rem;color:#64748B;line-height:1.8;margin-bottom:36px;max-width:480px}
 .pd-hero__btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 
 /* Proposal card */
-.pd-hero__card{display:flex;justify-content:center}
 .pd-proposal-card{background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.6);border-radius:24px;padding:28px 32px;box-shadow:0 8px 40px rgba(0,0,0,0.1),0 2px 8px rgba(0,0,0,0.06);width:100%;max-width:340px;animation:float-card 4s ease-in-out infinite}
 @keyframes float-card{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 .pd-proposal-card__head{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#64748B;margin-bottom:20px}
@@ -75,7 +78,7 @@
 .pd-div-card__glow{position:absolute;bottom:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:var(--dc,oklch(42% 0.18 195));opacity:.06;filter:blur(40px)}
 
 /* TECH BUILDER */
-.pd-builder{background:#fff;border-radius:32px;margin:0 40px;border:1px solid #E2E8F0;box-shadow:0 4px 32px rgba(0,0,0,.06)}
+.pd-builder{background:#fff;border-radius:32px;margin:0 auto;max-width:900px;width:100%;border:1px solid #E2E8F0;box-shadow:0 4px 32px rgba(0,0,0,.06)}
 .pd-builder-wrap{background:#F8FAFC;border-radius:20px;padding:36px;border:1px solid #F1F5F9}
 .pd-techs-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
 .pd-tech-pill{padding:8px 18px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #E2E8F0;background:#fff;color:#475569;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .25s}
@@ -153,7 +156,7 @@
 .pd-faq__a-inner{padding:0 24px 20px;font-size:.85rem;color:#64748B;line-height:1.75}
 
 /* FINAL CTA */
-.pd-cta{position:relative;z-index:1;overflow:hidden;background:#0F172A;margin:0 40px 80px;border-radius:32px;padding:100px 80px;text-align:center;box-shadow:0 8px 60px rgba(0,0,0,.2)}
+.pd-cta{position:relative;z-index:1;overflow:hidden;background:radial-gradient(125% 125% at 50% 0%,#0F172A 40%,#2563eb,#ffffff 100%);margin:0 40px 80px;border-radius:32px;padding:100px 80px;text-align:center;box-shadow:0 8px 60px rgba(0,0,0,.2)}
 .pd-cta__bg{position:absolute;inset:0;pointer-events:none}
 .pd-cta__orb{position:absolute;border-radius:50%;filter:blur(80px)}
 .pd-cta__orb--1{width:500px;height:500px;top:-150px;left:-100px;background:oklch(42% 0.18 195 / 0.2)}
