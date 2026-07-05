@@ -1,7 +1,7 @@
 import React,{useState,useRef,useEffect} from 'react';
 import {motion,useInView,AnimatePresence} from 'framer-motion';
 import {Link} from 'react-router-dom';
-import {ArrowRight,ChevronDown,Check,X,Zap,Globe,Smartphone,Server,Brain,Settings,Cloud,RefreshCw,Heart,GraduationCap,TrendingUp,ShoppingBag,Plane,Building,Factory,Coffee,Shield,Star,Layers} from 'lucide-react';
+import {ArrowRight,ChevronDown,Check,X,Zap,Globe,Smartphone,Server,Brain,Settings,Cloud,RefreshCw,Heart,GraduationCap,TrendingUp,ShoppingBag,Plane,Building,Factory,Coffee,Shield,Star,Layers,Clock} from 'lucide-react';
 import TypingKeyboard from '../components/TypingKeyboard';
 import './Products.css';
 
@@ -176,7 +176,12 @@ export default function Products(){
           <motion.p className="pd-hero__sub" {...fUp(0.35)}>Every solution begins with intelligent architecture. Our AI analyses your business, recommends technologies, estimates your budget and designs your roadmap — before development begins.</motion.p>
           <motion.div className="pd-hero__btns" {...fUp(0.5)}>
             <Link to="/chatbot"><motion.button className="pd-btn-primary" whileHover={{scale:1.04}} whileTap={{scale:0.97}}>Start AI Consultation <ArrowRight size={15}/></motion.button></Link>
-            <button className="pd-btn-ghost" onClick={()=>document.getElementById('solutions')?.scrollIntoView({behavior:'smooth'})}>Explore Solutions</button>
+            <button className="pd-btn-ghost" onClick={()=>{
+              const el=document.getElementById('solutions');
+              const vp=document.querySelector('.bezel-viewport');
+              if(el&&vp){vp.scrollTo({top:el.offsetTop-80,behavior:'smooth'});}
+              else if(el){el.scrollIntoView({behavior:'smooth'});}
+            }}>Explore Solutions</button>
           </motion.div>
         </div>
         <motion.div className="pd-hero__card" initial={{opacity:0,y:40,rotate:-2}} animate={{opacity:1,y:0,rotate:0}} transition={{duration:0.9,ease:E,delay:0.3}}>

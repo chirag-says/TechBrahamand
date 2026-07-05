@@ -32,9 +32,8 @@ export default function Footer() {
 
           {/* Brand section */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <img src="/techbrahmand-badge.png" alt="Tech Brahmand" className="w-10 h-10 rounded-full shadow-md border border-black/5" />
-              <span className="text-[18px] font-extrabold tracking-[0.08em] text-[#111] uppercase">Tech Brahmand</span>
+            <div className="flex justify-center mb-4">
+              <img src="/techbrahmand-logo.png" alt="Tech Brahmand" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-[12.5px] text-[#666] font-medium leading-[1.7] max-w-[300px] mx-auto">
               An AI-first engineering house bridging operations with execution, enabling enterprises to scale and evolve.
