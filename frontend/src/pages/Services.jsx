@@ -263,7 +263,8 @@ export default function Services() {
       {/* ── TECH ECOSYSTEM ── */}
       <section className="sv-section">
         <SHdr over="Technology Ecosystem" title="The Stack Powering Our Products" center />
-        <div className="sv-tech">
+        {/* Desktop orbit */}
+        <div className="sv-tech sv-tech--desktop">
           <div className="sv-tech__orbit sv-tech__orbit--1" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
           <div className="sv-tech__orbit sv-tech__orbit--2" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
           <div className="sv-tech__orbit sv-tech__orbit--3" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
@@ -285,6 +286,15 @@ export default function Services() {
               </div>
             );
           })}
+        </div>
+        {/* Mobile pill grid */}
+        <div className="sv-tech-pills">
+          {TECH_NODES.map((n, i) => (
+            <div key={i} className="sv-tech__pill">
+              <img src={n.icon} alt={n.label} className="sv-tech__pill-icon" loading="lazy" onError={e => { e.currentTarget.style.display='none'; }} />
+              {n.label}
+            </div>
+          ))}
         </div>
       </section>
 

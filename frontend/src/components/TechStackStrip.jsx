@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import './TechStackStrip.css';
 
 const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons';
@@ -27,12 +26,8 @@ const TechStackStrip = () => {
   const items = [...STACK, ...STACK];
 
   return (
-    <motion.section
+    <section
       className="tech-strip"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
       aria-label="Technology stack"
     >
       <div className="tech-strip__fade tech-strip__fade--left" />
@@ -56,7 +51,7 @@ const TechStackStrip = () => {
           </div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 };
 

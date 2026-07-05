@@ -12,9 +12,7 @@ const Home = () => {
   return (
     <div className="w-full" style={{ zoom: 1.12 }}>
       <NewHero />
-      <div className="hidden md:block">
-        <MarqueeBanner containerBg="bg-[#F3F5F9]" />
-      </div>
+      <MarqueeBanner containerBg="bg-[#F3F5F9]" skewClass="skew-y-0" marginTop="mt-0" />
       {/* ── Cosmic Background Section ── */}
       <div className="relative w-full">
 

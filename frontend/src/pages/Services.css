@@ -94,6 +94,7 @@
 
 /* ── TECH ECOSYSTEM ── */
 .sv-tech{position:relative;height:480px;display:flex;align-items:center;justify-content:center}
+.sv-tech-pills{display:none;flex-wrap:wrap;gap:10px;justify-content:center}
 .sv-tech__core{position:absolute;width:120px;height:120px;border-radius:50%;background:#0F172A;border:2px solid rgba(255,255,255,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;box-shadow:0 0 60px oklch(42% 0.18 195 / 0.25),0 8px 40px rgba(0,0,0,.2)}
 .sv-tech__core-label{font-size:8px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:4px}
 .sv-tech__core-name{font-size:11px;font-weight:800;color:#fff;letter-spacing:-.01em}
@@ -188,14 +189,15 @@
   .sv-inds-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
-  .sv-section{padding:52px 24px}
-  .sv-hero{padding:100px 24px 60px}
+  .sv-section{padding:52px 20px}
+  .sv-hero{padding:100px 20px 60px}
   .sv-ai{margin:0 20px;padding:52px 28px;border-radius:24px}
   .sv-cta{margin:0 20px 60px;padding:72px 32px;border-radius:24px}
   .sv-compare{grid-template-columns:1fr}
   .sv-bento{grid-template-columns:1fr}
   .sv-card--a,.sv-card--b,.sv-card--c,.sv-card--d,.sv-card--e,.sv-card--f,.sv-card--g,.sv-card--h{grid-column:span 1}
-  .sv-tech{height:320px}
+  .sv-tech--desktop{display:none}
+  .sv-tech-pills{display:flex}
 }
 @media(max-width:480px){
   .sv-inds-grid{grid-template-columns:1fr 1fr}
