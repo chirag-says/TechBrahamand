@@ -176,7 +176,10 @@
 }
 @media(max-width:768px){
   .pd-section{padding:48px 24px}
-  .pd-hero{padding:100px 24px 56px}
+  .pd-hero{padding:100px 24px 56px;flex-direction:column;overflow:visible}
+  .pd-hero__left{flex:unset;max-width:100%}
+  .pd-hero__card{flex:unset;justify-content:center;width:100%}
+  .pd-keyboard-wrap{width:100%;max-width:420px;height:auto;aspect-ratio:1/1;margin:0 auto;margin-right:0}
   .pd-divs-grid{grid-template-columns:1fr}
   .pd-features-grid{grid-template-columns:1fr}
   .pd-builder{margin:0 20px;border-radius:20px}

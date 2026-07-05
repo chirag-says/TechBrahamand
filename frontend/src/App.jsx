@@ -12,6 +12,7 @@ import { AnimatePresence } from "framer-motion";
 import IntroLoader from "./components/IntroLoader";
 import HoloMenu from "./components/HoloMenu";
 import "./App.css";
+import "./responsive.css";
 
 /* ════════════════════════════════════════
    PILL-STYLE NAVBAR (reference layout)

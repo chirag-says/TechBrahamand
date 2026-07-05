@@ -1,7 +1,7 @@
 import React,{useState,useRef,useEffect} from 'react';
 import {motion,useInView,AnimatePresence} from 'framer-motion';
 import {Link} from 'react-router-dom';
-import {ArrowRight,ChevronDown,Check,X,Zap,Globe,Smartphone,Server,Brain,Settings,Cloud,RefreshCw,Heart,GraduationCap,TrendingUp,ShoppingBag,Plane,Building,Factory,Coffee,Shield,Star,Layers} from 'lucide-react';
+import {ArrowRight,ChevronDown,Check,X,Zap,Globe,Smartphone,Server,Brain,Settings,Cloud,RefreshCw,Heart,GraduationCap,TrendingUp,ShoppingBag,Plane,Building,Factory,Coffee,Shield,Star,Layers,Clock} from 'lucide-react';
 import TypingKeyboard from '../components/TypingKeyboard';
 import './Products.css';
 

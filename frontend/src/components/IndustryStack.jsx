@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Heart, Brain, TrendingUp, Cloud, BookOpen, ArrowRight } from 'lucide-react';
@@ -58,6 +58,9 @@ const INDUSTRIES = [
   },
 ];
 
+/* ════════════════════════════════════════
+   DESKTOP — Sticky stacking cards (unchanged)
+   ════════════════════════════════════════ */
 function IndustryCard({ industry, i, progress, range, targetScale }) {
   const scale = useTransform(progress, range, [1, targetScale]);
   const Icon = industry.icon;
@@ -147,13 +150,135 @@ function Stack({ scroller }) {
   );
 }
 
+/* ════════════════════════════════════════
+   MOBILE — Premium vertical scroll reveal
+   ════════════════════════════════════════ */
+const mobileCard = {
+  hidden: { opacity: 0, y: 80, scale: 0.93 },
+  visible: {
+    opacity: 1, y: 0, scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.06,
+      delayChildren: 0.12,
+    },
+  },
+};
+
+const mobileChild = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const barDraw = {
+  hidden: { scaleX: 0 },
+  visible: {
+    scaleX: 1,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+function MobileIndustryCard({ industry, i }) {
+  const Icon = industry.icon;
+
+  return (
+    <motion.div
+      className="mob-ind-card"
+      style={{ backgroundColor: industry.bg }}
+      variants={mobileCard}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.12 }}
+    >
+      {/* Accent bar — draws in from left */}
+      <motion.div
+        className="mob-ind-card__bar"
+        style={{ background: industry.accent }}
+        variants={barDraw}
+      />
+
+      {/* Counter */}
+      <motion.div className="mob-ind-card__counter" variants={mobileChild}>
+        <span style={{ color: industry.accent, fontWeight: 700 }}>0{i + 1}</span>
+        <span style={{ opacity: 0.4, margin: '0 3px' }}>/</span>
+        <span style={{ opacity: 0.4 }}>0{INDUSTRIES.length}</span>
+      </motion.div>
+
+      {/* Subtitle */}
+      <motion.span
+        className="mob-ind-card__subtitle"
+        style={{ color: industry.accent }}
+        variants={mobileChild}
+      >
+        {industry.subtitle}
+      </motion.span>
+
+      {/* Title */}
+      <motion.h2 className="mob-ind-card__title" variants={mobileChild}>
+        {industry.name}
+      </motion.h2>
+
+      {/* Description */}
+      <motion.p className="mob-ind-card__desc" variants={mobileChild}>
+        {industry.description}
+      </motion.p>
+
+      {/* CTA */}
+      <motion.div variants={mobileChild}>
+        <Link
+          to="/chatbot"
+          className="mob-ind-card__cta"
+          style={{ background: industry.accent }}
+        >
+          Estimate a {industry.name} project
+          <ArrowRight size={14} />
+        </Link>
+      </motion.div>
+
+      {/* Icon */}
+      <motion.div
+        className="mob-ind-card__icon"
+        style={{ background: `${industry.accent}18` }}
+        variants={mobileChild}
+      >
+        <Icon size={36} strokeWidth={1.2} style={{ color: industry.accent }} />
+      </motion.div>
+
+      {/* Capabilities */}
+      <motion.ul className="mob-ind-card__list" variants={mobileChild}>
+        {industry.items.map((item, j) => (
+          <motion.li key={j} className="mob-ind-card__list-item" variants={mobileChild}>
+            <span className="mob-ind-card__dot" style={{ background: industry.accent }} />
+            {item}
+          </motion.li>
+        ))}
+      </motion.ul>
+    </motion.div>
+  );
+}
+
+/* ════════════════════════════════════════
+   MAIN COMPONENT
+   ════════════════════════════════════════ */
 const IndustryStack = () => {
   const rootRef = useRef(null);
   const [scroller, setScroller] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useLayoutEffect(() => {
     const vp = document.querySelector('.bezel-viewport');
     if (vp) setScroller(vp);
+  }, []);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 760);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
   return (
@@ -167,7 +292,15 @@ const IndustryStack = () => {
         </h2>
       </div>
 
-      {scroller && <Stack scroller={scroller} />}
+      {isMobile ? (
+        <div className="mob-ind-grid">
+          {INDUSTRIES.map((ind, i) => (
+            <MobileIndustryCard key={ind.id} industry={ind} i={i} />
+          ))}
+        </div>
+      ) : (
+        scroller && <Stack scroller={scroller} />
+      )}
     </div>
   );
 };

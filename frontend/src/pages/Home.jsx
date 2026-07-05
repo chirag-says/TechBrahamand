@@ -10,7 +10,7 @@ import SocialProof from "../components/SocialProof";
 
 const Home = () => {
   return (
-    <div className="w-full" style={{ zoom: 1.12 }}>
+    <div className="w-full tb-home-zoom" style={{ zoom: 1.12 }}>
       <NewHero />
       <div className="hidden md:block">
         <MarqueeBanner containerBg="bg-[#F3F5F9]" />

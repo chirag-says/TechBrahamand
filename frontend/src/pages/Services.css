@@ -196,6 +196,15 @@
   .sv-bento{grid-template-columns:1fr}
   .sv-card--a,.sv-card--b,.sv-card--c,.sv-card--d,.sv-card--e,.sv-card--f,.sv-card--g,.sv-card--h{grid-column:span 1}
   .sv-tech{height:320px}
+  .sv-tech__core{width:80px;height:80px;box-shadow:0 0 36px oklch(42% 0.18 195 / 0.2),0 4px 20px rgba(0,0,0,.15)}
+  .sv-tech__core svg{width:22px;height:22px}
+  .sv-tech__core-label{font-size:7px;margin-top:2px}
+  .sv-tech__core-name{font-size:9px}
+  .sv-tech__orbit--1{width:180px;height:180px}
+  .sv-tech__orbit--2{width:280px;height:280px}
+  .sv-tech__orbit--3{width:340px;height:340px}
+  .sv-tech__pill{font-size:10px;padding:5px 10px;gap:4px}
+  .sv-tech__pill-icon{width:13px;height:13px}
 }
 @media(max-width:480px){
   .sv-inds-grid{grid-template-columns:1fr 1fr}
