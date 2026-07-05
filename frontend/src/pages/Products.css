@@ -181,7 +181,8 @@
   .pd-section{padding:48px 20px}
   .pd-hero{flex-direction:column;padding:80px 20px 48px;gap:32px;align-items:flex-start}
   .pd-hero__left{flex:1 1 auto;max-width:100%}
-  .pd-hero__card{display:none}
+  .pd-hero__card{display:flex;justify-content:center;overflow:hidden;width:100%}
+  .pd-keyboard-wrap{width:800px;height:600px;transform:scale(0.72);transform-origin:center top;margin-bottom:-168px;flex-shrink:0}
   .pd-hero__h1{font-size:clamp(2rem,8vw,3rem)}
   .pd-divs-grid{grid-template-columns:1fr}
   .pd-features-grid{grid-template-columns:1fr}
