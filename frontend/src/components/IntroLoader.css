@@ -270,6 +270,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .intro-feather-img {
@@ -325,6 +328,9 @@
   line-height: 1;
   letter-spacing: 0.04em;
   will-change: transform, opacity, filter;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
   position: relative;
   text-shadow:
     0 0 20px rgba(150, 210, 255, 0.15),

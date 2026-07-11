@@ -29,10 +29,10 @@ const CENTER_IDX = (CHARS.length - 1) / 2;
 const MAX_DIST = CENTER_IDX;
 
 /* ── Timing constants (ms) ── */
-const COLLISION_MS = 2000;
-const FEATHER_MS = 1800;   // Feather starts rising just before text
-const TEXT_REVEAL_MS = 2400;
-const EXIT_MS = 4000;
+const COLLISION_MS = 2400;
+const FEATHER_MS = 2200;   // Feather starts rising just before text
+const TEXT_REVEAL_MS = 3000;
+const EXIT_MS = 6000;
 
 /* ──────────────────────────────
    STAR GENERATOR
@@ -98,7 +98,7 @@ const EnergyCanvas = React.memo(() => {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const rect = canvas.getBoundingClientRect();
     const W = rect.width;
     const H = rect.height;
@@ -279,8 +279,8 @@ const EnergyCanvas = React.memo(() => {
       });
 
       // ── Post-collision divine glow that lingers ──
-      if (exploded && dt < COLLISION_MS + 800) {
-        const gP = Math.max(0, 1 - (dt - COLLISION_MS) / 800);
+      if (exploded && dt < COLLISION_MS + 1200) {
+        const gP = Math.max(0, 1 - (dt - COLLISION_MS) / 1200);
         const dg = ctx.createRadialGradient(CX, CY, 0, CX, CY, 120);
         dg.addColorStop(0, `rgba(255,220,100,${gP * 0.12})`);
         dg.addColorStop(0.4, `rgba(100,180,255,${gP * 0.06})`);
@@ -291,7 +291,7 @@ const EnergyCanvas = React.memo(() => {
         ctx.fill();
       }
 
-      if (dt < COLLISION_MS + 1000) {
+      if (dt < COLLISION_MS + 1600) {
         raf = requestAnimationFrame(draw);
       }
     };
@@ -345,12 +345,12 @@ const IntroLoader = ({ onComplete }) => {
       className="intro-loader"
       animate={
         isExiting
-          ? { opacity: 0, filter: 'blur(5px)' }
-          : { opacity: 1, filter: 'blur(0px)' }
+          ? { opacity: 0, filter: 'blur(8px)', scale: 1.03 }
+          : { opacity: 1, filter: 'blur(0px)', scale: 1 }
       }
       transition={
         isExiting
-          ? { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+          ? { duration: 0.75, ease: [0.4, 0, 0.2, 1] }
           : { duration: 0 }
       }
       onAnimationComplete={() => {
@@ -491,9 +491,9 @@ const IntroLoader = ({ onComplete }) => {
           initial={{ y: '100vh', opacity: 0, rotate: -15 }}
           animate={{ y: '0%', opacity: 0.45, rotate: 0 }}
           transition={{
-            y: { duration: 1.2, ease: [0.16, 1, 0.3, 1] },
-            opacity: { duration: 0.8, ease: 'easeOut' },
-            rotate: { duration: 1.4, ease: [0.16, 1, 0.3, 1] },
+            y: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
+            opacity: { duration: 1.0, ease: 'easeOut' },
+            rotate: { duration: 1.7, ease: [0.16, 1, 0.3, 1] },
           }}
         >
           <img
@@ -526,7 +526,7 @@ const IntroLoader = ({ onComplete }) => {
           {CHARS.map((char, i) => {
             const isSpace = char === ' ';
             // Center-outward stagger: center letters appear first
-            const revealDelay = (Math.abs(i - CENTER_IDX) / MAX_DIST) * 0.12;
+            const revealDelay = (Math.abs(i - CENTER_IDX) / MAX_DIST) * 0.22;
 
             return (
               <motion.span
@@ -543,9 +543,9 @@ const IntroLoader = ({ onComplete }) => {
                   scale: 1,
                 }}
                 transition={{
-                  opacity: { duration: 0.18, delay: revealDelay, ease: 'easeOut' },
-                  filter: { duration: 0.22, delay: revealDelay, ease: 'easeOut' },
-                  scale: { duration: 0.3, delay: revealDelay, ease: [0.16, 1, 0.3, 1] },
+                  opacity: { duration: 0.28, delay: revealDelay, ease: 'easeOut' },
+                  filter: { duration: 0.35, delay: revealDelay, ease: 'easeOut' },
+                  scale: { duration: 0.45, delay: revealDelay, ease: [0.16, 1, 0.3, 1] },
                 }}
               >
                 {isSpace ? null : char}
